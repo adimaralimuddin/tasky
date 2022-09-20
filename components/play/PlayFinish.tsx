@@ -40,7 +40,7 @@ export default function PlayFinish({ setFinish, cards, setPlayInd }: props) {
         </div>
         <div className="flex flex-col items-center">
           <h1 className="font-bold text-green-400 ">Finish!</h1>
-          <p> cards: {cards?.length - 1}</p>
+          <p> cards: {cards && cards?.length - 1}</p>
           <div className="p-2 ring-1 rounded-lg ring-slate-300 my-2 bg-slate-50">
             <Item level="easy" filter={filter} onSelect={onItemSelect} />
             <Item level="normal" filter={filter} onSelect={onItemSelect} />

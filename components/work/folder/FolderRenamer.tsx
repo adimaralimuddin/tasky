@@ -19,7 +19,7 @@ export default function FolderRenamer({
 }: props) {
   const { renameFolder } = useFolderMutation(classId);
 
-  const onRenameHandler = (e) => {
+  const onRenameHandler = (e: any) => {
     e.preventDefault();
     const val = e.target.name?.value;
     renameFolder({ folderId: data?.id, name: val });
@@ -30,7 +30,7 @@ export default function FolderRenamer({
     <Modal open={renaming} setOpen={setOpen}>
       {(Icon: any) => (
         <Box>
-          <Icon onClick={(_) => setOpen(false)} />
+          <Icon onClick={() => setOpen(false)} />
           <h2>Rename folder</h2>
           <form onSubmit={onRenameHandler}>
             <Input

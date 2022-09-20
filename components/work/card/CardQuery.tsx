@@ -8,29 +8,32 @@ export default function CardQuery({
   cards,
   setCards,
 }: {
-  cards: CardTypes;
+  cards: CardTypes[];
   setCards: any;
+  classId?: string;
 }) {
   const { work } = useWork();
   const { selectedTopic: topic } = work;
   const { template } = useTemplate(topic?.templateId);
   const [type, setType] = useState("fronts");
   const [filter, setFilter] = useState("");
-  const [fields, setFields] = useState(templateFields(template));
+  const [fields, setFields] = useState<any>(templateFields(template));
 
   useEffect(() => {
     const fields = templateFields(template);
     setFields(fields);
     setFilter(fields?.fronts?.[0]?.text);
-  }, [work?.selectedTopic]);
+  }, [work?.selectedTopic?.id, template]);
 
-  useEffect(() => {
-    setFilter(fields?.[type]?.[0]?.text);
-  }, [type]);
+  // useEffect(() => {
+  //   setFilter(fields?.[type]?.[0]?.text);
+  // }, [type]);
+
+  const updateFilter = () => setFilter(fields?.[type]?.[0]?.text);
 
   const onSearchHandler = (e: any) => {
     const val = e.target.value?.toLowerCase();
-    const newCards = cards?.filter((card: CardTypes) => {
+    const newCards = cards?.filter((card: any) => {
       var ret = false;
       card?.[type]?.map((field: FieldType) => {
         if (field?.text == filter) {
@@ -60,8 +63,8 @@ export default function CardQuery({
           placeholder={`search ${type} ${filter}`}
         />
       </span>
-      <SelectItem text="filter" onInput={(e) => setFilter(e.target.value)}>
-        {fields?.[type]?.map((f) =>
+      <SelectItem text="filter" onInput={(e: any) => setFilter(e.target.value)}>
+        {fields?.[type]?.map((f: any) =>
           f?.type == "text" || f?.type == "number" ? (
             <option value={f?.text}>{f?.text}</option>
           ) : null
@@ -69,8 +72,9 @@ export default function CardQuery({
       </SelectItem>
       <SelectItem
         text="side"
-        onInput={(e) => {
+        onInput={(e: any) => {
           setType(e.target.value);
+          updateFilter();
         }}
       >
         <option value="fronts">fronts</option>
@@ -97,13 +101,13 @@ function SelectItem({ children, onInput, text }: any) {
   );
 }
 
-export const templateFields = (template) => {
+export const templateFields = (template: any) => {
   if (!template?.data) return;
-  const fronts = JSON?.parse(template?.data?.fronts)?.map((f) => ({
+  const fronts = JSON?.parse(template?.data?.fronts)?.map((f: FieldType) => ({
     ...f,
     view: true,
   }));
-  const backs = JSON?.parse(template?.data?.backs)?.map((f) => ({
+  const backs = JSON?.parse(template?.data?.backs)?.map((f: FieldType) => ({
     ...f,
     view: true,
   }));

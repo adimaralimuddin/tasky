@@ -15,7 +15,7 @@ export default function useClassHooks() {
 
   const createClass = useMutation(classApiCreateClass, {
     onSuccess: (addedClass) => {
-      qClient.setQueryData(["classes", user], (classes) => {
+      qClient.setQueryData(["classes", user], (classes: any) => {
         return [...classes, addedClass];
       });
     },

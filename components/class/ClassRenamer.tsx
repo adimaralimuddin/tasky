@@ -21,16 +21,18 @@ export default function ClassRenamer({
   const onRenameHandler = () => {
     renameClass({ classId: data?.id, name });
     setOpen(false);
-    };
-    
+  };
+
   return (
     <div>
       <Modal open={open} setOpen={setOpen}>
-        {(Icon) => (
+        {(Icon: any) => (
           <Box>
             <Icon />
             <Input
-              onInput={(e) => setName(e.target.value)}
+              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setName(e.target.value)
+              }
               value={name}
               defaultValue={data?.name}
             />

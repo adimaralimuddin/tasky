@@ -4,33 +4,31 @@ import {
   topicApiDeleteTopic,
   topicApiRenameTopic,
 } from "./topicApi";
+import { TopicType } from "./topicType";
 
-export default function useTopic(folderId: string) {
+export default function useTopic(folderId?: string) {
   const client = useQueryClient();
   const createTopicMutation = useMutation(topicApiCreateTopic, {
     onSuccess: (createdTopic) => {
-      client.setQueryData(["topics", folderId], (topics) => {
+      client.setQueryData(["topics", folderId], (topics: any) => {
         return [...topics, createdTopic];
       });
     },
   });
   const deleteTopic = useMutation(topicApiDeleteTopic, {
     onSuccess: (deletedTopic) => {
-      console.log("deleted topic ", deletedTopic);
-      client.setQueryData(["topics", folderId], (topics) => {
-        console.log("topics ", topics);
-        return topics?.filter((topic) => topic?.id !== deletedTopic?.id);
+      client.setQueryData(["topics", folderId], (topics: any) => {
+        return topics?.filter(
+          (topic: TopicType) => topic?.id !== deletedTopic?.id
+        );
       });
     },
   });
 
   const renameTopic = useMutation(topicApiRenameTopic, {
     onSuccess: (renamedTopic) => {
-      client.setQueryData(["topics", folderId], (topics) => {
-        console.log("folder id ", folderId);
-        console.log("renamed ", renamedTopic);
-        console.log("topics ", topics);
-        return topics?.map((topic) => {
+      client.setQueryData(["topics", folderId], (topics: any) => {
+        return topics?.map((topic: TopicType) => {
           if (topic?.id == renamedTopic?.id) {
             return { ...topic, name: renamedTopic?.name };
           }

@@ -1,17 +1,16 @@
 import React from "react";
 import useTopic from "../../../features/topic/useTopic";
-import useWork from "../../../features/work/useWork";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
 import Input from "../../elements/Input";
 import Modal from "../../elements/Modal";
 
-function TopicRenamer({ open, setOpen, data }) {
+function TopicRenamer({ open, setOpen, data }: any) {
   const { renameTopic } = useTopic(data?.folderId);
-  const onSaveHandler = async (e) => {
+  const onSaveHandler = (e: any) => {
     e.preventDefault();
     const name = e.target.name.value;
-    await renameTopic({ name, topicId: data?.id });
+    renameTopic({ name, topicId: data?.id });
     setOpen(false);
   };
   return (

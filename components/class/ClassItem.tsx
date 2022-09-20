@@ -26,7 +26,7 @@ function ClassItem({ data }: { data: ClassType; key?: any }) {
     },
   ];
 
-  const onSave = async (data) => {
+  const onSave = async (data: any) => {
     updateClass(data);
     setIsEditing(false);
   };
@@ -100,7 +100,7 @@ function ClassEditor({ open, setOpen, data, onSave }: props) {
   return (
     <div>
       <Modal open={open} setOpen={setOpen}>
-        {(Icon) => (
+        {(Icon: any) => (
           <Box>
             <Icon />
             <h3 className="text-indigo-400">Edit Class</h3>
@@ -110,13 +110,17 @@ function ClassEditor({ open, setOpen, data, onSave }: props) {
                 defaultValue={name}
                 value={name}
                 text="name"
-                onInput={(e) => setName(e.target?.value)}
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setName(e.target?.value)
+                }
               />
               <Input
                 defaultValue={description}
                 value={description}
                 text="description"
-                onInput={(e) => setDescription(e.target?.value)}
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setDescription(e.target?.value)
+                }
               />
               <button onClick={onResetHandler}>reset</button>
             </div>

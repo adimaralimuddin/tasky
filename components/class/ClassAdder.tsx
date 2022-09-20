@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa";
 import Modal from "../elements/Modal";
 import useClass from "../../hooks/useClassHooks";
 import { useUser } from "@auth0/nextjs-auth0";
+import { DEF_USER } from "../../lib/public";
 
 function ClassAdder() {
   const { user } = useUser();
@@ -14,9 +15,9 @@ function ClassAdder() {
   const [description, setDesc] = useState("");
   const { addClass } = useClass();
 
-  const onAddClassHandler = async () => {
-    const x = await addClass({
-      userId: user?.sub,
+  const onAddClassHandler = () => {
+    addClass({
+      userId: user?.sub || DEF_USER,
       name,
       description,
     });

@@ -1,5 +1,5 @@
 import request, { gql } from "graphql-request";
-const url = "http://localhost:3000/api/graphql";
+const url = "/api/graphql";
 
 export async function templateApiCreate(data: {
   name: string;
@@ -32,7 +32,11 @@ export async function templateApiCreate(data: {
   return ret.createTemplate;
 }
 
-export async function templateApiTemplates({ userId }: { userId: string }) {
+export async function templateApiTemplates({
+  userId,
+}: {
+  userId?: string | null;
+}) {
   const q = gql`
     query Templates($userId: String!) {
       templates(userId: $userId) {
@@ -47,7 +51,7 @@ export async function templateApiTemplates({ userId }: { userId: string }) {
   return ret.templates;
 }
 
-export async function templateApiTemplate(templateId: string) {
+export async function templateApiTemplate(templateId?: string) {
   const q = gql`
     query Template($templateId: String!) {
       template(id: $templateId) {
@@ -63,7 +67,7 @@ export async function templateApiTemplate(templateId: string) {
   return ret.template;
 }
 
-export async function templateApiDeleteTemplate(templateId: string) {
+export async function templateApiDeleteTemplate(templateId?: string) {
   const q = gql`
     mutation DeleteTemplate($templateId: String!) {
       deleteTemplate(templateId: $templateId) {
@@ -90,7 +94,6 @@ export async function templateApiUpdateTemplate({
   fronts: any[];
   backs: any[];
 }) {
-  console.log("pre ", { id, name, fronts, backs });
   const q = gql`
     mutation UpdateTemplate(
       $id: String!
@@ -109,6 +112,5 @@ export async function templateApiUpdateTemplate({
   `;
 
   const ret = await request(url, q, { id, name, fronts, backs });
-  console.log("success ", ret);
   return ret.updateTemplate;
 }

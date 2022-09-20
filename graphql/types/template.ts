@@ -1,4 +1,3 @@
-import { extendSchema } from "graphql";
 import {
   extendType,
   inputObjectType,
@@ -23,17 +22,18 @@ export const Template = objectType({
     t.string("name");
     t.string("userId");
     t.boolean("deleted");
+    t.string("fronts");
     //fronts
     t.field("fronts", {
       type: "String",
-      resolve(par) {
+      resolve(par: any) {
         return JSON.stringify(par?.fronts);
       },
     });
     //backs
     t.field("backs", {
       type: "String",
-      resolve(par) {
+      resolve(par: any) {
         return JSON.stringify(par?.backs);
       },
     });
@@ -79,7 +79,7 @@ export const TemplateMutation = extendType({
         fronts: list(FieldsListInputType),
         backs: list(FieldsListInputType),
       },
-      resolve(par, data, ctx) {
+      resolve(par, data: any, ctx) {
         return ctx.prisma.template.create({ data });
       },
     });
@@ -105,9 +105,10 @@ export const TemplateMutation = extendType({
         backs: list(FieldsListInputType),
       },
       resolve(par, { id, name, fronts, backs }, ctx) {
+        const data: any = { name, fronts, backs };
         return ctx.prisma.template.update({
           where: { id },
-          data: { name, fronts, backs },
+          data,
         });
       },
     });

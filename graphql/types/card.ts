@@ -163,11 +163,5 @@ export const CardMutaion = extendType({
         });
       },
     });
-
-    // update card
-    // t.field('updateCard', {
-    //   type: Card,
-
-    // })
   },
 });

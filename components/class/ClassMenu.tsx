@@ -36,8 +36,8 @@ export default function ClassMenu({ data }: { data: ClassType }) {
         className="hover:bg-slate-100 cursor-pointer rounded-lg flex items-center justify-between text-cyan-600 ring-1d px-3"
       >
         <h2 className="whitespace-nowrap">
-          {data?.name?.length > 15
-            ? data?.name.substring(0, 15) + "..."
+          {data?.name && data?.name?.length > 15
+            ? data?.name?.substring(0, 15) + "..."
             : data?.name}
         </h2>
         {hovered && <Option options={options} left={true} />}

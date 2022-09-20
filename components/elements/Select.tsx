@@ -46,6 +46,7 @@ export default function Select({
             <Box css=" shadow-xl ring-1 ring-slate-200 absolute top-0 left-0 p-0 overflow-hidden min-w-[80px] ">
               {options?.map((option) => (
                 <div
+                  key={option?.[0]?.toString()}
                   onClick={(_) => onInputHandler(option)}
                   className="hover:bg-slate-100 cursor-pointer px-4 p-1"
                 >

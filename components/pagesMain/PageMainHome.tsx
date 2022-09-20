@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useState } from "react";
 import { Mp3, Sound, Wave } from "../../lib/icons";
 import Box from "../elements/Box";
@@ -26,9 +27,9 @@ function Caption() {
         Online Flash Cards{" "}
       </h1>
       <h3 className="text-3xl text-cyan-500">free</h3>
-      <a href="/class/cl86siwik1391dkjokty3u8na">
+      <Link href="/class/cl86siwik1391dkjokty3u8na">
         <BtnPrime css="text-2xl rounded-full px-6 py-2">Get Started</BtnPrime>
-      </a>
+      </Link>
     </div>
   );
 }

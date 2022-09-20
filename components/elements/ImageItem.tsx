@@ -24,10 +24,11 @@ export default function ImageItem({
         src={src ? src : "/img/image.png"}
         width={width}
         height={height}
+        alt=""
       />
 
       <Modal open={open} setOpen={setOpen}>
-        {(Icon) => (
+        {(Icon: any) => (
           <div className=" shadow-xl relative w-4/5 p-10d h-4/5">
             <Icon />
             <Image
@@ -37,6 +38,7 @@ export default function ImageItem({
               layout="fill"
               width={200}
               height={200}
+              alt=""
             />
           </div>
         )}

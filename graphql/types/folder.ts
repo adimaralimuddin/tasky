@@ -13,8 +13,9 @@ export const Folder = objectType({
     t.field("class", {
       type: Class,
       resolve(par, arg, ctx) {
+        const id: any = par.classId;
         return ctx.prisma.folder.findFirst({
-          where: { id: par.classId },
+          where: { id },
         });
       },
     });

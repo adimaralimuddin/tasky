@@ -7,7 +7,7 @@ export default function useFolderMutation(classId: string) {
 
   const deleteFolder = useMutation(folderApideleteFolder, {
     onSuccess: (deletedFolder) => {
-      client.setQueryData(["folder", classId], (folders) => {
+      client.setQueryData(["folder", classId], (folders: any) => {
         return folders?.filter(
           (folder: FolderType) => folder?.id != deletedFolder?.id
         );
@@ -17,8 +17,8 @@ export default function useFolderMutation(classId: string) {
 
   const renameFolder = useMutation(folderApiRenameFolder, {
     onSuccess: (renamedFolder) => {
-      client.setQueryData(["folder", classId], (folders) => {
-        return folders.map((f) => {
+      client.setQueryData(["folder", classId], (folders: any) => {
+        return folders.map((f: FolderType) => {
           if (f.id == renamedFolder.id) {
             return { ...f, name: renamedFolder.name };
           }

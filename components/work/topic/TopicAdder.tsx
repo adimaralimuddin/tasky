@@ -18,11 +18,11 @@ export default function TopicAdder() {
   const { work, setOpenTopicAdder } = useWork();
   const { createTopic } = useTopic(work?.selectedFolder);
 
-  const onCreateHandler = (e) => {
+  const onCreateHandler = (e: any) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
 
-    const topicData = {
+    const topicData: any = {
       folderId: work?.selectedFolder,
       userId: user?.sub || DEF_USER,
       templateId,
@@ -44,7 +44,7 @@ export default function TopicAdder() {
             <Input text="name" />
             <Input text="description" />
             <Select
-              onInput={(val) => setTemplateId(val)}
+              onInput={(val: any) => setTemplateId(val)}
               defaultValue={options?.[0]}
               options={options}
               text="templateId"

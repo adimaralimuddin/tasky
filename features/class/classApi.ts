@@ -2,7 +2,7 @@ import request, { gql } from "graphql-request";
 import { ClassCreateType } from "../../components/class/classTypes";
 const url = "/api/graphql";
 
-export const classApiUserClass = async (userId: string) => {
+export const classApiUserClass = async (userId?: string | any) => {
   const q = gql`
     query Query($userId: String!) {
       userClasses(userId: $userId) {
@@ -62,7 +62,7 @@ export async function classApiRenameClass({
   name,
 }: {
   classId: string;
-  name: string;
+  name?: string;
 }) {
   const q = gql`
     mutation RenameClass($classId: String!, $name: String!) {
@@ -112,6 +112,5 @@ export async function classApiDeleteclass(classId: string) {
     }
   `;
   const ret = await request(url, q, { classId });
-  console.log("class deleted ", ret);
   return ret.deleteClass;
 }

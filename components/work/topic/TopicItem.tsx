@@ -1,17 +1,8 @@
-import Image from "next/image";
-import React, { isValidElement, useState } from "react";
-import useCards from "../../../features/card/useCards";
+import React, { useState } from "react";
 import { TopicType } from "../../../features/topic/topicType";
 import useTopic from "../../../features/topic/useTopic";
 import useWork from "../../../features/work/useWork";
-import {
-  Book,
-  OptionIcon,
-  Pencil,
-  Plus,
-  TopicIcon,
-  Trash,
-} from "../../../lib/icons";
+import { Pencil, Plus, TopicIcon, Trash } from "../../../lib/icons";
 import Option from "../../elements/Option";
 import Verifier from "../../elements/Verifier";
 import TopicRenamer from "./TopicRenamer";
@@ -70,7 +61,6 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
           isSelected(" bg-slate-100")
         }
       >
-        {/* <Book className="mr-1 text-violet-500" /> */}
         <TopicIcon className="mr-1 text-violet-500" />
         <small className="flex-1 py-1 whitespace-nowrap">
           {data?.name?.length > 20

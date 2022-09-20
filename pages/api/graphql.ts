@@ -1,19 +1,22 @@
 import { ApolloServer } from "apollo-server-micro";
-import { typeDefs, schema } from "../../graphql/schema";
+import { schema } from "../../graphql/schema";
 import { resolvers } from "../../graphql/resolvers";
 import { createContext } from "../../graphql/context";
-import Cors from "micro-cors";
+import { NextApiRequest, NextApiResponse } from "next";
+const Cors = require("micro-cors");
 
 const cors = Cors();
 const apolloServer = new ApolloServer({
   schema,
-  // typeDefs,
   resolvers,
   context: createContext,
 });
 
 const startServer = apolloServer.start();
-export default cors(async function handler(req, res) {
+export default cors(async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === "OPTIONS") {
     res.end();
     return false;

@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDb } from "../../lib/db";
-import { FieldType } from "../card/CardType";
+import { CardTypes, FieldType } from "../card/CardType";
 import { fieldApiUpdateField } from "./fieldApi";
 
 export default function useField() {
   const client = useQueryClient();
   const updateField = useMutation(fieldApiUpdateField, {
     onSuccess: (data) => {
-      console.log("updated ", data);
+      // console.log("updated ", data);
     },
   });
 
@@ -48,15 +48,11 @@ export default function useField() {
     cardId: string;
     topicId: string;
   }) => {
-    console.log("pre ", { f, b, cardId, topicId });
-    // console.log({ cardId, topicId });
     const fronts = await updateSide(f);
     const backs = await updateSide(b);
-    await client.setQueryData(["cards", topicId], (cards) => {
-      //   console.log("cards ", cards);
-      const n = cards?.map((card) => {
+    await client.setQueryData(["cards", topicId], (cards: any) => {
+      const n = cards?.map((card: CardTypes) => {
         if (card?.id == cardId) {
-          console.log("yes ", { card, fronts, backs });
           card.fronts = fronts;
           card.backs = backs;
         }
@@ -66,7 +62,6 @@ export default function useField() {
     });
 
     return { fronts, backs };
-    // console.log({ f, b });
   };
 
   return {

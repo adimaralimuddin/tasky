@@ -7,7 +7,7 @@ import Input from "../../elements/Input";
 import Modal from "../../elements/Modal";
 
 type props = {
-  classId: string;
+  classId: string | any;
 };
 
 export default function FolderAdder({ classId }: props) {
@@ -22,7 +22,7 @@ export default function FolderAdder({ classId }: props) {
 
   return (
     <div className="flex flex-col">
-      <BtnPrime css="max-w-[130px] mx-auto m-3 " onClick={(_) => setOpen(true)}>
+      <BtnPrime css="max-w-[130px] mx-auto m-3 " onClick={() => setOpen(true)}>
         <Plus className="text-lg" />
         <small className="whitespace-nowrap">New Folder</small>
       </BtnPrime>

@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TopicType } from "../topic/topicType";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { TemplateType } from "../template/templateType";
+import { FieldType } from "../card/CardType";
 
 type fieldVal = {
   text: string;
@@ -126,13 +128,13 @@ export const {
 } = workSlice.actions;
 export default workSlice.reducer;
 
-function templateFields(template) {
+function templateFields(template?: TemplateType) {
   if (!template) return;
-  const fronts = JSON?.parse(template?.fronts)?.map((f) => ({
+  const fronts = JSON?.parse(template?.fronts)?.map((f: FieldType) => ({
     ...f,
     view: true,
   }));
-  const backs = JSON?.parse(template?.backs)?.map((f) => ({
+  const backs = JSON?.parse(template?.backs)?.map((f: FieldType) => ({
     ...f,
     view: true,
   }));

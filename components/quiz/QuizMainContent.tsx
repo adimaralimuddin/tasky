@@ -9,10 +9,9 @@ import CardItem from "../work/card/CardItem";
 import CardQueryView from "../work/card/CardQueryView";
 import QuizFinnished from "./QuizFinnished";
 import QuizOptions from "./QuizOptions";
-import QuizPlayHeader from "./QuizPlayHeader";
 import QuizPlayOptionItem from "./QuizPlayOptionItem";
 
-export default function QuizMainContent({ classId }: { classId: string }) {
+export default function QuizMainContent({ classId }: any) {
   const [playInd, setPlayInd] = useState<number>(0);
   const [singleWrong, setSingleWrong] = useState(false);
   const { work } = useWork();
@@ -91,7 +90,7 @@ export default function QuizMainContent({ classId }: { classId: string }) {
           side={side}
           setSide={setSide}
           optionCount={optionCount}
-          setOptionCount={(val) => {
+          setOptionCount={(val: any) => {
             setOptionCount(val);
             reloadOptions(val);
           }}
@@ -112,6 +111,7 @@ export default function QuizMainContent({ classId }: { classId: string }) {
       <div className="flex flex-wrap gap-1">
         {options?.map((opt) => (
           <QuizPlayOptionItem
+            key={Math.random()}
             onSelect={onSelectOption}
             side={side}
             card={cards?.[opt]}
@@ -144,7 +144,8 @@ function ranNum(count = 3, length = 11, playInd = 0) {
     ret.push(ran);
   }
   ret = ret.filter((i) => i != playInd);
-  let uniqued = [...new Set(ret)];
+  let x: any = new Set(ret);
+  let uniqued = [...x];
   let sliced = uniqued.slice(0, count - 1);
   sliced.splice(run(count), 0, playInd);
   return sliced;

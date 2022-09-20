@@ -13,15 +13,14 @@ import ContentHeader from "../../elements/ContentHeader";
 import Verifier from "../../elements/Verifier";
 import CardItem from "./CardItem";
 
-export default function CardAdder({ classId }: { classId: string }) {
-  const { work } = useWork();
+export default function CardAdder({ classId }: { classId: string | any }) {
   const { user } = useUser();
+  const { work } = useWork();
+  const { cards } = useCards(work.selectedTopic?.id);
+
   const {
     template: { data: template },
   } = useTemplate(work.selectedTopic?.templateId);
-
-  const topic = work.selectedTopic;
-  const { cards } = useCards(topic?.id);
 
   return (
     <Box css="flex-1">
@@ -34,8 +33,8 @@ export default function CardAdder({ classId }: { classId: string }) {
       />
       <div className="my-2">
         {cards?.data
-          ?.map((c, ind) => ({ ...c, ind }))
-          ?.sort((a, b) => b?.ind - a?.ind)
+          ?.map((c: CardTypes, ind: number) => ({ ...c, ind }))
+          ?.sort((a: any, b: any) => b?.ind - a?.ind)
           ?.map((card: CardTypes) => (
             <CardItem card={card} key={card?.id} index={true} />
           ))}
@@ -57,7 +56,7 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
     setbacks(parseFields("backs"));
   }, [template, topic, user]);
 
-  const onAddCardHandler = async (e) => {
+  const onAddCardHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     const tar = e.target;
 
@@ -76,8 +75,8 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
     setIsAdding(true);
     createCard(data, {
       onSuccess: () => {
-        fronts?.map((f) => localStorage.removeItem(f.text + "front"));
-        backs?.map((f) => localStorage.removeItem(f.text + "back"));
+        fronts?.map((f: any) => localStorage.removeItem(f.text + "front"));
+        backs?.map((f: any) => localStorage.removeItem(f.text + "back"));
         setIsAdding(false);
       },
       onError: () => {
@@ -86,7 +85,7 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
     });
   };
 
-  const filterFields = (type: string, tar, lists) => {
+  const filterFields = (type: string, tar: any, lists: any) => {
     const ret = lists?.map((f: FieldType, ind: number) => {
       const x = tar?.[f.text + "%*" + type];
       if (x) {
@@ -213,12 +212,12 @@ export function Field({ data, side = "" }: any) {
 
 function FileInput({ text, side, Icon, type }: any) {
   const [imgSrc, setImgSrc] = useState();
-  const [file, setFile] = useState();
+  const [file, setFile] = useState<any>();
 
   useEffect(() => {
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (e) => setImgSrc(e.target?.result);
+    reader.onload = (e: any) => setImgSrc(e.target?.result);
     reader.readAsDataURL(file);
   }, [file]);
 
@@ -241,6 +240,7 @@ function FileInput({ text, side, Icon, type }: any) {
                 src={imgSrc}
                 width={200}
                 height={200}
+                alt=""
               />
               <small className="text-slate-600">
                 {file?.name?.slice(1, 30)}..
@@ -250,7 +250,7 @@ function FileInput({ text, side, Icon, type }: any) {
       </div>
       <input
         id={text + "%*" + side}
-        onInput={(e) => setFile(e.target?.files?.[0])}
+        onInput={(e: any) => setFile(e.target?.files?.[0])}
         type="file"
         accept={type == "image" ? "image/*" : "audio/*"}
         name={text + "%*" + side}

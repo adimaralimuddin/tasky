@@ -6,11 +6,7 @@ import ContentHeader from "../../../elements/ContentHeader";
 import NoCards from "../../../elements/NoCards";
 import CardList from "../../card/CardList";
 
-type props = {
-  classId: string;
-};
-
-export default function CategoryList({ classId }: props) {
+export default function CategoryList({ classId }: any) {
   const { work } = useWork();
   const { category } = useCards(work.selectedTopic?.id);
 

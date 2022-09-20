@@ -1,12 +1,12 @@
 export type ClassType = {
   id: string;
-  name: string;
-  description: string;
-  userId: String;
+  name?: string;
+  description?: string;
+  userId?: String;
 };
 
 export type ClassCreateType = {
-  name: string;
-  description: string;
-  userId: string;
+  name?: string;
+  description?: string;
+  userId?: string;
 };

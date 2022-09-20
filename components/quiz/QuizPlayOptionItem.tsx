@@ -94,7 +94,7 @@ export default function QuizPlayOptionItem({
       {isCorrect(
         <div className="relative">
           <div className="absolute top-0 left-0 dbg-red-400">
-            <Image src={"/img/check.png"} width={50} height={50} />
+            <Image src={"/img/check.png"} width={50} height={50} alt="" />
           </div>
         </div>
       )}
@@ -102,7 +102,7 @@ export default function QuizPlayOptionItem({
       {isWrong && (
         <div className="relative">
           <div className="absolute top-0 left-0 dbg-red-400">
-            <Image src={"/img/wrong.png"} width={50} height={50} />
+            <Image src={"/img/wrong.png"} width={50} height={50} alt="" />
           </div>
         </div>
       )}

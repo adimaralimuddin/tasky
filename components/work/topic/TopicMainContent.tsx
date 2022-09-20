@@ -5,14 +5,9 @@ import BtnCardAdder from "../../elements/BtnCardAdder";
 import BtnPrime from "../../elements/BtnPrime";
 import BtnSec from "../../elements/BtnSec";
 import ContentHeader from "../../elements/ContentHeader";
-import TopicTitle from "../../elements/TopicTitle";
 import CategoryItem from "./category/CategoryItem";
 
-type props = {
-  classId: string;
-};
-
-export default function TopicMainContent({ classId }: props) {
+export default function TopicMainContent({ classId }: any) {
   const { work, setContent } = useWork();
   const { selectedTopic: topic } = work;
 

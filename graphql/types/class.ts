@@ -101,10 +101,11 @@ export const ClassMutation = extendType({
         name: stringArg(),
         description: stringArg(),
       },
-      resolve(par, { classId, ...data }, ctx) {
+      resolve(par, { classId, ...x }, ctx) {
+        const data: any = x;
         return ctx.prisma.class.update({
           where: { id: classId },
-          data,
+          data: data,
         });
       },
     });

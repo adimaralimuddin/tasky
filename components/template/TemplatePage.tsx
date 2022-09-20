@@ -16,7 +16,7 @@ export default function TemplatePage() {
       <div className="flex gap-2 w-full max-w-4xl mx-auto my-2 py-4 p-2 flex-wrap contents-center justify-center">
         <TemplateAdder />
         {templates?.data?.map((template: TemplateType) => (
-          <TemplateItem template={template} />
+          <TemplateItem template={template} key={template.id} />
         ))}
       </div>
     </div>

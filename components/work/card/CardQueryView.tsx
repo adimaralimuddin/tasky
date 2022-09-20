@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FieldType } from "../../../features/card/CardType";
+import { TemplateType } from "../../../features/template/templateType";
 import useWork from "../../../features/work/useWork";
 import { ViewIcon } from "../../../lib/icons";
 import Box from "../../elements/Box";
@@ -21,7 +23,7 @@ export default function CardQueryView() {
   const setView = (
     view: boolean,
     field: FieldType,
-    side = "fronts",
+    side: "fronts" | "backs" = "fronts",
     setter: any
   ) => {
     const newView = work?.[side]?.map((x) => {
@@ -30,6 +32,7 @@ export default function CardQueryView() {
       }
       return x;
     });
+
     setter(newView);
   };
 
@@ -48,7 +51,7 @@ export default function CardQueryView() {
             <Box css="z-20 shadow-xl ring-1 ring-slate-200 pr-3">
               <SelectSimple
                 text="Font size"
-                onInput={(e) => setTextSize(e.target.value)}
+                onInput={(e: any) => setTextSize(e.target.value)}
                 defaultValue={work.textSize}
                 value={work.textSize}
               >
@@ -58,7 +61,7 @@ export default function CardQueryView() {
               </SelectSimple>
               <SelectSimple
                 text="Image size"
-                onInput={(e) => setImageSize(e.target.value)}
+                onInput={(e: any) => setImageSize(e.target.value)}
                 defaultValue={work?.imageSize}
               >
                 <option value={150}>normal</option>
@@ -68,46 +71,48 @@ export default function CardQueryView() {
               <div className="py-2 text-slate-500">
                 <Input
                   text="lebel"
-                  onInput={(e) => setViewLebel(e.target.checked)}
+                  onInput={(e: any) => setViewLebel(e.target.checked)}
                   defaultChecked={work.viewLebel}
                   type="checkbox"
                 />
                 <Input
                   text="level"
                   defaultChecked={work.viewLevel}
-                  onInput={(e) => setViewLevel(e.target.checked)}
+                  onInput={(e: any) => setViewLevel(e.target.checked)}
                   type="checkbox"
                 />
 
                 <Input
                   text="category"
                   defaultChecked={work.viewCategory}
-                  onInput={(e) => setviewCategory(e.target.checked)}
+                  onInput={(e: any) => setviewCategory(e.target.checked)}
                   type="checkbox"
                 />
               </div>
               <p>View Fronts</p>
               <div className="ring-1 ring-slate-200 rounded-lg mx-1 py-1d text-slate-500">
-                {work?.fronts?.map((f) => (
+                {work?.fronts?.map((f: any) => (
                   <Input
-                    onInput={(e) =>
+                    onInput={(e: any) =>
                       setView(e.target.checked, f, "fronts", setFronts)
                     }
                     text={f?.text}
                     type="checkbox"
                     defaultChecked={f?.view}
+                    key={"" + f?.text + f?.type}
                   />
                 ))}
               </div>
               <p>View Backs</p>
               <div className="ring-1 ring-slate-200 rounded-lg mx-1 py-1d text-slate-500">
-                {work?.backs?.map((f) => (
+                {work?.backs?.map((f: any) => (
                   <Input
-                    onInput={(e) =>
+                    onInput={(e: any) =>
                       setView(e.target.checked, f, "backs", setBacks)
                     }
                     text={f?.text}
                     type="checkbox"
+                    key={"" + f?.text + f?.type}
                     defaultChecked={f?.view}
                   />
                 ))}
@@ -120,13 +125,13 @@ export default function CardQueryView() {
   );
 }
 
-export function templateFields(template) {
+export function templateFields(template: { data: TemplateType }) {
   if (!template?.data) return;
-  const fronts = JSON?.parse(template?.data?.fronts)?.map((f) => ({
+  const fronts = JSON?.parse(template?.data?.fronts)?.map((f: FieldType) => ({
     ...f,
     view: true,
   }));
-  const backs = JSON?.parse(template?.data?.backs)?.map((f) => ({
+  const backs = JSON?.parse(template?.data?.backs)?.map((f: FieldType) => ({
     ...f,
     view: true,
   }));

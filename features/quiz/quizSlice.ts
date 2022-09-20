@@ -12,8 +12,8 @@ const initialState: quizState = {
   optionsCount: 4,
   playInd: 0,
   finish: false,
-    side: "fronts",
-    options:
+  side: "fronts",
+  options: [],
 };
 
 export const quizSlice = createSlice({

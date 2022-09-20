@@ -6,7 +6,6 @@ import TopicItem from "../topic/TopicItem";
 import Option from "../../elements/Option";
 import {
   DownIcon,
-  // FolderBoldIcon,
   FolderIcon,
   Pencil,
   PlusBig,
@@ -22,7 +21,7 @@ type props = {
     id: string;
     name: string;
   };
-  classId: string;
+  classId: string | any;
   setSideBar: any;
 };
 

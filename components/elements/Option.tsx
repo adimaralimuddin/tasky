@@ -4,15 +4,13 @@ import { OptionIcon } from "../../lib/icons";
 
 type props = {
   Icon?: any;
-  topOptions?: { text: string; icon: any; action?: any }[];
-  options: { text: string; icon: any; action?: any }[];
+  options: { text: string; icon?: any; action?: any }[];
   left?: boolean;
 };
 
 export default function Option({
   Icon = <OptionIcon />,
   options,
-  topOptions,
   left = false,
 }: props) {
   const [open, setOpen] = useState(false);
@@ -30,7 +28,7 @@ export default function Option({
       {open && (
         <div className="relative z-20">
           <Box
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e: React.FormEvent) => e.stopPropagation()}
             css={
               "absolute ring-1 ring-slate-200 p-2 overflow-hidden shadow-xl " +
               (left && "right-0")
@@ -44,6 +42,7 @@ export default function Option({
                     setOpen?.(false);
                   }}
                   className="cursor-pointer flex items-center hover:bg-slate-100 p-2 rounded-md"
+                  key={option.text}
                 >
                   {option?.icon}
                   <small className="ml-2 whitespace-nowrap">

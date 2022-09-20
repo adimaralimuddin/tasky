@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import useClass from "../../../features/class/useClass";
+import { FolderType } from "../../../features/folder/folderTypes";
 import useFolder from "../../../features/folder/useFolder";
 import useWork from "../../../features/work/useWork";
 import { OptionIcon, UndoIcon } from "../../../lib/icons";
-import ClassItem from "../../class/ClassItem";
 import ClassMenu from "../../class/ClassMenu";
 import Box from "../../elements/Box";
 import FolderAdder from "../folder/FolderAdder";
@@ -11,7 +11,7 @@ import FolderItem from "../folder/FolderItem";
 import TopicAdder from "../topic/TopicAdder";
 
 type props = {
-  classId: string;
+  classId?: string | any;
 };
 
 export default function WorkSide<Type>({ classId }: props) {
@@ -75,7 +75,7 @@ export default function WorkSide<Type>({ classId }: props) {
         <FolderAdder classId={classId} />
       </header>
       <main>
-        {folder?.data?.map((folder) => (
+        {folder?.data?.map((folder: FolderType) => (
           <FolderItem
             data={folder}
             key={folder?.id}

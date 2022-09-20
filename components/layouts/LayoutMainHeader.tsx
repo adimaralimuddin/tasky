@@ -29,7 +29,7 @@ function LayoutMainHeader() {
       }
       setSize(w);
     };
-  }, [user]);
+  }, [setSize]);
 
   return (
     <div className=" bg-white ">
@@ -43,7 +43,7 @@ function LayoutMainHeader() {
         <UserHeaderPop />
         {!user && (
           <p className="hover:text-indigo-400">
-            <a href="/api/auth/login">Login</a>
+            <Link href="/api/auth/login">Login</Link>
           </p>
         )}
       </div>

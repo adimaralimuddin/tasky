@@ -25,17 +25,17 @@ export default function CardEditor({
   setOpen,
   onUpdated,
 }: props) {
-  if (!open) return null;
-
   const { work } = useWork();
   const [fronts, setFronts] = useState(card?.fronts);
   const [backs, setBacks] = useState(card?.backs);
   const { updateFields } = useField();
   const [isUpdating, setIsUpdating] = useState(false);
 
+  if (!open) return null;
+
   const onUpdateHandler = async () => {
     setIsUpdating(true);
-    const data = {
+    const data: any = {
       fronts,
       backs,
       topicId: work?.selectedTopic?.id,
@@ -83,7 +83,7 @@ function Fields({
 }: {
   fields?: FieldType[];
   setter?: any;
-  text: string;
+  text?: string;
 }) {
   return (
     <div className="flex-1 ring-1 ring-slate-200 rounded-xl p-2">
@@ -104,7 +104,7 @@ function Fields({
 }
 
 function FieldEditor({ data, setter }: { data: FieldType; setter: any }) {
-  const onInputHandler = (e) => {
+  const onInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setter((p: FieldType[]) => {
       const n = p?.map((f) => {
@@ -130,16 +130,16 @@ function FieldEditor({ data, setter }: { data: FieldType; setter: any }) {
 
 function FieldFileEditor({ data, setter }: { data: FieldType; setter: any }) {
   const [src, setSrc] = useState(data?.value);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<any>(null);
 
   // console.log("file data ", data);
 
-  const onFileInputHandler = (e) => {
-    const file = e.target?.files?.[0];
+  const onFileInputHandler = (e: any) => {
+    const file: any = e.target?.files?.[0];
     if (!file) return console.log("no file ", e.target);
     const reader = new FileReader();
     reader.onload = (e) => {
-      const result = e.target?.result;
+      const result: any = e.target?.result;
       if (!result) return console.log("no result ", e.target);
       setSrc(result);
     };
@@ -148,7 +148,7 @@ function FieldFileEditor({ data, setter }: { data: FieldType; setter: any }) {
     onSetHandler(file);
   };
 
-  const onSetHandler = (file) => {
+  const onSetHandler = (file: any) => {
     setter((p: FieldType[]) => {
       const n = p?.map((f) => {
         if (f?.id == data?.id) {

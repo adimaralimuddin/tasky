@@ -8,6 +8,7 @@ export type CardTypes = {
   backs?: FieldType[];
   ind?: number;
   correct?: boolean;
+  def?: boolean;
 };
 
 export type FieldType = {

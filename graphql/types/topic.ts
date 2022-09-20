@@ -1,6 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
 import { Card } from "./card";
-import { Template } from "./template";
 
 export const Topic = objectType({
   name: "Topic",
@@ -14,8 +13,8 @@ export const Topic = objectType({
     t.field("template", {
       type: "Template",
       // args: {},
-      resolve(par, arg, ctx) {
-        return par.Template;
+      resolve(par: any, arg, ctx) {
+        return par?.Template;
       },
     });
 

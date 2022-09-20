@@ -1,17 +1,12 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React, { useEffect, useState } from "react";
+import { FieldType } from "../../features/card/CardType";
 import { Trash } from "../../lib/icons";
 import Box from "../elements/Box";
 import BtnPrime from "../elements/BtnPrime";
 import BtnSec from "../elements/BtnSec";
 import Input from "../elements/Input";
 import Modal from "../elements/Modal";
-
-type fieldType = {
-  text: string;
-  type: string;
-  ind?: number;
-};
 
 type props = {
   onSave: Function;
@@ -36,9 +31,9 @@ export default function TemplateEditor({
   const [fronts, setFronts] = useState(fronts_);
   const [backs, setBacks] = useState(backs_);
 
-  useEffect(() => {
-    resetData();
-  }, [open]);
+  // useEffect(() => {
+  //   resetData();
+  // }, [open]);
 
   const onSaveTemplate = () => {
     if (name.trim() == "") {
@@ -73,15 +68,23 @@ export default function TemplateEditor({
             <div className="flex flex-wrap gap-2 ">
               <div className="flex-1 ring-1 p-2 ring-slate-200 rounded-md">
                 <p>Fronts</p>
-                {fronts?.map((field: fieldType) => (
-                  <FieldItem field={field} set={setFronts} />
+                {fronts?.map((field: FieldType) => (
+                  <FieldItem
+                    field={field}
+                    set={setFronts}
+                    key={"front-" + field.text + field.ind}
+                  />
                 ))}
                 <FieldAdder list={fronts} set={setFronts} />
               </div>
               <div className="flex-1 ring-1 p-2 ring-slate-200 rounded-md">
                 <p>Backs</p>
-                {backs?.map((field: fieldType) => (
-                  <FieldItem field={field} set={setBacks} />
+                {backs?.map((field: FieldType) => (
+                  <FieldItem
+                    field={field}
+                    set={setBacks}
+                    key={"back-" + field.text + field.ind}
+                  />
                 ))}
                 <FieldAdder list={backs} set={setBacks} />
               </div>
@@ -97,18 +100,18 @@ export default function TemplateEditor({
   );
 }
 
-function FieldItem({ field, set }: { field: fieldType; set: any }) {
+function FieldItem({ field, set }: { field: FieldType; set: any }) {
   const onRemove = () => {
-    set((p) => p.filter((p) => p !== field));
+    set((p: FieldType[]) => p.filter((p) => p !== field));
   };
 
-  const onTextInputHandler = (e) => {
+  const onTextInputHandler: any = (e: React.ChangeEvent<HTMLFormElement>) => {
     const text = e.target.value;
-    set((p) => p?.map((f) => (f == field ? { ...f, text } : f)));
+    set((p: FieldType[]) => p?.map((f) => (f == field ? { ...f, text } : f)));
   };
-  const onTypeInputHandler = (e) => {
+  const onTypeInputHandler: any = (e: React.ChangeEvent<HTMLFormElement>) => {
     const type = e.target.value;
-    set((p) => p?.map((f) => (f == field ? { ...f, type } : f)));
+    set((p: FieldType[]) => p?.map((f) => (f == field ? { ...f, type } : f)));
   };
 
   return (
@@ -145,7 +148,7 @@ function FieldItem({ field, set }: { field: fieldType; set: any }) {
 function FieldAdder({ list, set }: any) {
   const [clicked, setClicked] = useState(false);
   const [text, setText] = useState("");
-  const [type, setType] = useState("text");
+  const [type, setType] = useState<any>("text");
 
   const onSave = () => {
     const data = { text, type };
@@ -166,7 +169,7 @@ function FieldAdder({ list, set }: any) {
     <div className="my-2 flex flex-cold">
       {!clicked && (
         <p
-          onClick={(_) => setClicked(true)}
+          onClick={() => setClicked(true)}
           className="ring-1 px-2 rounded-md cursor-pointer"
         >
           + field
@@ -181,7 +184,9 @@ function FieldAdder({ list, set }: any) {
               className=" p-0 px-2 m-0 rounded-none outline-none min-w-[150px] ring-1d flex-1 w-full"
               autoFocus
               placeholder="ie: in spanish"
-              onInput={(e) => setText(e.target.value)}
+              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setText(e.target.value)
+              }
               onKeyUp={(e) => {
                 if (e.code === "Enter") {
                   onSave();
@@ -193,7 +198,9 @@ function FieldAdder({ list, set }: any) {
             <small>type :</small>
             <select
               defaultValue={"text"}
-              onInput={(e) => setType(e.target.value)}
+              onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setType(e.target.value)
+              }
               className="min-w-[50px]"
             >
               <option value="text">text</option>

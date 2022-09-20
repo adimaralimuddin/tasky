@@ -7,11 +7,11 @@ export default function Modal({
 }: {
   children: any;
   open: boolean;
-  setOpen: any;
+  setOpen?: any;
 }) {
   if (!open) return null;
 
-  const stopPropa = (e) => e.stopPropagation();
+  const stopPropa = (e: React.FormEvent) => e.stopPropagation();
 
   const closeIcon = ({ css, iconCss, ...props }: any) => (
     <div

@@ -1,5 +1,6 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
+import { CardTypes } from "../../features/card/CardType";
 import useDashboard from "../../features/card/useDashboard";
 import { DEF_USER } from "../../lib/public";
 import Box from "../elements/Box";
@@ -16,7 +17,10 @@ export default function DashboardMainContent() {
     dashboard: { data },
   } = useDashboard(user?.sub || DEF_USER);
 
-  const total = data?.reduce((total: number, d) => total + d._count.id, 0);
+  const total = data?.reduce(
+    (total: number, d: dashType) => total + d._count.id,
+    0
+  );
 
   return (
     <Box css="flex-1 p-4 flex flex-col gap-3 p-[5%]">
@@ -52,7 +56,7 @@ function LevelItem({
   value: string;
   field: string;
 }) {
-  const cards = data?.filter((i) => i?.[field] == value);
+  const cards = data?.filter((i: any) => i?.[field] == value);
   const x = cards?.reduce(
     (s, f) => {
       s.count += f._count.id;
@@ -60,16 +64,13 @@ function LevelItem({
     },
     { count: 0 }
   );
-  // console.log("x ", cards);
   return (
     <div className="p-2 flex-1 ring-1 ring-slate-200 rounded-xl shadow-md ">
       <h3 className="px-2  text-slate-500">{value}</h3>
       <h1 className="text-center p-3 text-indigo-400">{x?.count} cards</h1>
       <div className="flex flex-col items-center">
         {cards?.map((c) => (
-          <div>
-            <Item data={c} field={field} />
-          </div>
+          <Item key={c._count.id} data={c} field={field} />
         ))}
       </div>
     </div>

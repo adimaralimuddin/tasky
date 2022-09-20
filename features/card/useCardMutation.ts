@@ -6,12 +6,12 @@ import {
 } from "./cardApi";
 import { CardTypes } from "./CardType";
 
-export function useCardMutation(topicId: string) {
+export function useCardMutation(topicId?: string) {
   const client = useQueryClient();
 
   const createCard = useMutation(cardApiCreateCard, {
     onSuccess: (createdCard) => {
-      client.setQueryData(["cards", topicId], (cards) => {
+      client.setQueryData(["cards", topicId], (cards: any) => {
         return [...cards, createdCard];
       });
     },
@@ -19,7 +19,7 @@ export function useCardMutation(topicId: string) {
 
   const deleteCard = useMutation(cardApiDeleteCard, {
     onSuccess: (deletedCard) => {
-      client.setQueryData(["cards", topicId], (cards) => {
+      client.setQueryData(["cards", topicId], (cards: any) => {
         return cards?.filter((card: CardTypes) => card?.id !== deletedCard?.id);
       });
     },
@@ -27,7 +27,7 @@ export function useCardMutation(topicId: string) {
 
   const setCardLevel = useMutation(cardApiSetCardLevel, {
     onSuccess: (updatedCard) => {
-      client.setQueryData(["cards", topicId], (cards) => {
+      client.setQueryData(["cards", topicId], (cards: any) => {
         return cards?.map((card: CardTypes) => {
           if (card.id == updatedCard.id) {
             return { ...card, level: updatedCard.level };

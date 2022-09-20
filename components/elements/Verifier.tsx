@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Box from "./Box";
 import BtnPrime from "./BtnPrime";
 import BtnWarm from "./BtnWarm";
@@ -21,7 +21,7 @@ export default function Verifier({
 }) {
   return (
     <Modal open={open} setOpen={setOpen}>
-      {(Icon) => (
+      {(Icon: any) => (
         <Box css="min-h-[130px]d flex flex-col p-6">
           {actions && <Icon css="-top-12 -right-8" />}
           <h3 className="flex-1 flex flex-col items-center justify-center p-3">
@@ -30,7 +30,7 @@ export default function Verifier({
           {actions && (
             <div className="flex items-center justify-between">
               <BtnWarm
-                onClick={(_) => {
+                onClick={() => {
                   setOpen?.(false);
                   onCancel?.();
                 }}
@@ -38,7 +38,7 @@ export default function Verifier({
                 cancel
               </BtnWarm>
               <BtnPrime
-                onClick={(_) => {
+                onClick={() => {
                   onOkay?.();
                   setOpen?.(false);
                 }}

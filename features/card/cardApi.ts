@@ -59,7 +59,7 @@ export async function fieldsSolve(fields: Field[]) {
 }
 
 export async function cardApiCreateCard(data: {
-  classId: string;
+  classId?: string;
   userId: string;
   topicId: string;
   name: string;
@@ -76,7 +76,7 @@ export async function cardApiCreateCard(data: {
   }
 
   // remove the classId to uninclude from model
-  delete data.classId;
+  delete data?.classId;
 
   const q = gql`
     mutation CreateCard(

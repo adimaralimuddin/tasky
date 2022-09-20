@@ -1,25 +1,29 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import Box from "./Box";
 
 export default function UserHeaderPop() {
   const { user } = useUser();
+  const [open, setOpen] = useState(false);
 
   if (!user) {
     return null;
   }
 
-  const [open, setOpen] = useState(false);
   return (
     <div className="flex items-center z-50">
       <div className="flex items-center" onMouseEnter={() => setOpen(true)}>
-        <Image
-          className="rounded-full"
-          src={user?.picture}
-          width={40}
-          height={40}
-        />
+        {user?.picture && (
+          <Image
+            className="rounded-full"
+            src={user?.picture}
+            width={40}
+            height={40}
+            alt="user avatar"
+          />
+        )}
       </div>
       {open && (
         <span className="relative">
@@ -34,7 +38,7 @@ export default function UserHeaderPop() {
               </div>
               <hr />
               <button className="m-0">
-                <a href="/api/auth/logout">logout</a>
+                <Link href="/api/auth/logout">logout</Link>
               </button>
             </Box>
           </div>

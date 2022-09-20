@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 import { Sound, Wave } from "../../lib/icons";
 
-export default function AudioElement({ src, ...props }) {
-  const ref = useRef();
+export default function AudioElement({ src, ...props }: any) {
+  const ref = useRef<any>();
   const [isPlay, setIsPlay] = useState(false);
 
   return (
     <div
       onClick={(e) => {
-        const au = ref.current;
+        const au: any = ref.current;
         if (au?.paused) {
           au?.play();
         } else {

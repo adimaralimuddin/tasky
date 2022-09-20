@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { TemplateType } from "../../features/template/templateType";
 import useTemplateMutation from "../../features/template/useTemplateMutation";
-import { Pencil, RefreshIcon, Trash } from "../../lib/icons";
+import { Trash } from "../../lib/icons";
 import Box from "../elements/Box";
 import BtnSec from "../elements/BtnSec";
 import BtnWarm from "../elements/BtnWarm";
-import Input from "../elements/Input";
 import Modal from "../elements/Modal";
-import SelectSimple from "../elements/SelectSimple";
 import TemplateEditor from "./TemplateEditor";
 
 type props = {
@@ -29,7 +27,7 @@ export default function TemplateItem({ template }: props) {
 
   const { deleteTemplate, updateTemplate } = useTemplateMutation();
 
-  const onSaveHandler = (data) => {
+  const onSaveHandler = (data: any) => {
     updateTemplate({ ...data, id: template.id });
     setOpen(true);
   };
@@ -60,7 +58,7 @@ export default function TemplateItem({ template }: props) {
       <Modal open={open} setOpen={setOpen}>
         {(Icon: any) => (
           <Box
-            onClick={(e) => {
+            onClick={(e: any) => {
               e.stopPropagation();
             }}
             css="flex flex-col max-h-[90vh] overflow-autod"
@@ -74,17 +72,20 @@ export default function TemplateItem({ template }: props) {
             <div className="flex gap-2 overflow-auto flex-1 p-2 bg-slate-50 rounded-lg">
               <div>
                 {toJson(template.fronts)?.map((front: FieldType) => (
-                  <FieldItem front={front} />
+                  <FieldItem front={front} key={front.text} />
                 ))}
               </div>
               <div>
                 {toJson(template.backs)?.map((front: FieldType) => (
-                  <FieldItem front={front} />
+                  <FieldItem front={front} key={front.text} />
                 ))}
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <BtnWarm className="" onClick={() => deleteTemplate(template.id)}>
+              <BtnWarm
+                className=""
+                onClick={() => deleteTemplate(template?.id)}
+              >
                 <Trash /> delete
               </BtnWarm>
               <BtnSec onClick={onEdithandler}>edit</BtnSec>

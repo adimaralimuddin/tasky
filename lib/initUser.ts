@@ -4,7 +4,7 @@ import request, { gql } from "graphql-request";
 export const initUserData = withPageAuthRequired({
   async getServerSideProps(ctx) {
     const session = getSession(ctx.req, ctx.res);
-    initUser(session.user);
+    initUser(session?.user);
     return {
       props: {},
     };

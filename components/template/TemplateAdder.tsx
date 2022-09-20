@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import { TemplateType } from "../../features/template/templateType";
 import useTemplate from "../../features/template/useTemplate";
 import BoxHover from "../elements/BoxHover";
 import TemplateEditor from "./TemplateEditor";
-
-type fieldType = {
-  text: string;
-  type: string;
-};
 
 export default function TemplateAdder() {
   const { createTemplate } = useTemplate();
   const [open, setOpen] = useState(false);
 
-  const onSaveTemplate = (data) => {
-    console.log("data ", data);
+  const onSaveTemplate = (data: TemplateType) => {
     createTemplate(data);
     setOpen(false);
   };
@@ -25,7 +20,7 @@ export default function TemplateAdder() {
         <BoxHover css="flex items-center text-cyan-500 text-lg rounded-full">
           <FaPlus
             className="text-3xl text-indigo-400  "
-            onClick={(_) => setOpen(true)}
+            onClick={() => setOpen(true)}
           />
         </BoxHover>
         <p className="text-slate-500">add template</p>

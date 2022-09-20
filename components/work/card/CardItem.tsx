@@ -32,7 +32,8 @@ export default function CardItem({
   const { work } = useWork();
   const { deleteCard } = useCardMutation(work?.selectedTopic?.id);
   const textSize = work.textSize;
-  const imageSize = parseInt(work.imageSize);
+  const size: any = work?.imageSize;
+  const imageSize = parseInt(size);
   const lebel = work.viewLebel;
   const options = [
     {
@@ -124,7 +125,7 @@ export default function CardItem({
           setIsEditing(false);
           setHovered(false);
         }}
-        onUpdated={(data) => {
+        onUpdated={(data: CardTypes) => {
           setCard({ ...card, ...data });
         }}
       />
@@ -133,7 +134,7 @@ export default function CardItem({
 }
 
 type CardFrontsProps = {
-  card: CardTypes;
+  card: any;
   type: string;
   textSize: any;
   imageSize: any;
@@ -190,11 +191,11 @@ function FieldItem({
   field: FieldType;
   textSize: any;
   imageSize: any;
-  lebel: boolean;
+  lebel?: boolean;
   view: any;
   imageViewer?: boolean;
 }) {
-  const isView = () => view?.find((x) => x?.text == field?.text);
+  const isView = () => view?.find((f: FieldType) => f?.text == field?.text);
 
   if (!isView()?.view) {
     return null;

@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String?
+  email     String?
+  createdAt DateTime   @default(now()) @map(name: "created_at")
+  updatedAt DateTime   @updatedAt @map(name: "updated_at")
+  class     Class[]
+  folders   Folder[]
+  topics    Topic[]
+  cards     Card[]
+  Template  Template[]
+
+  @@map(name: "users")
+}
+
+model Class {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+  folders     Folder[]
+}
+
+model Folder {
+  id    String  @id @default(cuid())
+  name  String
+  Topic Topic[]
+
+  class   Class?  @relation(fields: [classId], references: [id])
+  classId String?
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model Topic {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  cards       Card[]
+
+  folder   Folder? @relation(fields: [folderId], references: [id])
+  folderId String?
+
+  Template   Template? @relation(fields: [templateId], references: [id])
+  templateId String?
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model Template {
+  id      String  @id @default(cuid())
+  name    String
+  deleted Boolean @default(false)
+  topics  Topic[]
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  fronts Json[]
+  backs  Json[]
+}
+
+model Card {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  level       String?
+  category    String?
+  def         Boolean  @default(false)
+  defDel      Boolean? @default(false)
+
+  Topic   Topic?  @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  topicId String?
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  fronts Field[] @relation("front")
+  backs  Field[] @relation("back")
+}
+
+model Field {
+  id    String @id @default(cuid())
+  text  String
+  type  String
+  value String
+  ind   Int
+
+  front   Card?   @relation("front", fields: [frontId], references: [id], onDelete: Cascade)
+  back    Card?   @relation("back", fields: [backId], references: [id], onDelete: Cascade)
+  frontId String?
+  backId  String?
+}

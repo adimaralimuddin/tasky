@@ -1,0 +1,30 @@
+import { useUser } from "@auth0/nextjs-auth0";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  classApiCreateClass,
+  classApiUserClass,
+} from "../features/class/classApi";
+
+export default function useClassHooks() {
+  const { user } = useUser();
+  const qClient = useQueryClient();
+
+  const classes = useQuery(["classes", user], () =>
+    classApiUserClass(user?.sub)
+  );
+
+  const createClass = useMutation(classApiCreateClass, {
+    onSuccess: (addedClass) => {
+      qClient.setQueryData(["classes", user], (classes) => {
+        return [...classes, addedClass];
+      });
+    },
+  });
+
+  // const defaultClasses = useQuery(['classes'],()=>)
+
+  return {
+    addClass: createClass.mutate,
+    classes,
+  };
+}

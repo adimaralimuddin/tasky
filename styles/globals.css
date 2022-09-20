@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   padding: 0;
@@ -13,9 +17,58 @@ a {
 
 * {
   box-sizing: border-box;
+  font-weight: 600;
 }
 
-@media (prefers-color-scheme: dark) {
+a {
+  text-decoration: none;
+  list-style: none;
+  list-style-type: none;
+}
+
+input,
+button,
+select,
+textarea {
+  padding: 7px 10px;
+  border-radius: 10px;
+  margin: 5px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+button {
+  padding: 5px 20px;
+  border-radius: 15px;
+  transition: 0.1s;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  min-width: 50px;
+}
+
+button:hover {
+  transform: scale(1.03);
+  /* box-shadow: 3px 5px #0000002a; */
+}
+
+h1 {
+  font-size: x-large;
+}
+h2 {
+  font-size: larger;
+}
+h3 {
+  font-size: large;
+}
+
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
@@ -23,4 +76,4 @@ a {
     color: white;
     background: black;
   }
-}
+} */

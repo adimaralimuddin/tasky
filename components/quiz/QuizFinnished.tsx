@@ -1,5 +1,7 @@
 import React from "react";
 import { CardTypes } from "../../features/card/CardType";
+import useQuiz from "../../features/quiz/useQuiz";
+import Box from "../elements/Box";
 import BtnBack from "../elements/BtnBack";
 import BtnSec from "../elements/BtnSec";
 import CardItem from "../work/card/CardItem";
@@ -8,23 +10,22 @@ type props = {
   setFinish: any;
   resetResult: Function;
   reloadOptions: any;
-  singleWrong: boolean;
 };
 export default function QuizFinnished({
   result,
   setFinish,
   resetResult,
   reloadOptions,
-  singleWrong,
 }: props) {
   const onBackHandler = () => {
     setFinish(false);
     reloadOptions();
     resetResult();
   };
-
+  const { quiz } = useQuiz();
+  const { singleWrong } = quiz;
   return (
-    <div>
+    <Box css="flex-1">
       <BtnBack onClick={onBackHandler} />
       <div className="flex flex-col items-center justify-center py-3">
         <h1 className="font-bold text-green-400">finish</h1>
@@ -39,7 +40,7 @@ export default function QuizFinnished({
           <ResItem res={res} singleWrong={singleWrong} key={res?.card?.id} />
         ))}
       </div>
-    </div>
+    </Box>
   );
 }
 

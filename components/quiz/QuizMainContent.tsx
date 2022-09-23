@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CardTypes } from "../../features/card/CardType";
 import useCards from "../../features/card/useCards";
+import useQuiz from "../../features/quiz/useQuiz";
 import useWork from "../../features/work/useWork";
 import Box from "../elements/Box";
 import ContentHeader from "../elements/ContentHeader";
@@ -13,7 +14,6 @@ import QuizPlayOptionItem from "./QuizPlayOptionItem";
 
 export default function QuizMainContent({ classId }: any) {
   const [playInd, setPlayInd] = useState<number>(0);
-  const [singleWrong, setSingleWrong] = useState(false);
   const { work } = useWork();
   const { selectedTopic, selectedCategory } = work;
   const { category } = useCards(selectedTopic?.id);
@@ -23,9 +23,6 @@ export default function QuizMainContent({ classId }: any) {
     ranNum(optionCount, cards?.length - 1, playInd)
   );
   const [finish, setFinish] = useState(false);
-  const [side, setSide] = useState("fronts");
-  const [hasChoosen, setHasChoosen] = useState(false);
-  const [speed, setSpeed] = useState(0.5);
   const [result, setResult] = useState(resetResult());
 
   function resetResult() {
@@ -53,23 +50,6 @@ export default function QuizMainContent({ classId }: any) {
     });
   };
 
-  const onSelectOption = (selected: CardTypes, correct: boolean) => {
-    const pass = () => {
-      setHasChoosen(true);
-      setTimeout(() => {
-        setHasChoosen(false);
-        next();
-      }, speed * 1000);
-    };
-    if (correct) {
-      pass();
-    } else {
-      if (singleWrong) {
-        pass();
-      }
-    }
-  };
-
   if (finish) {
     return (
       <QuizFinnished
@@ -77,7 +57,6 @@ export default function QuizMainContent({ classId }: any) {
         resetResult={() => setResult(resetResult())}
         setFinish={setFinish}
         reloadOptions={reloadOptions}
-        singleWrong={singleWrong}
       />
     );
   }
@@ -87,17 +66,11 @@ export default function QuizMainContent({ classId }: any) {
       <div className="flex items-center gap-2 flex-wrap">
         <CardQueryView />
         <QuizOptions
-          side={side}
-          setSide={setSide}
           optionCount={optionCount}
           setOptionCount={(val: any) => {
             setOptionCount(val);
             reloadOptions(val);
           }}
-          singleWrong={singleWrong}
-          setSingleWrong={setSingleWrong}
-          speed={speed}
-          setSpeed={setSpeed}
         />
       </div>
       <div className="text-center mt-5">
@@ -105,23 +78,16 @@ export default function QuizMainContent({ classId }: any) {
           {playInd} / {cards?.length}
         </p>
       </div>
-      <div className="flex flex-col items-center">
-        <CardItem side={side} card={current()} allowOption={false} />
-      </div>
+      <TrivItem current={current()} />
       <div className="flex flex-wrap gap-1">
         {options?.map((opt) => (
           <QuizPlayOptionItem
             key={Math.random()}
-            onSelect={onSelectOption}
-            side={side}
+            next={next}
             card={cards?.[opt]}
-            opt={opt}
             current={current()}
-            hasChoosen={hasChoosen}
             playInd={playInd}
-            result={result}
             setResult={setResult}
-            singleWrong={singleWrong}
           />
         ))}
       </div>
@@ -131,6 +97,9 @@ export default function QuizMainContent({ classId }: any) {
   return (
     <Box css="flex-1 flex flex-col ">
       <ContentHeader />
+      <button>
+        <h1>set</h1>
+      </button>
       {cards?.length > 0 ? Content : <NoCards text="No Cards For Quiz" />}
     </Box>
   );
@@ -149,4 +118,14 @@ function ranNum(count = 3, length = 11, playInd = 0) {
   let sliced = uniqued.slice(0, count - 1);
   sliced.splice(run(count), 0, playInd);
   return sliced;
+}
+
+function TrivItem({ current }: any) {
+  const { quiz } = useQuiz();
+  const { side } = quiz;
+  return (
+    <div className="flex flex-col items-center">
+      <CardItem side={side} card={current} allowOption={false} />
+    </div>
+  );
 }

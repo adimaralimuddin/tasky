@@ -1,29 +1,17 @@
 import React, { useState } from "react";
+import useQuiz from "../../features/quiz/useQuiz";
 import Box from "../elements/Box";
 import Select from "../elements/Select";
 
 type props = {
   optionCount: number;
   setOptionCount: any;
-  side: string;
-  setSide: any;
-  singleWrong: boolean;
-  setSingleWrong: Function;
-  speed: number;
-  setSpeed: Function;
 };
 
-export default function QuizOptions({
-  optionCount,
-  setOptionCount,
-  side,
-  setSide,
-  singleWrong,
-  setSingleWrong,
-  speed,
-  setSpeed,
-}: props) {
+export default function QuizOptions({ optionCount, setOptionCount }: props) {
   const [open, setOpen] = useState(false);
+  const { quiz, setSide, setSingleWrong, setSpeed } = useQuiz();
+  const { side, singleWrong, speed } = quiz;
   return (
     <div>
       <p
@@ -61,7 +49,7 @@ export default function QuizOptions({
                 text="pause duration"
                 options={[[0.1], [0.2], [0.5], [0.7], [1], [1.5], [2], [2.5]]}
                 defaultValue={[speed]}
-                onInput={(val: any) => setSpeed([val])}
+                onInput={(val: number) => setSpeed(val)}
                 css="flex items-center justify-between"
               />
             </Box>

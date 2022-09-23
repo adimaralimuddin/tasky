@@ -1,5 +1,5 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useTemplates from "../../../features/template/useTemplates";
 import useTopic from "../../../features/topic/useTopic";
 import useWork from "../../../features/work/useWork";
@@ -18,6 +18,10 @@ export default function TopicAdder() {
   const { work, setOpenTopicAdder } = useWork();
   const { createTopic } = useTopic(work?.selectedFolder);
 
+  useEffect(() => {
+    setTemplateId(options?.[0]?.[1]);
+  }, [templates]);
+
   const onCreateHandler = (e: any) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
@@ -28,6 +32,7 @@ export default function TopicAdder() {
       templateId,
       ...data,
     };
+
     createTopic(topicData);
     setOpenTopicAdder(false);
   };

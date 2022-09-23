@@ -1,4 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { setContent } from "../card/cardSlice";
 import {
   topicApiCreateTopic,
   topicApiDeleteTopic,
@@ -7,9 +9,11 @@ import {
 import { TopicType } from "./topicType";
 
 export default function useTopic(folderId?: string) {
+  const dispatch = useDispatch();
   const client = useQueryClient();
   const createTopicMutation = useMutation(topicApiCreateTopic, {
     onSuccess: (createdTopic) => {
+      console.log("topic added successfully ", createdTopic);
       client.setQueryData(["topics", folderId], (topics: any) => {
         return [...topics, createdTopic];
       });
@@ -22,6 +26,7 @@ export default function useTopic(folderId?: string) {
           (topic: TopicType) => topic?.id !== deletedTopic?.id
         );
       });
+      dispatch(setContent("dashboard"));
     },
   });
 

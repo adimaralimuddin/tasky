@@ -1,5 +1,3 @@
-
-
 import { createSlice } from "@reduxjs/toolkit";
 import { TopicType } from "../topic/topicType";
 import type { PayloadAction } from "@reduxjs/toolkit";
@@ -19,7 +17,7 @@ export const cardSlice = createSlice({
   name: "topic",
   initialState,
   reducers: {
-    setTopic: (state, action: PayloadAction<TopicType>) => {
+    setTopic: (state, action: PayloadAction<TopicType | undefined>) => {
       state.selectedTopic = action.payload;
       state.content = "topic";
     },

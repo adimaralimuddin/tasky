@@ -1,6 +1,6 @@
 import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import request, { gql } from "graphql-request";
-
+const url = "/api/graphql";
 export const initUserData = withPageAuthRequired({
   async getServerSideProps(ctx) {
     const session = getSession(ctx.req, ctx.res);
@@ -21,7 +21,7 @@ export async function initUser(user: any) {
       }
     }
   `;
-  const res = await request("http://localhost:3000/api/graphql", userQ, {
+  const res = await request(url, userQ, {
     userId: user?.sub,
   });
 
@@ -43,7 +43,7 @@ export async function initUser(user: any) {
       }
     `;
 
-    const res = await request("http://localhost:3000/api/graphql", q, {
+    const res = await request(url, q, {
       createUserId: user.sub,
       name: user.name,
       email: user.email,

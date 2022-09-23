@@ -5,11 +5,11 @@ import { initUser } from "../../lib/initUser";
 
 export default WorkPage;
 
-export async function getServerSideProps(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const session = getSession(req, res);
+export async function getServerSideProps(ctx: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+}) {
+  const session = getSession(ctx?.req, ctx?.res);
   initUser(session?.user);
   return {
     props: {},

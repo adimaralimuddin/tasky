@@ -91,6 +91,9 @@ export const TopicMutation = extendType({
       resolve(par, data: any, ctx) {
         return ctx.prisma.topic.create({
           data,
+          include: {
+            Template: true,
+          },
         });
       },
     });

@@ -70,6 +70,13 @@ export async function topicApiCreateTopic(data: {
         folderId
         userId
         templateId
+        template {
+          id
+          name
+          userId
+          fronts
+          backs
+        }
       }
     }
   `;

@@ -1,5 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { TopicType } from "../topic/topicType";
+import type { RootState } from "./../../store";
+import { FieldType } from "../card/CardType";
+
 import {
   setTopic,
   setCategory,
@@ -18,8 +21,6 @@ import {
   setViewLebel,
   setSize,
 } from "./workSlice";
-import type { RootState } from "./../../store";
-import { FieldType } from "../card/CardType";
 
 export default function useWork() {
   const work = useSelector((state: RootState) => state.work);

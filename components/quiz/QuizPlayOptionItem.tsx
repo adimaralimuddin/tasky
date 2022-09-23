@@ -1,33 +1,27 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { CardTypes } from "../../features/card/CardType";
+import useQuiz from "../../features/quiz/useQuiz";
 import CardItem from "../work/card/CardItem";
 type props = {
   card: CardTypes;
-  opt: number;
-  side: string;
-  onSelect: any;
+  next: any;
   current: CardTypes;
-  hasChoosen: boolean;
   playInd: number;
-  result: any;
   setResult: any;
-  singleWrong: boolean;
 };
 export default function QuizPlayOptionItem({
   card,
-  opt,
-  side,
-  onSelect,
+  next,
   current,
-  hasChoosen,
   playInd,
   setResult,
-  singleWrong,
 }: props) {
   const [correct, setCorrect] = useState(false);
   const [wasWrong, setWasWrong] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
+  const { quiz, setHasChosen } = useQuiz();
+  const { hasChosen, side, singleWrong, speed } = quiz;
 
   useEffect(() => {
     setCorrect(false);
@@ -37,6 +31,11 @@ export default function QuizPlayOptionItem({
   useEffect(() => {
     setWasWrong(false);
   }, [card]);
+
+  const pass = () => {
+    next();
+    setHasChosen(false);
+  };
 
   const updateResult = (value: boolean = true) => {
     setResult((p: any[]) => {
@@ -49,26 +48,33 @@ export default function QuizPlayOptionItem({
     });
   };
 
+  const gotAnswer = (func: any) => {
+    setTimeout(() => func?.(), speed * 1000);
+  };
+
   const onSelectHandler = () => {
-    if (hasChoosen) {
-      return;
-    }
+    if (hasChosen) return;
     if (card?.id == current?.id) {
+      setHasChosen(true);
       setCorrect(true);
       updateResult();
-      if (!hasChoosen) {
-        onSelect(card, true);
-      }
-    } else {
-      if (!hasChoosen) {
+      gotAnswer(() => {
         setCorrect(false);
-        setWasWrong(true);
-        updateResult(false);
-        onSelect(card, false);
-      }
-      setTimeout(() => setWasWrong(false), 1000);
+        pass();
+      });
+    } else {
+      setCorrect(false);
+      setWasWrong(true);
+      updateResult(false);
+      gotAnswer(() => {
+        setWasWrong(false);
+      });
       if (singleWrong) {
+        setHasChosen(true);
         setIsWrong(true);
+        gotAnswer(() => {
+          pass();
+        });
       }
     }
   };
@@ -85,20 +91,21 @@ export default function QuizPlayOptionItem({
           "ring-green-400 hover:ring-green-500",
           isWasWrong(
             "ring-red-400",
-            !hasChoosen && "hover:ring-indigo-400 hover:shadow-lg"
+            !hasChosen && "hover:ring-indigo-400 hover:shadow-lg"
           )
-        ) +
-        (isWrong && hasChoosen ? " ring-red-400 " : "")
+        )
+        // +
+        // (isWrong && hasChosen ? " ring-red-400 " : "")
       }
     >
-      {isCorrect(
+      {}
+      {correct && (
         <div className="relative">
           <div className="absolute top-0 left-0 dbg-red-400">
             <Image src={"/img/check.png"} width={50} height={50} alt="" />
           </div>
         </div>
       )}
-
       {isWrong && (
         <div className="relative">
           <div className="absolute top-0 left-0 dbg-red-400">

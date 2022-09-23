@@ -29,7 +29,7 @@ export default function CardItem({
   const [card, setCard] = useState(card_);
   const [isEditing, setIsEditing] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const { work } = useWork();
+  const { work, setContent } = useWork();
   const { deleteCard } = useCardMutation(work?.selectedTopic?.id);
   const textSize = work.textSize;
   const size: any = work?.imageSize;
@@ -48,7 +48,6 @@ export default function CardItem({
       text: "delete",
       icon: <Trash />,
       action: () => {
-        console.log("c", card);
         if (card?.def) {
           return alert(
             "demo card is not meant to delete. you can create or add folder"

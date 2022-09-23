@@ -23,7 +23,7 @@ export default function CardQuery({
     const fields = templateFields(template);
     setFields(fields);
     setFilter(fields?.fronts?.[0]?.text);
-  }, [work?.selectedTopic?.id, template]);
+  }, [work?.selectedTopic?.id]);
 
   // useEffect(() => {
   //   setFilter(fields?.[type]?.[0]?.text);

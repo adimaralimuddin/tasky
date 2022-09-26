@@ -5,14 +5,17 @@ import LayoutMainHeader from "../layouts/LayoutMainHeader";
 import ClassAdder from "./ClassAdder";
 import ClassItem from "./ClassItem";
 import { ClassType } from "./classTypes";
-
+const class1 = "cl86siwik1391dkjokty3u8na";
+const class2 = "cl8gpnl7x0095skjomfufvmzm";
 function PageMainClass() {
   const {
     classes: { data },
   } = useClassHooks();
   const {
     userClass: { data: defaultClass },
-  } = useClass("cl86siwik1391dkjokty3u8na");
+  } = useClass(class2);
+
+  console.log("defaultClass", defaultClass);
 
   return (
     <div>

@@ -32,7 +32,7 @@ function ClassItem({ data }: { data: ClassType; key?: any }) {
   };
 
   const onDelete = () => {
-    deleteClass(data.id);
+    deleteClass(data?.id);
     setIsEditing(false);
   };
 

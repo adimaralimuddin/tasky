@@ -1,10 +1,10 @@
 import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import request, { gql } from "graphql-request";
-const url = "/api/graphql";
+const url = process.env.AUTH0_BASE_URL + "/api/graphql";
 export const initUserData = withPageAuthRequired({
   async getServerSideProps(ctx) {
     const session = getSession(ctx.req, ctx.res);
-    initUser(session?.user);
+    await initUser(session?.user);
     return {
       props: {},
     };

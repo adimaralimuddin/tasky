@@ -54,6 +54,7 @@ export async function classApiGetClass(id: string) {
     }
   `;
   const res = await request(url, q, { id });
+  console.log("got class ", res);
   return res?.class;
 }
 

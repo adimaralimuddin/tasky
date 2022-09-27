@@ -6,6 +6,7 @@ import { ClassIcon, MenuIcon, TemplateIcon } from "../../lib/icons";
 import { FcLightAtTheEndOfTunnel } from "react-icons/fc";
 import useWork from "../../features/work/useWork";
 import Box from "../elements/Box";
+import DarkMode from "../elements/DarkMode";
 
 function LayoutMainHeader() {
   const { user } = useUser();
@@ -34,18 +35,23 @@ function LayoutMainHeader() {
   return (
     <div className=" bg-white dark:bg-slate-800">
       <div className="flex items-center justify-between px-5 p-2 max-w-4xl mx-auto flex-wrap">
-        <div className="flex items-center cursor-pointer">
-          <FcLightAtTheEndOfTunnel className="text-4xl" />
-          {!col && <h2>Flasky</h2>}
-          {col && <ColMenu />}
-        </div>
+        <Link href="/">
+          <div className="flex items-center cursor-pointer">
+            <FcLightAtTheEndOfTunnel className="text-4xl" />
+            {!col && <h2>Flasky</h2>}
+            {col && <ColMenu />}
+          </div>
+        </Link>
         {!col && <Menus />}
-        <UserHeaderPop />
-        {!user && (
-          <p className="hover:text-indigo-400">
-            <Link href="/api/auth/login">Login</Link>
-          </p>
-        )}
+        <span className="flex items-center gap-2">
+          <DarkMode />
+          <UserHeaderPop />
+          {!user && (
+            <p className="hover:text-indigo-400">
+              <Link href="/api/auth/login">Login</Link>
+            </p>
+          )}
+        </span>
       </div>
     </div>
   );
@@ -78,7 +84,7 @@ function Menus({ css, style = "flex items-center gap-5 " }: any) {
   return (
     <nav className={style + css}>
       <Menu Icon={ClassIcon} href="/class">
-        class
+        classes
       </Menu>
       <Menu Icon={TemplateIcon} href="/templates">
         templates

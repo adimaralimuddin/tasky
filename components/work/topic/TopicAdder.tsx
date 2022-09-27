@@ -29,7 +29,6 @@ export default function TopicAdder() {
       templateId: templateId || options?.[0]?.[1],
       ...data,
     };
-    console.log("topic data ", topicData);
     createTopic(topicData);
     setOpenTopicAdder(false);
   };

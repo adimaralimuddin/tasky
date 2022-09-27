@@ -34,7 +34,6 @@ export default function TemplateItem({ template }: props) {
     useTemplateMutation(user?.sub);
 
   const onSaveHandler = (data: any) => {
-    console.log("pre id ", template.id);
     updateTemplate({ ...data, id: template.id });
     setOpen(true);
   };

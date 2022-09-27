@@ -5,7 +5,7 @@ console.log("AUTH0_SECRET: ", !!process.env.AUTH0_SECRET);
 export default handleAuth({
   async login(req, res) {
     await handleLogin(req, res, {
-      returnTo: "/home",
+      returnTo: "/class",
     });
   },
 });

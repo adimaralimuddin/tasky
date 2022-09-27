@@ -5,11 +5,7 @@ import { fieldApiUpdateField } from "./fieldApi";
 
 export default function useField() {
   const client = useQueryClient();
-  const updateField = useMutation(fieldApiUpdateField, {
-    onSuccess: (data) => {
-      // console.log("updated ", data);
-    },
-  });
+  const updateField = useMutation(fieldApiUpdateField);
 
   const updateSide = async (fields: FieldType[]) => {
     const client = useDb();

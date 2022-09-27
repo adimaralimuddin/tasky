@@ -13,7 +13,6 @@ export default function useTopic(folderId?: string) {
   const client = useQueryClient();
   const topicAdder = useMutation(topicApiCreateTopic, {
     onSuccess: (createdTopic) => {
-      console.log("topic added successfully ", createdTopic);
       client.setQueryData(["topics", folderId], (topics: any) => {
         return [...topics, createdTopic];
       });

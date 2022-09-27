@@ -41,7 +41,6 @@ export default function UserHeaderPop() {
                 </p>
               </div>
               <hr />
-              <DarkMode />
               <button className="m-0 dark:text-white">
                 <Link href="/api/auth/logout">logout</Link>
               </button>

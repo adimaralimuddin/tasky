@@ -5,15 +5,14 @@ import LayoutMainHeader from "../layouts/LayoutMainHeader";
 import ClassAdder from "./ClassAdder";
 import ClassItem from "./ClassItem";
 import { ClassType } from "./classTypes";
-const class1 = "cl86siwik1391dkjokty3u8na";
-const class2 = "cl8gpnl7x0095skjomfufvmzm";
+
 function PageMainClass() {
   const {
     classes: { data },
   } = useClassHooks();
   const {
     userClass: { data: defaultClass },
-  } = useClass(class2);
+  } = useClass(process.env.NEXT_PUBLIC_DEF_CLASS);
 
   return (
     <div className="min-h-screen dark:bg-slate-800">

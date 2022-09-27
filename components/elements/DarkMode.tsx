@@ -12,7 +12,6 @@ export default function DarkMode() {
         onClick={() => setTheme(val)}
       >
         <Icon className="text-3xl dark:text-white" />
-        <h3>{val}</h3>
       </div>
     );
   }

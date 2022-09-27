@@ -128,11 +128,11 @@ function FieldFileEditor({ data, setter }: { data: FieldType; setter: any }) {
 
   const onFileInputHandler = (e: any) => {
     const file: any = e.target?.files?.[0];
-    if (!file) return console.log("no file ", e.target);
+    if (!file) return 
     const reader = new FileReader();
     reader.onload = (e) => {
       const result: any = e.target?.result;
-      if (!result) return console.log("no result ", e.target);
+      if (!result) return 
       setSrc(result);
     };
     reader.readAsDataURL(e.target.files?.[0]);

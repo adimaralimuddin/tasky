@@ -122,7 +122,6 @@ export const CardMutaion = extendType({
         backs: list(arg({ type: FieldInputType })),
       },
       resolve(par, arg: any, ctx) {
-        // console.log("arg ", arg);
         return ctx.prisma.card.create({
           data: {
             userId: arg.userId,

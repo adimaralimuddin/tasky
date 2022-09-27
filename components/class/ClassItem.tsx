@@ -5,16 +5,20 @@ import Box from "../elements/Box";
 import BtnPrime from "../elements/BtnPrime";
 import BtnWarm from "../elements/BtnWarm";
 import Input from "../elements/Input";
+import Loader from "../elements/Loader";
 import Modal from "../elements/Modal";
 import Option from "../elements/Option";
 import Verifier from "../elements/Verifier";
+import ClassEditor from "./ClassEditor";
 import { ClassType } from "./classTypes";
 
 function ClassItem({ data }: { data: ClassType; key?: any }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const { deleteClass, updateClass } = useClass(data?.id);
+  const { deleteClass, classUpdater, updateClass, classDeleter } = useClass(
+    data?.id
+  );
   const options = [
     {
       text: "edit",
@@ -44,6 +48,7 @@ function ClassItem({ data }: { data: ClassType; key?: any }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      <Loader message="updating class ... " open={classUpdater?.isLoading} />
       <ClassEditor
         onSave={onSave}
         open={isEditing}
@@ -60,9 +65,17 @@ function ClassItem({ data }: { data: ClassType; key?: any }) {
       )}
 
       <Link href={`/class/${data?.id}`}>
-        <div className="flex-1 flex flex-col cursor-pointer hover:font-boldd text-center justify-center">
+        <div
+          title={`
+          ${data?.name}
+${data?.description}
+          `}
+          className="flex-1 flex flex-col cursor-pointer hover:font-boldd text-center justify-center"
+        >
           <h2 className="text-indigo-400 text-xl">{data?.name}</h2>
-          <p className="text-slate-400 text-sm">{data?.description}</p>
+          <p className="text-slate-400 text-sm overflow-hidden">
+            {data?.description}
+          </p>
         </div>
       </Link>
 
@@ -72,65 +85,66 @@ function ClassItem({ data }: { data: ClassType; key?: any }) {
         message="folders and topics will also be permanently deleted"
         onOkay={onDelete}
       />
+      <Loader message="deleting class ... " open={classDeleter?.isLoading} />
     </Box>
   );
 }
 
 export default ClassItem;
 
-type props = {
-  open: boolean;
-  setOpen: any;
-  data: ClassType;
-  onSave: any;
-};
-function ClassEditor({ open, setOpen, data, onSave }: props) {
-  const [name, setName] = useState(data?.name);
-  const [description, setDescription] = useState(data?.description);
+// type props = {
+//   open: boolean;
+//   setOpen: any;
+//   data: ClassType;
+//   onSave: any;
+// };
+// function ClassEditor({ open, setOpen, data, onSave }: props) {
+//   const [name, setName] = useState(data?.name);
+//   const [description, setDescription] = useState(data?.description);
 
-  const onResetHandler = () => {
-    setName(data?.name);
-    setDescription(data?.description);
-  };
+//   const onResetHandler = () => {
+//     setName(data?.name);
+//     setDescription(data?.description);
+//   };
 
-  const onSaveHandler = () => {
-    onSave({ classId: data.id, name, description });
-  };
+//   const onSaveHandler = () => {
+//     onSave({ classId: data.id, name, description });
+//   };
 
-  return (
-    <div>
-      <Modal open={open} setOpen={setOpen}>
-        {(Icon: any) => (
-          <Box>
-            <Icon />
-            <h3 className="text-indigo-400">Edit Class</h3>
-            <div>
-              <Input
-                autoFocus
-                defaultValue={name}
-                value={name}
-                text="name"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setName(e.target?.value)
-                }
-              />
-              <Input
-                defaultValue={description}
-                value={description}
-                text="description"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setDescription(e.target?.value)
-                }
-              />
-              <button onClick={onResetHandler}>reset</button>
-            </div>
-            <div className="flex items-center justify-between">
-              <BtnPrime onClick={onSaveHandler}>save</BtnPrime>
-              <BtnWarm onClick={() => setOpen(false)}>cancel</BtnWarm>
-            </div>
-          </Box>
-        )}
-      </Modal>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <Modal open={open} setOpen={setOpen}>
+//         {(Icon: any) => (
+//           <Box>
+//             <Icon />
+//             <h3 className="text-indigo-400">Edit Class</h3>
+//             <div>
+//               <Input
+//                 autoFocus
+//                 defaultValue={name}
+//                 value={name}
+//                 text="name"
+//                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+//                   setName(e.target?.value)
+//                 }
+//               />
+//               <Input
+//                 defaultValue={description}
+//                 value={description}
+//                 text="description"
+//                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+//                   setDescription(e.target?.value)
+//                 }
+//               />
+//               <button onClick={onResetHandler}>reset</button>
+//             </div>
+//             <div className="flex items-center justify-between">
+//               <BtnPrime onClick={onSaveHandler}>save</BtnPrime>
+//               <BtnWarm onClick={() => setOpen(false)}>cancel</BtnWarm>
+//             </div>
+//           </Box>
+//         )}
+//       </Modal>
+//     </div>
+//   );
+// }

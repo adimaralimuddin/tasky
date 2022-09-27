@@ -13,7 +13,7 @@ function Input({
   return (
     <div
       className={
-        "flex  flex-1 my-2 " +
+        "dark:text-slate-300 flex  flex-1 my-2 " +
         (type == "checkbox" ? "" : " flex-col ") +
         props?.css
       }
@@ -24,9 +24,11 @@ function Input({
       <input
         {...props}
         type={type}
-        
         name={text || name}
-        className={"bg-slate-100 flex-1 min-w-[50px] w-[95%] " + inputClass}
+        className={
+          "bg-slate-100 dark:bg-slate-600 flex-1 min-w-[50px] w-[95%] " +
+          inputClass
+        }
       />
     </div>
   );

@@ -8,11 +8,11 @@ import LayoutMainHeader from "../layouts/LayoutMainHeader";
 
 function PageMainHome() {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-slate-700 ">
       <LayoutMainHeader />
-      <A />
-      <Bubble />
-      <Bubble top="10%" left="60%" color="pink-500" w="250px" />
+      {/* <A /> */}
+      {/* <Bubble /> */}
+      {/* <Bubble top="10%" left="60%" color="pink-500" w="250px" /> */}
       <Caption />
     </div>
   );

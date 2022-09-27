@@ -20,7 +20,7 @@ export default function useClass(classId: any) {
     async () => await classApiGetClass(classId)
   );
 
-  const renameClass = useMutation(classApiRenameClass, {
+  const classRenamer = useMutation(classApiRenameClass, {
     onSuccess: (renamedClass) => {
       client.setQueryData(["class", classId], (prevClass: any) => {
         return { ...prevClass, name: renamedClass?.name };
@@ -28,7 +28,7 @@ export default function useClass(classId: any) {
     },
   });
 
-  const updateClass = useMutation(classApiUpdateClass, {
+  const classUpdater = useMutation(classApiUpdateClass, {
     onSuccess: (updatedClass) => {
       client.setQueryData(["classes", user], (classes: any) =>
         classes.map((c: ClassType) =>
@@ -38,7 +38,7 @@ export default function useClass(classId: any) {
     },
   });
 
-  const deleteClass = useMutation(classApiDeleteclass, {
+  const classDeleter = useMutation(classApiDeleteclass, {
     onSuccess: (deletedClass) => {
       client.setQueryData(["classes", user], (classes: any) =>
         classes.filter((c: ClassType) => c.id !== deletedClass?.id)
@@ -48,8 +48,11 @@ export default function useClass(classId: any) {
 
   return {
     userClass,
-    renameClass: renameClass.mutate,
-    updateClass: updateClass.mutate,
-    deleteClass: deleteClass.mutate,
+    classRenamer,
+    classUpdater,
+    classDeleter,
+    renameClass: classRenamer.mutate,
+    updateClass: classUpdater.mutate,
+    deleteClass: classDeleter.mutate,
   };
 }

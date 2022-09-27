@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { CardTypes } from "../../features/card/CardType";
-import { RefreshIcon } from "../../lib/icons";
 import Box from "../elements/Box";
 import BtnBack from "../elements/BtnBack";
 import BtnPrime from "../elements/BtnPrime";
@@ -41,7 +40,7 @@ export default function PlayFinish({ setFinish, cards, setPlayInd }: props) {
         <div className="flex flex-col items-center">
           <h1 className="font-bold text-green-400 ">Finish!</h1>
           <p> cards: {cards && cards?.length - 1}</p>
-          <div className="p-2 ring-1 rounded-lg ring-slate-300 my-2 bg-slate-50">
+          <div className="p-2 ring-1 rounded-lg ring-slate-300 my-2 bg-slate-50 dark:bg-slate-500">
             <Item level="easy" filter={filter} onSelect={onItemSelect} />
             <Item level="normal" filter={filter} onSelect={onItemSelect} />
             <Item level="hard" filter={filter} onSelect={onItemSelect} />
@@ -92,19 +91,24 @@ function Item({
 
   const color = () =>
     level == "easy"
-      ? " text-teal-400 "
+      ? " text-teal-400 dark:text-teal-200 "
       : level == "normal"
-      ? " text-lime-400 "
-      : " text-red-400 ";
+      ? " text-lime-400 dark:text-lime-300 "
+      : " text-red-400 dark:text-red-300 ";
   return (
     <div
       onClick={onSelectHandler}
-      className="hover:bg-slate-100d hover:shadow-lg cursor-pointer p-[2px] px-3 rounded-lg flex gap-3 items-center justify-between hover:bg-white"
+      className="hover:bg-slate-100d hover:shadow-lg cursor-pointer p-[2px] px-3 rounded-lg flex gap-3 items-center justify-between hover:bg-white dark:hover:bg-slate-400 "
     >
-      <p className={"text-lg " + color()}>
-        {level} : {filter?.(level)?.length}
-      </p>
-      <RefreshIcon className="text-slate-500 text-xl" />
+      <span
+        className={
+          "flex flex-1 items-center justify-between text-lg text-justify gap-2"
+        }
+      >
+        <p className={color()}>{level}</p>
+        <p>:</p>
+        <p className={color()}>{filter?.(level)?.length}</p>
+      </span>
     </div>
   );
 }

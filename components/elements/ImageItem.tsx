@@ -14,7 +14,7 @@ export default function ImageItem({
   return (
     <div
       className={
-        " cursor-pointer mr-auto rounded-md ring-1 ring-slate-300 flex " +
+        " cursor-pointer mr-auto rounded-md ring-1 ring-slate-300 flex min-w-[100px] " +
         divCss
       }
     >

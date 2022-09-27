@@ -15,10 +15,8 @@ function PageMainClass() {
     userClass: { data: defaultClass },
   } = useClass(class2);
 
-  console.log("defaultClass", defaultClass);
-
   return (
-    <div>
+    <div className="min-h-screen dark:bg-slate-800">
       <LayoutMainHeader />
       <div className="p-5 flex gap-3 flex-wrap content-center justify-center max-w-5xl mx-auto">
         <ClassAdder />

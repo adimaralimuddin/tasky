@@ -13,7 +13,7 @@ export default function useClassHooks() {
     classApiUserClass(user?.sub)
   );
 
-  const createClass = useMutation(classApiCreateClass, {
+  const classAdder = useMutation(classApiCreateClass, {
     onSuccess: (addedClass) => {
       qClient.setQueryData(["classes", user], (classes: any) => {
         return [...classes, addedClass];
@@ -24,7 +24,8 @@ export default function useClassHooks() {
   // const defaultClasses = useQuery(['classes'],()=>)
 
   return {
-    addClass: createClass.mutate,
+    classAdder,
+    addClass: classAdder.mutate,
     classes,
   };
 }

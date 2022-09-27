@@ -3,6 +3,7 @@ import useClass from "../../features/class/useClass";
 import Box from "../elements/Box";
 import BtnPrime from "../elements/BtnPrime";
 import Input from "../elements/Input";
+import Loader from "../elements/Loader";
 import Modal from "../elements/Modal";
 import { ClassType } from "./classTypes";
 
@@ -15,7 +16,7 @@ export default function ClassRenamer({
   setOpen: any;
   data: ClassType;
 }) {
-  const { renameClass } = useClass(data?.id);
+  const { renameClass, classRenamer } = useClass(data?.id);
   const [name, setName] = useState(data?.name);
 
   const onRenameHandler = () => {
@@ -40,6 +41,7 @@ export default function ClassRenamer({
           </Box>
         )}
       </Modal>
+      <Loader message="renaming class ... " open={classRenamer?.isLoading} />
     </div>
   );
 }

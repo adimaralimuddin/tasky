@@ -8,6 +8,7 @@ import BtnSec from "../../elements/BtnSec";
 import BtnWarm from "../../elements/BtnWarm";
 import ImageItem from "../../elements/ImageItem";
 import Input from "../../elements/Input";
+import Loader from "../../elements/Loader";
 import Modal from "../../elements/Modal";
 
 type props = {
@@ -64,14 +65,7 @@ export default function CardEditor({
           </Box>
         )}
       </Modal>
-      <Modal open={isUpdating}>
-        {() => (
-          <Box css="p-4 shadow-md flex items-center gap-3 text-indigo-400">
-            <h2 className=" animate-pulse  font-bold">Updating</h2>
-            <RefreshIcon className="animate-spin text-2xl" />
-          </Box>
-        )}
-      </Modal>
+      <Loader open={isUpdating} message="updating card ... " />
     </div>
   );
 }
@@ -131,8 +125,6 @@ function FieldEditor({ data, setter }: { data: FieldType; setter: any }) {
 function FieldFileEditor({ data, setter }: { data: FieldType; setter: any }) {
   const [src, setSrc] = useState(data?.value);
   const [file, setFile] = useState<any>(null);
-
-  // console.log("file data ", data);
 
   const onFileInputHandler = (e: any) => {
     const file: any = e.target?.files?.[0];

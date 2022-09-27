@@ -39,16 +39,17 @@ export default function CardQueryView() {
   return (
     <div>
       <div
-        className="flex hover:shadow-lg cursor-pointer hover:-translate-y-[2px]d items-center px-2 gap-1 ring-1 ring-slate-300 rounded-lg transition m-1 "
+        className="flex hover:shadow-lg cursor-pointer hover:-translate-y-[2px]d items-center px-2 gap-1 ring-1 ring-slate-300 dark:ring-slate-500 rounded-lg transition m-1 dark:bg-slate-600"
         title="view"
         onClick={(_) => setOpen((p) => !p)}
       >
-        <ViewIcon className="text-2xl text-slate-600 " /> view
+        <ViewIcon className="text-2xl text-slate-600 dark:text-slate-300 " />{" "}
+        view
       </div>
       {open && (
         <div className="relative z-50">
           <div className="absolute top-0 right-0 z-20">
-            <Box css="z-20 shadow-xl ring-1 ring-slate-200 pr-3">
+            <Box css="z-20 shadow-xl ring-1 ring-slate-200 pr-3 dark:bg-slate-600 dark:shadow-2xl">
               <SelectSimple
                 text="Font size"
                 onInput={(e: any) => setTextSize(e.target.value)}

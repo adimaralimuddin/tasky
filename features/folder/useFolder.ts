@@ -13,7 +13,6 @@ export default function useFolder(classId: string | any) {
 
   const add = useMutation(folderApiAddFolder, {
     onSuccess: (newAddedFolder) => {
-      console.log("success mutation ", newAddedFolder);
       client.setQueryData(["folder", classId], (folders: any) => {
         return [...folders, newAddedFolder];
       });
@@ -27,5 +26,6 @@ export default function useFolder(classId: string | any) {
   return {
     folder,
     addFolder,
+    folderAdder: add,
   };
 }

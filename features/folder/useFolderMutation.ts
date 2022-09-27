@@ -5,7 +5,7 @@ import { FolderType } from "./folderTypes";
 export default function useFolderMutation(classId: string) {
   const client = useQueryClient();
 
-  const deleteFolder = useMutation(folderApideleteFolder, {
+  const folderDeleter = useMutation(folderApideleteFolder, {
     onSuccess: (deletedFolder) => {
       client.setQueryData(["folder", classId], (folders: any) => {
         return folders?.filter(
@@ -29,7 +29,8 @@ export default function useFolderMutation(classId: string) {
   });
 
   return {
-    deleteFolder: (folderId: string) => deleteFolder.mutate(folderId),
+    folderDeleter,
+    deleteFolder: (folderId: string) => folderDeleter.mutate(folderId),
     renameFolder: renameFolder.mutate,
   };
 }

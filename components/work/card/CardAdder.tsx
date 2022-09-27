@@ -10,7 +10,7 @@ import { ImageIcon, Mp3 } from "../../../lib/icons";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
 import ContentHeader from "../../elements/ContentHeader";
-import Verifier from "../../elements/Verifier";
+import Loader from "../../elements/Loader";
 import CardItem from "./CardItem";
 
 export default function CardAdder({ classId }: { classId: string | any }) {
@@ -47,8 +47,7 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
   const parseFields = (type: string) => JSON.parse(template?.[type] || "[]");
   const [fronts, setFronts] = useState(parseFields("fronts"));
   const [backs, setbacks] = useState(parseFields("backs"));
-  const { createCard } = useCardMutation(topic?.id);
-  const [isAdding, setIsAdding] = useState(false);
+  const { createCard, cardCreator } = useCardMutation(topic?.id);
 
   useEffect(() => {
     const parseFields = (type: string) => JSON.parse(template?.[type] || "[]");
@@ -72,15 +71,11 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
       fronts: front,
       backs: back,
     };
-    setIsAdding(true);
+
     createCard(data, {
       onSuccess: () => {
         fronts?.map((f: any) => localStorage.removeItem(f.text + "front"));
         backs?.map((f: any) => localStorage.removeItem(f.text + "back"));
-        setIsAdding(false);
-      },
-      onError: () => {
-        setIsAdding(false);
       },
     });
   };
@@ -108,16 +103,7 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
   return (
     <Box css="flex flex-col shadow-md ring-2 ring-slate-200 p-3 bg-slate-50d">
       <h1 className="py-3 font-bold text-indigo-400 text-center">Add Card</h1>
-      <Verifier
-        message={
-          <div className="flex gap-2 items-center animate-pulse">
-            <h2>adding card ...</h2>
-          </div>
-        }
-        open={isAdding}
-        setOpen={setIsAdding}
-        actions={false}
-      />
+      <Loader message="adding card ... " open={cardCreator?.isLoading} />
       <form onSubmit={onAddCardHandler}>
         <div className="flex gap-3 flex-wrap ">
           <Fields side="front" fields={fronts} />
@@ -138,7 +124,7 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
 
 function Fields({ fields, side }: any) {
   return (
-    <div className="ring-1 rounded-xl p-1 ring-indigo-100 flex-1 bg-white">
+    <div className="ring-1 rounded-xl p-1 ring-indigo-100 flex-1 bg-white dark:bg-slate-600">
       <h2 className="text-indigo-400 text-center">{side}</h2>
       {fields?.map((field: any) => (
         <Field data={field} side={side} key={field?.id} />
@@ -164,7 +150,7 @@ export function Field({ data, side = "" }: any) {
       data-name={data.text}
       onInput={onInputHandler}
       type={data?.type || "text"}
-      className={"bg-slate-100 w-full"}
+      className={"bg-slate-100 dark:ring-1 dark:ring-slate-500 w-full"}
     />
   );
 
@@ -222,7 +208,7 @@ function FileInput({ text, side, Icon, type }: any) {
   }, [file]);
 
   return (
-    <div className="flex items-center gap-2 hover:bg-slate-200 p-1 rounded-md cursor-pointer">
+    <div className="flex items-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-500 p-1 rounded-md cursor-pointer">
       <div className="flex flex-col">
         <p className="flex items-center gap-2 whitespace-nowrap ring-1 px-2 rounded-md">
           <Icon className="text-xl" />
@@ -231,7 +217,10 @@ function FileInput({ text, side, Icon, type }: any) {
         {imgSrc &&
           (type == "audio" ? (
             <div className="my-2">
-              <audio src={imgSrc} controls />
+              <audio className=" w-full " src={imgSrc} controls />
+              <small className="text-slate-600">
+                {file?.name?.slice(1, 30)}..
+              </small>
             </div>
           ) : (
             <div className="py-2 flex flex-col">

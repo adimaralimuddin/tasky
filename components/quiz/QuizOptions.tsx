@@ -16,14 +16,14 @@ export default function QuizOptions({ optionCount, setOptionCount }: props) {
     <div>
       <p
         onClick={() => setOpen((p) => !p)}
-        className="ring-1 rounded-lg ring-slate-300 px-2 hover:shadow-lg cursor-pointer"
+        className="ring-1 rounded-lg dark:bg-slate-600 ring-slate-300 dark:ring-slate-500 px-2 hover:shadow-lg cursor-pointer"
       >
         Quiz Options
       </p>
       {open && (
         <span className="relative z-10">
           <div className="absolute">
-            <Box css="shadow-xl ring-1 ring-slate-300">
+            <Box css="shadow-xl ring-1 ring-slate-300 dark:ring-slate-600">
               <Select
                 defaultValue={[optionCount]}
                 options={[[2], [3], [4], [5], [6]]}

@@ -32,7 +32,7 @@ function LayoutMainHeader() {
   }, [setSize]);
 
   return (
-    <div className=" bg-white ">
+    <div className=" bg-white dark:bg-slate-800">
       <div className="flex items-center justify-between px-5 p-2 max-w-4xl mx-auto flex-wrap">
         <div className="flex items-center cursor-pointer">
           <FcLightAtTheEndOfTunnel className="text-4xl" />
@@ -64,7 +64,7 @@ const Menu = ({
 }) => {
   return (
     <Link href={href}>
-      <div className="flex items-center gap-1 cursor-pointer hover:text-indigo-400 text-lg ">
+      <div className="dark:text-slate-100 flex items-center gap-1 cursor-pointer hover:text-indigo-400 dark:hover:text-white text-lg ">
         {Icon && <Icon className="text-xl" />}
         {!col && children}
       </div>

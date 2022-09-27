@@ -36,7 +36,7 @@ export default function Select({
       <div>
         <p
           onClick={(_) => setOpen((p) => !p)}
-          className="	 cursor-pointer hover:shadow-smd hover:ring-1 ring-slate-200 rounded-lg m-1 w-mind  p-2 bg-slate-100 min-w-[70px] flex items-center justify-between"
+          className="	 cursor-pointer hover:shadow-smd hover:ring-1 ring-slate-200 rounded-lg m-1 w-mind  p-2 bg-slate-100 dark:bg-slate-600 min-w-[70px] flex items-center justify-between"
         >
           {val?.[0]?.toString()}
           {open ? <UpIcon /> : <DownIcon />}

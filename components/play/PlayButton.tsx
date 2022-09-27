@@ -3,7 +3,10 @@ export default function PlayButtons({ onFlip, onNext, side }: any) {
     <div className="flex items-center justify-center gap-2 py-2 content-center flex-wrap">
       <button
         className={
-          "" + (side == "backs" ? "bg-indigo-400 text-white" : "bg-white")
+          "" +
+          (side == "backs"
+            ? "bg-indigo-400 text-white"
+            : "bg-white dark:bg-slate-400 dark:text-white ")
         }
         onClick={onFlip}
       >

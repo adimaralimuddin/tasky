@@ -11,7 +11,7 @@ import { TopicType } from "./topicType";
 export default function useTopic(folderId?: string) {
   const dispatch = useDispatch();
   const client = useQueryClient();
-  const createTopicMutation = useMutation(topicApiCreateTopic, {
+  const topicAdder = useMutation(topicApiCreateTopic, {
     onSuccess: (createdTopic) => {
       console.log("topic added successfully ", createdTopic);
       client.setQueryData(["topics", folderId], (topics: any) => {
@@ -19,7 +19,7 @@ export default function useTopic(folderId?: string) {
       });
     },
   });
-  const deleteTopic = useMutation(topicApiDeleteTopic, {
+  const topicDeleter = useMutation(topicApiDeleteTopic, {
     onSuccess: (deletedTopic) => {
       client.setQueryData(["topics", folderId], (topics: any) => {
         return topics?.filter(
@@ -30,7 +30,7 @@ export default function useTopic(folderId?: string) {
     },
   });
 
-  const renameTopic = useMutation(topicApiRenameTopic, {
+  const topicRenamer = useMutation(topicApiRenameTopic, {
     onSuccess: (renamedTopic) => {
       client.setQueryData(["topics", folderId], (topics: any) => {
         return topics?.map((topic: TopicType) => {
@@ -44,8 +44,11 @@ export default function useTopic(folderId?: string) {
   });
 
   return {
-    createTopic: createTopicMutation.mutate,
-    deleteTopic: deleteTopic.mutate,
-    renameTopic: renameTopic.mutate,
+    topicAdder,
+    topicDeleter,
+    topicRenamer,
+    createTopic: topicAdder.mutate,
+    deleteTopic: topicDeleter.mutate,
+    renameTopic: topicRenamer.mutate,
   };
 }

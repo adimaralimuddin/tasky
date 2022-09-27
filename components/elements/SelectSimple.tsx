@@ -29,7 +29,8 @@ export default function SelectSimple({
         onInput={onInput}
         value={value}
         className={
-          "ring-1 py-1 ring-slate-200 text-slate-500 bg-slate-50 " + css
+          "ring-1 py-1 ring-slate-200 dark:ring-slate-500 text-slate-500 bg-slate-50 dark:text-slate-200 " +
+          css
         }
       >
         {children}

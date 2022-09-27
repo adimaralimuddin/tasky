@@ -17,7 +17,7 @@ export default function CategoryItem({ field, topicId, classId }: props) {
     <div>
       <Box
         onClick={() => setCategory(field)}
-        css="flex-1 cursor-pointer ring-1 ring-slate-200 hover:-translate-y-[2px] transition ease-in-out duration-200 hover:shadow-lg"
+        css="flex-1 cursor-pointer ring-1 ring-slate-200 dark:ring-slate-500 hover:-translate-y-[2px] transition ease-in-out duration-200 hover:shadow-lg"
       >
         <h3>{field}</h3>
         <p>{cards?.length} items</p>

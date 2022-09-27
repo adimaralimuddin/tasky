@@ -6,6 +6,7 @@ import { Pencil, Trash } from "../../../lib/icons";
 import AudioElement from "../../elements/AudioEl";
 import Box from "../../elements/Box";
 import ImageItem from "../../elements/ImageItem";
+import Loader from "../../elements/Loader";
 import Option from "../../elements/Option";
 import CardEditor from "./CardEditor";
 
@@ -29,8 +30,8 @@ export default function CardItem({
   const [card, setCard] = useState(card_);
   const [isEditing, setIsEditing] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const { work, setContent } = useWork();
-  const { deleteCard } = useCardMutation(work?.selectedTopic?.id);
+  const { work } = useWork();
+  const { deleteCard, cardDeleter } = useCardMutation(work?.selectedTopic?.id);
   const textSize = work.textSize;
   const size: any = work?.imageSize;
   const imageSize = parseInt(size);
@@ -58,12 +59,16 @@ export default function CardItem({
     },
   ];
 
+  useEffect(() => {
+    setCard(card_);
+  }, [card_]);
+
   return (
     <Box
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       css={
-        "flexd ring-1 ring-slate-200 items-center p-0 my-5 min-w-[100px] shadow-lg " +
+        "flexd ring-1 ring-slate-200 items-center p-0 my-5 min-w-[100px] shadow-lg bg-white dark:bg-slate-600 dark:ring-1 dark:ring-slate-600 " +
         css
       }
     >
@@ -93,7 +98,7 @@ export default function CardItem({
               imageViewer={imageViewer}
             />
           )}
-          <div className="ring-2 ring-slate-200 my-3"></div>
+          {side == "both" && <div className="ring-2 ring-slate-200 my-3"></div>}
           {(side == "backs" || side == "both") && (
             <CardFronts
               card={card}
@@ -128,6 +133,7 @@ export default function CardItem({
           setCard({ ...card, ...data });
         }}
       />
+      <Loader message="deleting card ... " open={cardDeleter?.isLoading} />
     </Box>
   );
 }
@@ -206,7 +212,7 @@ function FieldItem({
 
   return (
     <div>
-      <div className="flex gap-2 items-start ">
+      <div className="flex gap-2 items-start py-1">
         {lebel && (
           <p className={"text-slate-400 " + textSize}>{field?.text} :</p>
         )}

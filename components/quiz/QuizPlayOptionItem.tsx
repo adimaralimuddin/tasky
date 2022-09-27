@@ -94,11 +94,8 @@ export default function QuizPlayOptionItem({
             !hasChosen && "hover:ring-indigo-400 hover:shadow-lg"
           )
         )
-        // +
-        // (isWrong && hasChosen ? " ring-red-400 " : "")
       }
     >
-      {}
       {correct && (
         <div className="relative">
           <div className="absolute top-0 left-0 dbg-red-400">

@@ -19,7 +19,7 @@ export async function folderApiAddFolder({
   classId,
   name,
 }: {
-  classId: string;
+  classId?: string;
   name: string;
 }) {
   const q = gql`

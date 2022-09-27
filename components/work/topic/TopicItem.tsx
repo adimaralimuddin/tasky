@@ -3,6 +3,7 @@ import { TopicType } from "../../../features/topic/topicType";
 import useTopic from "../../../features/topic/useTopic";
 import useWork from "../../../features/work/useWork";
 import { Pencil, Plus, TopicIcon, Trash } from "../../../lib/icons";
+import Loader from "../../elements/Loader";
 import Option from "../../elements/Option";
 import Verifier from "../../elements/Verifier";
 import TopicRenamer from "./TopicRenamer";
@@ -20,7 +21,7 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { setTopic, work, setContent } = useWork();
-  const { deleteTopic } = useTopic(data?.folderId);
+  const { deleteTopic, topicDeleter } = useTopic(data?.folderId);
 
   const isSelected = (a: any = true, b: any = false) =>
     work?.selectedTopic?.id === data.id ? a : b;
@@ -57,8 +58,8 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
           selectFolder(true);
         }}
         className={
-          "cursor-pointer flex items-center hover:bg-slate-100 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
-          isSelected(" bg-slate-100")
+          "cursor-pointer flex items-center hover:bg-slate-100 dark:hover:bg-slate-600 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
+          isSelected(" bg-slate-100 dark:bg-slate-600")
         }
       >
         <TopicIcon className="mr-1 text-violet-500" />
@@ -76,6 +77,7 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
         setOpen={setIsDeleting}
         onOkay={onDeleteHandler}
       />
+      <Loader message="deleting topic ... " open={topicDeleter?.isLoading} />
     </div>
   );
 }

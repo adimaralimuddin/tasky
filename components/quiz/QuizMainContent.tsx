@@ -97,9 +97,6 @@ export default function QuizMainContent({ classId }: any) {
   return (
     <Box css="flex-1 flex flex-col ">
       <ContentHeader />
-      <button>
-        <h1>set</h1>
-      </button>
       {cards?.length > 0 ? Content : <NoCards text="No Cards For Quiz" />}
     </Box>
   );
@@ -123,6 +120,7 @@ function ranNum(count = 3, length = 11, playInd = 0) {
 function TrivItem({ current }: any) {
   const { quiz } = useQuiz();
   const { side } = quiz;
+
   return (
     <div className="flex flex-col items-center">
       <CardItem side={side} card={current} allowOption={false} />

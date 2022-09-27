@@ -1,12 +1,13 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FieldType } from "../../features/card/CardType";
-import { Trash } from "../../lib/icons";
 import Box from "../elements/Box";
 import BtnPrime from "../elements/BtnPrime";
 import BtnSec from "../elements/BtnSec";
 import Input from "../elements/Input";
 import Modal from "../elements/Modal";
+import FieldAdder from "./FieldAdder";
+import FieldItem from "./FieldItem";
 
 type props = {
   onSave: Function;
@@ -54,7 +55,7 @@ export default function TemplateEditor({
     <div>
       <Modal open={open} setOpen={setOpen}>
         {(Icon: any) => (
-          <Box css="w-full max-w-xl">
+          <Box css="w-full max-w-xl max-h-[93vh]">
             <Icon onClick={onCancel} />
             <div>
               <Input
@@ -66,30 +67,10 @@ export default function TemplateEditor({
               />
             </div>
             <div className="flex flex-wrap gap-2 ">
-              <div className="flex-1 ring-1 p-2 ring-slate-200 rounded-md">
-                <p>Fronts</p>
-                {fronts?.map((field: FieldType) => (
-                  <FieldItem
-                    field={field}
-                    set={setFronts}
-                    key={"front-" + field.text + field.ind}
-                  />
-                ))}
-                <FieldAdder list={fronts} set={setFronts} />
-              </div>
-              <div className="flex-1 ring-1 p-2 ring-slate-200 rounded-md">
-                <p>Backs</p>
-                {backs?.map((field: FieldType) => (
-                  <FieldItem
-                    field={field}
-                    set={setBacks}
-                    key={"back-" + field.text + field.ind}
-                  />
-                ))}
-                <FieldAdder list={backs} set={setBacks} />
-              </div>
+              <Fields fields={fronts} set={setFronts} text="Fronts" />
+              <Fields fields={backs} set={setBacks} text="Backs" />
             </div>
-            <footer className="flex items-center justify-between">
+            <footer className="flex items-center justify-between py-2">
               <BtnPrime onClick={onSaveTemplate}>save</BtnPrime>
               <BtnSec onClick={resetData}>reset</BtnSec>
             </footer>
@@ -100,120 +81,28 @@ export default function TemplateEditor({
   );
 }
 
-function FieldItem({ field, set }: { field: FieldType; set: any }) {
-  const onRemove = () => {
-    set((p: FieldType[]) => p.filter((p) => p !== field));
-  };
-
-  const onTextInputHandler: any = (e: React.ChangeEvent<HTMLFormElement>) => {
-    const text = e.target.value;
-    set((p: FieldType[]) => p?.map((f) => (f == field ? { ...f, text } : f)));
-  };
-  const onTypeInputHandler: any = (e: React.ChangeEvent<HTMLFormElement>) => {
-    const type = e.target.value;
-    set((p: FieldType[]) => p?.map((f) => (f == field ? { ...f, type } : f)));
-  };
-
+function Fields({
+  fields,
+  set,
+  text,
+}: {
+  fields: FieldType[];
+  set: any;
+  text: string;
+}) {
   return (
-    <div className="ring-1 ring-slate-300 shadow-sm p-1 flex items-center justify-between rounded-md my-2">
-      <small className="flex-1 flex items-center gap-1 ">
-        <input
-          className="w-[95%] m-0 py-1 px-1 ring-1 ring-slate-200"
-          type="text"
-          value={field?.text}
-          onInput={onTextInputHandler}
-        />
-        :
-        <select
-          className="flex-1 ring-1 ring-slate-200 m-0 py-1 px-1"
-          value={field?.type}
-          onInput={onTypeInputHandler}
-        >
-          <option value="text">text</option>
-          <option value="number">number</option>
-          <option value="image">image</option>
-          <option value="audio">audio</option>
-        </select>
-      </small>
-      <button
-        onClick={onRemove}
-        className="ring-1d hover:shadow-lg hover:ring-1 ring-slate-200 p-1 m-0"
-      >
-        <Trash className="text-xl" />
-      </button>
-    </div>
-  );
-}
-
-function FieldAdder({ list, set }: any) {
-  const [clicked, setClicked] = useState(false);
-  const [text, setText] = useState("");
-  const [type, setType] = useState<any>("text");
-
-  const onSave = () => {
-    const data = { text, type };
-    if (text.trim() === "") {
-      return alert("must have a text");
-    }
-    if (type.trim() === "") {
-      return alert("must have a type");
-    }
-    console.log(data);
-    set((p = []) => [...p, data]);
-    setClicked(false);
-    setText("");
-    setType("text");
-  };
-
-  return (
-    <div className="my-2 flex flex-cold">
-      {!clicked && (
-        <p
-          onClick={() => setClicked(true)}
-          className="ring-1 px-2 rounded-md cursor-pointer"
-        >
-          + field
-        </p>
-      )}
-      {clicked && (
-        <div className="gap-2 flex-1 flex flex-col  ring-1 ring-slate-100 rounded-md p-2 shadow-md ">
-          <span className=" flex flex-col flex-1">
-            <small>text:</small>
-            <input
-              type="text flex-1"
-              className=" p-0 px-2 m-0 rounded-none outline-none min-w-[150px] ring-1d flex-1 w-full"
-              autoFocus
-              placeholder="ie: in spanish"
-              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setText(e.target.value)
-              }
-              onKeyUp={(e) => {
-                if (e.code === "Enter") {
-                  onSave();
-                }
-              }}
-            />
-          </span>
-          <span className="flex flex-col ">
-            <small>type :</small>
-            <select
-              defaultValue={"text"}
-              onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setType(e.target.value)
-              }
-              className="min-w-[50px]"
-            >
-              <option value="text">text</option>
-              <option value="number">number</option>
-              <option value="image">image</option>
-              <option value="audio">audio</option>
-            </select>
-          </span>
-          <button onClick={onSave} className="ring-1 p-0 m-0 px-2">
-            add
-          </button>
-        </div>
-      )}
+    <div className="flex-1 ring-1 ring-slate-200 rounded-md dark:ring-slate-600 overflow-autod ">
+      <p className="p-1 px-2">{text}</p>
+      <div className="flex flex-col max-h-[60vh] overflow-auto p-3">
+        {fields?.map((field: FieldType) => (
+          <FieldItem
+            field={field}
+            set={set}
+            key={"front-" + field.text + field.ind}
+          />
+        ))}
+        <FieldAdder list={fields} set={set} />
+      </div>
     </div>
   );
 }

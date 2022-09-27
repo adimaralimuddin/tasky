@@ -52,14 +52,14 @@ export default function CardQuery({
     <div className="flex flex-wrap items-end gap-1 ">
       <span
         className="flex flex-col flex-1 hover:scale-[1.2] transition 
-      cursor-pointer hover:shadow-lg bg-white p-1 rounded-lg 
-      hover:ring-1 ring-slate-300 hover:text-sm hover:p-3 min-w-[120px]"
+      cursor-pointer hover:shadow-lg  bg-white dark:bg-slate-700 p-1 rounded-lg 
+      hover:ring-1 ring-slate-300  dark:ring-slate-400 hover:text-sm hover:p-3 min-w-[120px]"
       >
         <label htmlFor="">search</label>
         <input
           onInput={onSearchHandler}
           type="text"
-          className="ring-1 px-2 m-0 p-0 w-full ring-slate-300 outline-indigo-400 "
+          className="ring-1 px-2 m-0 p-0 w-full ring-slate-300 dark:ring-slate-500 outline-indigo-400 dark:outline-nond "
           placeholder={`search ${type} ${filter}`}
         />
       </span>
@@ -87,10 +87,10 @@ export default function CardQuery({
 
 function SelectItem({ children, onInput, text }: any) {
   return (
-    <span className="flex flex-col hover:scale-[1.1]d transition cursor-pointer hover:shadow-lg p-1 rounded-lg hover:ring-1 ring-slate-200 bg-white">
+    <span className="flex flex-col hover:scale-[1.1]d transition cursor-pointer hover:shadow-lg p-1 rounded-lg hover:ring-1 ring-slate-200 dark:ring-slate-500  bg-white dark:bg-transparent">
       <label className="text-sm">{text}</label>
       <select
-        className="m-0 p-0 ring-1 px-1 ring-slate-300"
+        className="m-0 p-0 ring-1 px-1 ring-slate-300 dark:ring-slate-500"
         name=""
         id=""
         onInput={onInput}

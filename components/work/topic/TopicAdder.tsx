@@ -1,5 +1,5 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useTemplates from "../../../features/template/useTemplates";
 import useTopic from "../../../features/topic/useTopic";
 import useWork from "../../../features/work/useWork";
@@ -7,6 +7,7 @@ import { DEF_USER } from "../../../lib/public";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
 import Input from "../../elements/Input";
+import Loader from "../../elements/Loader";
 import Modal from "../../elements/Modal";
 import Select from "../../elements/Select";
 
@@ -16,11 +17,7 @@ export default function TopicAdder() {
   const options = templates?.data?.map((temp: any) => [temp?.name, temp?.id]);
   const [templateId, setTemplateId] = useState(options?.[0]?.[1]);
   const { work, setOpenTopicAdder } = useWork();
-  const { createTopic } = useTopic(work?.selectedFolder);
-
-  useEffect(() => {
-    setTemplateId(options?.[0]?.[1]);
-  }, [templates]);
+  const { createTopic, topicAdder } = useTopic(work?.selectedFolder);
 
   const onCreateHandler = (e: any) => {
     e.preventDefault();
@@ -29,13 +26,17 @@ export default function TopicAdder() {
     const topicData: any = {
       folderId: work?.selectedFolder,
       userId: user?.sub || DEF_USER,
-      templateId,
+      templateId: templateId || options?.[0]?.[1],
       ...data,
     };
-
+    console.log("topic data ", topicData);
     createTopic(topicData);
     setOpenTopicAdder(false);
   };
+
+  if (topicAdder.isLoading) {
+    return <Loader message="adding topic ... " open={topicAdder.isLoading} />;
+  }
 
   return (
     <Modal open={work.openTopicAdder} setOpen={setOpenTopicAdder}>

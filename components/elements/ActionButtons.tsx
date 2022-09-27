@@ -19,7 +19,7 @@ export default function ActionButtons() {
 
   return (
     <div className=" flex flex-col">
-      <div className="ring-1 flex  rounded-lg overflow-hidden ring-indigo-400 my-1 bg-indigo-400 text-white">
+      <div className="ring-1 flex  rounded-lg overflow-hidden ring-indigo-400 dark:ring-0 my-1 bg-indigo-400 text-white">
         <p
           onClick={(_) => setContent("play")}
           className="px-3 hover:bg-indigo-300 cursor-pointer first-letter:"
@@ -29,14 +29,14 @@ export default function ActionButtons() {
         <div
           onClick={(_) => setOpen((p) => !p)}
           className="flex items-center px-2 cursor-pointer 
-          bg-white "
+          bg-white dark:bg-slate-200"
         >
           {open ? <UpIcon /> : <DownIcon />}
         </div>
       </div>
       {open && (
         <span className="relative z-20">
-          <Box css="ring-1 ring-slate-200 shadow-lg absolute top-0 left-0 min-w-full mx-0">
+          <Box css="ring-1 ring-slate-200 shadow-lg absolute top-0 left-0 min-w-full mx-0 dark:bg-slate-600 dark:shadow-2xl">
             <Item onClick={onQuizHandler} Icon={<QuizIcon />}>
               Quiz
             </Item>
@@ -55,7 +55,7 @@ function Item({ children, Icon, onClick, ...props }: any) {
     <p
       onClick={onClick}
       {...props}
-      className="cursor-pointer flex items-center gap-2 p-1 hover:bg-slate-100 rounded-lg px-2 "
+      className="cursor-pointer flex items-center gap-2 p-1 hover:bg-slate-100 dark:hover:bg-slate-500 rounded-lg px-2 "
     >
       {Icon}
       {children}

@@ -4,7 +4,9 @@ import { Plus } from "../../../lib/icons";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
 import Input from "../../elements/Input";
+import Loader from "../../elements/Loader";
 import Modal from "../../elements/Modal";
+import Verifier from "../../elements/Verifier";
 
 type props = {
   classId: string | any;
@@ -13,11 +15,15 @@ type props = {
 export default function FolderAdder({ classId }: props) {
   const [open, setOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
-  const { addFolder } = useFolder(classId);
+
+  const {
+    addFolder,
+    folderAdder: { isLoading },
+  } = useFolder(classId);
 
   const onAddFolderHandler = () => {
-    addFolder(folderName);
     setOpen(false);
+    addFolder(folderName);
   };
 
   return (
@@ -37,6 +43,7 @@ export default function FolderAdder({ classId }: props) {
           </Box>
         )}
       </Modal>
+      <Loader message="adding folder ..." open={isLoading} />
     </div>
   );
 }

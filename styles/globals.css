@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  * {
+    @apply outline-indigo-500 dark:outline-none;
+  }
+
+  body {
+    @apply bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-200;
+  }
+
+  button {
+    @apply dark:text-slate-200;
+  }
+
+  input,
+  select {
+    @apply bg-slate-100 dark:bg-slate-600;
+  }
+
+  p,
+  h3,
+  h2,
+  h1,
+  small {
+    @apply dark:text-white;
+  }
+
+  div {
+    @apply dark:border-slate-600 dark:ring-slate-700;
+  }
+}
+
+/* * {
+  outline: none;
+} */
+
 html,
 body {
   padding: 0;
@@ -55,7 +90,6 @@ input {
 
 button:hover {
   transform: scale(1.03);
-  /* box-shadow: 3px 5px #0000002a; */
 }
 
 h1 {
@@ -67,13 +101,3 @@ h2 {
 h3 {
   font-size: large;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-} */

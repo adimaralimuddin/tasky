@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { templateApiCreate, templateApiTemplate } from "./templateApi";
 
-export default function useTemplate(id?: string) {
+export default function useTemplate(id?: string, userId?: string | any) {
   const client = useQueryClient();
 
-  const createTemplate = useMutation(templateApiCreate, {
+  const templateAdder = useMutation(templateApiCreate, {
     onSuccess: (newTemplate) => {
-      client.setQueryData(["templates"], (templates: any) => {
+      client.setQueryData(["templates", userId], (templates: any) => {
         return [...templates, newTemplate];
       });
     },
@@ -19,6 +19,7 @@ export default function useTemplate(id?: string) {
 
   return {
     template,
-    createTemplate: createTemplate.mutate,
+    templateAdder,
+    createTemplate: templateAdder.mutate,
   };
 }

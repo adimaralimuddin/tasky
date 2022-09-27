@@ -15,6 +15,7 @@ import {
 import useFolderMutation from "../../../features/folder/useFolderMutation";
 import FolderRenamer from "./FolderRenamer";
 import Verifier from "../../elements/Verifier";
+import Loader from "../../elements/Loader";
 
 type props = {
   data: {
@@ -31,7 +32,7 @@ export default function FolderItem({
   setSideBar,
 }: props) {
   const { topics } = useTopics(id);
-  const { deleteFolder } = useFolderMutation(classId);
+  const { deleteFolder, folderDeleter } = useFolderMutation(classId);
   const { setOpenTopicAdder, setSelectedFolder } = useWork();
 
   const [open, setOpen] = useState(false);
@@ -69,7 +70,7 @@ export default function FolderItem({
       <div
         title={name}
         onClick={(_) => setOpen((p) => !p)}
-        className="flex items-center hover:bg-slate-100 p-1 px-1 rounded-lg cursor-pointer text-slate-600 justify-between text-orange-600d"
+        className="flex items-center hover:bg-slate-100 dark:hover:bg-slate-600 p-1 px-1 rounded-lg cursor-pointer text-slate-600 justify-between text-orange-600d"
       >
         <FolderIcon className="text-2xl mr-2" />
         <small className="flex-1 whitespace-nowrap">
@@ -102,6 +103,7 @@ export default function FolderItem({
         setOpen={setIsDeleting}
         onOkay={ondeleteHandler}
       />
+      <Loader message="deleting folder ..." open={folderDeleter.isLoading} />
     </div>
   );
 }

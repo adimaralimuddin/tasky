@@ -46,7 +46,7 @@ export default function WorkSide<Type>({ classId }: props) {
   const Content = (
     <div
       className={
-        "bg-white rounded-xl flex-1 max-w-xs m-0 w-[200px]d p-0 pb-2 px-1 py-1 " +
+        " rounded-xl flex-1 max-w-xs m-0 w-[200px]d p-0 pb-2 px-1 py-1 " +
         (!open && " hidden")
       }
     >
@@ -65,13 +65,13 @@ export default function WorkSide<Type>({ classId }: props) {
         <div className=" pb-2">
           <ClassMenu data={data} />
           <h3
-            className="text-cyan-500 cursor-pointer hover:bg-slate-100 hover:text-cyan-600 px-3 self-start rounded-lg"
+            className="text-cyan-500 dark:text-white cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-cyan-600 px-3 self-start rounded-lg"
             onClick={(_) => setContent("dashboard")}
           >
             Dashboard
           </h3>
         </div>
-        <hr />
+        <hr className="" />
         <FolderAdder classId={classId} />
       </header>
       <main>
@@ -93,7 +93,7 @@ export default function WorkSide<Type>({ classId }: props) {
   return (
     <div
       className={
-        "z-50 py-4  bg-white rounded-xl " +
+        "z-50 py-4 dark:bg-slate-700 bg-white rounded-xl " +
         isCol("relative", " px-[2%] flex-1 mr-3 m-1 shadow-sm")
       }
     >

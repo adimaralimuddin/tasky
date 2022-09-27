@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import Box from "./Box";
+import DarkMode from "./DarkMode";
 
 export default function UserHeaderPop() {
   const { user } = useUser();
@@ -30,14 +31,18 @@ export default function UserHeaderPop() {
           <div
             onMouseLeave={() => setOpen(false)}
             onClick={() => setOpen(false)}
-            className="absolute right-0 top-0 pt-10 "
+            className="absolute right-0 top-0 pt-10  "
           >
             <Box css="flex flex-col shadow-xl p-2 ring-1 ring-slate-200 ">
-              <div className="p-2">
+              <div className="p-2 text-center">
                 <p className="whitespace-nowrap">{user?.name}</p>
+                <p className="whitespace-nowrap text-slate-400 dark:text-white">
+                  {user?.email}
+                </p>
               </div>
               <hr />
-              <button className="m-0">
+              <DarkMode />
+              <button className="m-0 dark:text-white">
                 <Link href="/api/auth/logout">logout</Link>
               </button>
             </Box>

@@ -21,7 +21,7 @@ export default function Option({
           setOpen((p) => !p);
           e.stopPropagation();
         }}
-        className="hover:bg-slate-300 p-1 rounded-md hover:shadow-md cursor-pointer hover:scale-[1.3] transition-all duration-300"
+        className="hover:bg-slate-300 dark:hover:bg-slate-500  p-1 rounded-md hover:shadow-md cursor-pointer hover:scale-[1.3] transition-all duration-300 dark:text-slate-100"
       >
         {Icon}
       </div>
@@ -30,7 +30,7 @@ export default function Option({
           <Box
             onClick={(e: React.FormEvent) => e.stopPropagation()}
             css={
-              "absolute ring-1 ring-slate-200 p-2 overflow-hidden shadow-xl " +
+              "dark:ring-slate-600 dark:bg-slate-600 absolute ring-1 ring-slate-200 p-2 overflow-hidden shadow-xl  " +
               (left && "right-0")
             }
           >
@@ -41,7 +41,7 @@ export default function Option({
                     option?.action();
                     setOpen?.(false);
                   }}
-                  className="cursor-pointer flex items-center hover:bg-slate-100 p-2 rounded-md"
+                  className="cursor-pointer flex items-center hover:bg-slate-100 dark:hover:bg-slate-500 dark:text-slate-200 p-2 rounded-md"
                   key={option.text}
                 >
                   {option?.icon}

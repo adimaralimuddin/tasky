@@ -16,7 +16,7 @@ export default function Verifier({
   onOkay?: any;
   onCancel?: any;
   open: boolean;
-  setOpen: any;
+  setOpen?: any;
   actions?: boolean;
 }) {
   return (

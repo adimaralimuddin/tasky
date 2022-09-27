@@ -7,7 +7,7 @@ export default function PlayHeader({ startSide, setStartSide }: any) {
     work: { selectedCategory, selectedTopic },
   } = useWork();
   return (
-    <div className="flex items-center bg-white px-2 w-full max-w-xl rounded-xl mx-auto flex-wrap">
+    <div className="flex items-center bg-white dark:bg-slate-700 px-2 w-full max-w-xl rounded-xl mx-auto flex-wrap">
       <div
         title="start side"
         className="p-0 px-2 m-0 flex items-center gap-2 ring-1 rounded-lg ring-slate-300 mx-1 cursor-pointer hover:shadow-lg"

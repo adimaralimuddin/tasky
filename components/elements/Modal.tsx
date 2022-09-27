@@ -24,11 +24,11 @@ export default function Modal({
         onClick={(_) => setOpen(false)}
         {...props}
         className={
-          "bg-slate-200 p-1 rounded-full text-3xl absolute -top-6 -right-5 shadow-md ring-1 ring-slate-300 hover:scale-105 cursor-pointer " +
+          "bg-slate-200 dark:bg-slate-500 p-1 rounded-full text-3xl absolute -top-6 -right-5 shadow-md ring-1 ring-slate-300 dark:ring-slate-400 hover:scale-105 cursor-pointer " +
           css
         }
       >
-        <IoClose className={iconCss} />
+        <IoClose className={" dark:text-white " + iconCss} />
       </span>
     </div>
   );

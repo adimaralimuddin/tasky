@@ -29,6 +29,7 @@ model Class {
   id          String   @id @default(cuid())
   name        String
   description String?
+  sample      Boolean  @default(false)
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @updatedAt @map(name: "updated_at")
   User        User?    @relation(fields: [userId], references: [id])
@@ -37,9 +38,10 @@ model Class {
 }
 
 model Folder {
-  id    String  @id @default(cuid())
-  name  String
-  Topic Topic[]
+  id     String  @id @default(cuid())
+  name   String
+  Topic  Topic[]
+  sample Boolean @default(false)
 
   class   Class?  @relation(fields: [classId], references: [id])
   classId String?
@@ -53,6 +55,7 @@ model Topic {
   name        String
   description String?
   cards       Card[]
+  sample      Boolean @default(false)
 
   folder   Folder? @relation(fields: [folderId], references: [id])
   folderId String?
@@ -69,6 +72,7 @@ model Template {
   name    String
   deleted Boolean @default(false)
   topics  Topic[]
+  sample  Boolean @default(false)
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
@@ -85,6 +89,7 @@ model Card {
   category    String?
   def         Boolean  @default(false)
   defDel      Boolean? @default(false)
+  sample      Boolean  @default(false)
 
   Topic   Topic?  @relation(fields: [topicId], references: [id], onDelete: Cascade)
   topicId String?

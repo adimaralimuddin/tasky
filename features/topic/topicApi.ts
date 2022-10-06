@@ -10,6 +10,7 @@ export default async function topicApiGetTopicsByFolder(folderId: string) {
         templateId
         userId
         folderId
+        sample
         template {
           name
           userId
@@ -35,6 +36,7 @@ export async function topicApiGetTopic(topicId: string) {
         templateId
         userId
         folderId
+        sample
       }
     }
   `;
@@ -70,6 +72,7 @@ export async function topicApiCreateTopic(data: {
         folderId
         userId
         templateId
+        sample
         template {
           id
           name

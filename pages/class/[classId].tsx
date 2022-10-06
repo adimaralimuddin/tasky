@@ -9,9 +9,10 @@ export async function getServerSideProps(ctx: {
   req: NextApiRequest;
   res: NextApiResponse;
 }) {
+  const defTempId = process.env.DEF_TEMP;
   const session = getSession(ctx?.req, ctx?.res);
   initUser(session?.user);
   return {
-    props: {},
+    props: { defTempId },
   };
 }

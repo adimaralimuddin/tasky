@@ -8,4 +8,5 @@ export type TopicType = {
   folderId: string;
   userId: string;
   template?: TemplateType;
+  sample?: boolean | string;
 };

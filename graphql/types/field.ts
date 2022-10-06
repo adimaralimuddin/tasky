@@ -42,6 +42,7 @@ export const FieldMutation = extendType({
         val: nonNull(stringArg()),
       },
       resolve(par, { id, newValue, val }, ctx) {
+        console.log("par ", par);
         return ctx.prisma.field.update({
           where: { id },
           data: { value: newValue },

@@ -6,29 +6,33 @@ import BtnPrime from "../elements/BtnPrime";
 import BtnSec from "../elements/BtnSec";
 import LayoutMainHeader from "../layouts/LayoutMainHeader";
 
-function PageMainHome() {
+function PageMainHome({ defClass }: { defClass: string }) {
+  console.log("def ", defClass);
   return (
     <div className="flex dark:bg-green-500d flex-col min-h-screen bg-slate-100 dark:bg-slate-800 ">
       <LayoutMainHeader />
       <A />
 
-      <Caption />
+      <Caption defClass={defClass} />
     </div>
   );
 }
 
 export default PageMainHome;
 
-function Caption() {
+function Caption({ defClass }: { defClass: string }) {
   return (
     <div className="m-auto gap-2 flex flex-col items-center justify-center z-20 text-center">
       <h1 className="text-cyan-500 text-5xl font-bold drop-shadow-lg">
         Online Flash Cards{" "}
       </h1>
       <h3 className="text-3xl text-cyan-500">free</h3>
-      <Link href={`/class/${process.env.NEXT_PUBLIC_DEF_CLASS}`}>
+      <Link href={`/class/${defClass}`}>
         <BtnPrime css="text-2xl rounded-full px-6 py-2">Get Started</BtnPrime>
       </Link>
+      {/* <Link href={`/class/${process.env.NEXT_PUBLIC_DEF_CLASS}`}>
+        <BtnPrime css="text-2xl rounded-full px-6 py-2">Get Started</BtnPrime>
+      </Link> */}
     </div>
   );
 }

@@ -26,7 +26,15 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
   const isSelected = (a: any = true, b: any = false) =>
     work?.selectedTopic?.id === data.id ? a : b;
 
-  const onDeleteHandler = () => deleteTopic(data?.id);
+  const onDeleteHandler = () => {
+    if (data?.sample) {
+      return alert(
+        "sample topic will not be deleted. you can always create, edit and delete your own topic"
+      );
+    }
+    deleteTopic(data?.id);
+  };
+
   const options = [
     {
       icon: <Plus />,

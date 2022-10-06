@@ -9,14 +9,9 @@ export {
   HiPlay as Play,
   HiSearch as Search,
   HiOutlineTrash as Trash,
-  // HiChevronDown as DownIcon,
-  // HiChevronUp as UpIcon,
   HiOutlinePhotograph as ImageIcon,
-  // HiOutlineVolumeUp as Sound,
   HiOutlineMusicNote as Mp3,
   HiOutlineViewGrid as ViewIcon,
-  // HiOutlineChevronRight as RigthArrow,
-  // HiOutlineChevronLeft as LeftArrow,
   HiOutlineRefresh as RefreshIcon,
 } from "react-icons/hi";
 export { RiBookFill as Book } from "react-icons/ri";
@@ -30,11 +25,15 @@ export {
   FcMindMap as ClassIcon,
   FcFolder as FolderIcon,
   FcDataSheet as TopicIcon,
-  FcMenu as MenuIcon,
-  FcCollapse as UpIcon,
-  FcExpand as DownIcon,
-  FcNext as RigthArrow,
-  FcPrevious as LeftArrow,
   FcSpeaker as Sound,
   FcUndo as UndoIcon,
 } from "react-icons/fc";
+
+export {
+  FaAngleDown as DownIcon,
+  FaAngleLeft as LeftArrow,
+  FaAngleRight as RigthArrow,
+  FaAngleUp as UpIcon,
+  FaTimes as XIcon,
+  FaBars as MenuIcon,
+} from "react-icons/fa";

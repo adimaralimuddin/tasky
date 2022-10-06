@@ -26,8 +26,13 @@ export default function ClassMenu({ data }: { data: ClassType }) {
   ];
 
   const onDeleteHandler = () => {
+    if (data?.sample)
+      return alert(
+        "sample class will not be deleted. it's there as sample only. you can always signin and create your own class."
+      );
     deleteClass(data?.id);
   };
+
   return (
     <div>
       <div

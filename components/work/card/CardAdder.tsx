@@ -7,6 +7,7 @@ import useCards from "../../../features/card/useCards";
 import useTemplate from "../../../features/template/useTemplate";
 import useWork from "../../../features/work/useWork";
 import { ImageIcon, Mp3 } from "../../../lib/icons";
+import { defUser, DEF_USER } from "../../../lib/public";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
 import ContentHeader from "../../elements/ContentHeader";
@@ -58,13 +59,15 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
   const onAddCardHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     const tar = e.target;
+    const x = defUser();
+    console.log("x", x);
 
     const front = filterFields("front", tar, fronts);
     const back = filterFields("back", tar, backs);
 
     const data = {
       classId,
-      userId: user?.sub,
+      userId: user?.sub || DEF_USER,
       topicId: topic?.id,
       name: "",
       description: "",

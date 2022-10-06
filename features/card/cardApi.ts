@@ -11,6 +11,7 @@ export async function cardApiGetCardsByTopic(topicId: string) {
         description
         level
         category
+        sample
         def
         fronts {
           id
@@ -101,6 +102,7 @@ export async function cardApiCreateCard(data: {
         level
         category
         def
+        sample
         fronts {
           id
           text

@@ -6,15 +6,24 @@ import LayoutMainHeader from "../layouts/LayoutMainHeader";
 import TemplateAdder from "./TemplateAdder";
 import TemplateItem from "./TemplateItem";
 
-export default function TemplatePage() {
+export default function TemplatePage({ defTempId }: { defTempId: any }) {
   const { user } = useUser();
-  const { templates } = useTemplates(user?.sub);
+  const { templates, sampleTemplates } = useTemplates(user?.sub);
 
   return (
     <div>
       <LayoutMainHeader />
       <div className="flex gap-2 w-full max-w-4xl mx-auto my-2 py-4 p-2 flex-wrap contents-center justify-center">
         <TemplateAdder />
+
+        {sampleTemplates?.data?.map((template: TemplateType) => (
+          <TemplateItem
+            template={template}
+            editable={false}
+            key={template.id}
+          />
+        ))}
+
         {templates?.data?.map((template: TemplateType) => (
           <TemplateItem template={template} key={template.id} />
         ))}

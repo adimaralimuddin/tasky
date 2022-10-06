@@ -21,6 +21,7 @@ import {
   setViewLebel,
   setSize,
 } from "./workSlice";
+import { defUser } from "../../lib/public";
 
 export default function useWork() {
   const work = useSelector((state: RootState) => state.work);

@@ -3,7 +3,7 @@ import useClass from "../../../features/class/useClass";
 import { FolderType } from "../../../features/folder/folderTypes";
 import useFolder from "../../../features/folder/useFolder";
 import useWork from "../../../features/work/useWork";
-import { OptionIcon, UndoIcon } from "../../../lib/icons";
+import { LeftArrow, OptionIcon } from "../../../lib/icons";
 import ClassMenu from "../../class/ClassMenu";
 import Box from "../../elements/Box";
 import FolderAdder from "../folder/FolderAdder";
@@ -12,6 +12,7 @@ import TopicAdder from "../topic/TopicAdder";
 
 type props = {
   classId?: string | any;
+  defTempId: string;
 };
 
 export default function WorkSide<Type>({ classId }: props) {
@@ -46,21 +47,23 @@ export default function WorkSide<Type>({ classId }: props) {
   const Content = (
     <div
       className={
-        " rounded-xl flex-1 max-w-xs m-0 w-[200px]d p-0 pb-2 px-1 py-1 " +
+        "bg-white dark:bg-slate-700 rounded-xl flex-1 max-w-xs m-0 p-0 pb-2 px-1 py-1 " +
         (!open && " hidden")
       }
     >
       <header>
         {collapse && (
-          <button
-            className="ring-1f m-0"
-            onClick={() => {
-              setOpen((p) => !p);
-            }}
-          >
-            <UndoIcon />
-            back
-          </button>
+          <>
+            <button
+              className="ring-1f m-0d dark:ring-1 dark:ring-slate-600 dark:hover:bg-slate-600"
+              onClick={() => {
+                setOpen((p) => !p);
+              }}
+            >
+              <LeftArrow />
+              back
+            </button>
+          </>
         )}
         <div className=" pb-2">
           <ClassMenu data={data} />
@@ -99,7 +102,7 @@ export default function WorkSide<Type>({ classId }: props) {
     >
       {collapse && !open && (
         <Box
-          css="absolute top-0 -left-4 shadow-xl ring-slate-200 cursor-pointer ring-1 w-min m-0 hover:scale-[1.1] hover:pl-6 hover:shadow-xl hover:ring-slate-300 transition-all "
+          css="absolute top-0 -left-4 shadow-xl ring-slate-200 cursor-pointer ring-1 dark:ring-slate-600 w-min m-0 hover:scale-[1.1] hover:pl-6 hover:shadow-xl hover:ring-slate-300 transition-all "
           onClick={() => setOpen((p) => !p)}
         >
           <OptionIcon className="ml-1" />
@@ -109,7 +112,7 @@ export default function WorkSide<Type>({ classId }: props) {
       <div
         className={isCol(
           open &&
-            "ring-1 ring-red-500 fixed top-0 left-0 w-screen h-screen bg-slate-600 p-2 bg-opacity-60 backdrop-blur-sm",
+            "ring-1 ring-red-500 fixed top-0 left-0 w-screen h-screen bg-slate-600 p-2 bg-opacity-60 backdrop-blur-sm ",
           "flex-1 "
         )}
       >

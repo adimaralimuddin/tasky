@@ -32,6 +32,23 @@ export async function templateApiCreate(data: {
   return ret.createTemplate;
 }
 
+export async function templateApiSampleTemplate() {
+  const q = gql`
+    query SampleTemplates {
+      sampleTemplates {
+        id
+        name
+        userId
+        deleted
+        fronts
+        backs
+      }
+    }
+  `;
+  const ret = await request(url, q);
+  return ret?.sampleTemplates;
+}
+
 export async function templateApiTemplates({
   userId,
 }: {

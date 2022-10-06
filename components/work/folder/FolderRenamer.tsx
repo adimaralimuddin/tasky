@@ -3,11 +3,12 @@ import BtnPrime from "../../elements/BtnPrime";
 import Input from "../../elements/Input";
 import Modal from "../../elements/Modal";
 import useFolderMutation from "../../../features/folder/useFolderMutation";
+import { FolderType } from "./folderTypes";
 
 type props = {
   renaming: boolean;
   setOpen: any;
-  data: { id: string; name: string };
+  data: FolderType;
   classId: string;
 };
 
@@ -22,6 +23,11 @@ export default function FolderRenamer({
   const onRenameHandler = (e: any) => {
     e.preventDefault();
     const val = e.target.name?.value;
+    if (data?.sample) {
+      return alert(
+        "sample folder will not be renamed. you can always create, rename and delete your own folder."
+      );
+    }
     renameFolder({ folderId: data?.id, name: val });
     setOpen(false);
   };

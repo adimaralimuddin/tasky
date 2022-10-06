@@ -7,6 +7,7 @@ export const Folder = objectType({
   definition(t) {
     t.string("id");
     t.string("name");
+    t.boolean("sample");
     t.string("classId");
 
     // folder's class
@@ -67,10 +68,11 @@ export const FolderMutation = extendType({
     t.field("deleteFolder", {
       type: Folder,
       args: { id: nonNull(stringArg()) },
-      resolve(par, { id }, ctx) {
-        return ctx.prisma.folder.delete({
-          where: { id },
+      async resolve(par, { id }, ctx) {
+        const res = await ctx.prisma.folder.deleteMany({
+          where: { id, sample: false },
         });
+        return res?.count !== 0 ? { id } : null;
       },
     });
 
@@ -78,11 +80,12 @@ export const FolderMutation = extendType({
     t.field("renameFolder", {
       type: Folder,
       args: { folderId: nonNull(stringArg()), name: nonNull(stringArg()) },
-      resolve(par, { folderId, name }, ctx) {
-        return ctx.prisma.folder.update({
-          where: { id: folderId },
+      async resolve(par, { folderId, name }, ctx) {
+        const res: any = await ctx.prisma.folder.updateMany({
+          where: { id: folderId, sample: false },
           data: { name },
         });
+        return res?.count !== 0 ? { id: folderId, name } : null;
       },
     });
   },

@@ -49,9 +49,9 @@ export default function CardItem({
       text: "delete",
       icon: <Trash />,
       action: () => {
-        if (card?.def) {
+        if (card?.sample) {
           return alert(
-            "demo card is not meant to delete. you can create or add folder"
+            "sample card will not be deleted. you can always add, edit and delete your own card instead."
           );
         }
         deleteCard(card.id);

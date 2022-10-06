@@ -16,21 +16,16 @@ import useFolderMutation from "../../../features/folder/useFolderMutation";
 import FolderRenamer from "./FolderRenamer";
 import Verifier from "../../elements/Verifier";
 import Loader from "../../elements/Loader";
+import { FolderType } from "./folderTypes";
 
 type props = {
-  data: {
-    id: string;
-    name: string;
-  };
+  data: FolderType;
   classId: string | any;
   setSideBar: any;
 };
 
-export default function FolderItem({
-  data: { id, name },
-  classId,
-  setSideBar,
-}: props) {
+export default function FolderItem({ data, classId, setSideBar }: props) {
+  const { id, name } = data;
   const { topics } = useTopics(id);
   const { deleteFolder, folderDeleter } = useFolderMutation(classId);
   const { setOpenTopicAdder, setSelectedFolder } = useWork();
@@ -59,7 +54,14 @@ export default function FolderItem({
     { icon: "", text: "+ folder" },
   ];
 
-  const ondeleteHandler = () => deleteFolder(id);
+  const ondeleteHandler = () => {
+    if (data?.sample) {
+      return alert(
+        "sample folder will not be deleted. you can always create, edit and delete your own folder."
+      );
+    }
+    deleteFolder(id);
+  };
 
   return (
     <div
@@ -92,7 +94,7 @@ export default function FolderItem({
         </div>
       )}
       <FolderRenamer
-        data={{ id, name }}
+        data={data}
         renaming={renaming}
         setOpen={setRenaming}
         classId={classId}

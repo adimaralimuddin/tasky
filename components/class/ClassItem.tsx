@@ -2,17 +2,20 @@ import Link from "next/link";
 import React, { useState } from "react";
 import useClass from "../../features/class/useClass";
 import Box from "../elements/Box";
-import BtnPrime from "../elements/BtnPrime";
-import BtnWarm from "../elements/BtnWarm";
-import Input from "../elements/Input";
 import Loader from "../elements/Loader";
-import Modal from "../elements/Modal";
 import Option from "../elements/Option";
 import Verifier from "../elements/Verifier";
 import ClassEditor from "./ClassEditor";
 import { ClassType } from "./classTypes";
 
-function ClassItem({ data }: { data: ClassType; key?: any }) {
+function ClassItem({
+  data,
+  editable = true,
+}: {
+  data: ClassType;
+  editable?: boolean;
+  key?: any;
+}) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -31,11 +34,21 @@ function ClassItem({ data }: { data: ClassType; key?: any }) {
   ];
 
   const onSave = async (data: any) => {
+    if (!editable) {
+      return alert(
+        "sample class will not be edited. you can always login and create or delete your own class"
+      );
+    }
     updateClass(data);
     setIsEditing(false);
   };
 
   const onDelete = () => {
+    if (!editable) {
+      return alert(
+        "sample class will not be deleted. you can always login and create or delete your own class"
+      );
+    }
     deleteClass(data?.id);
     setIsEditing(false);
   };
@@ -91,60 +104,3 @@ ${data?.description}
 }
 
 export default ClassItem;
-
-// type props = {
-//   open: boolean;
-//   setOpen: any;
-//   data: ClassType;
-//   onSave: any;
-// };
-// function ClassEditor({ open, setOpen, data, onSave }: props) {
-//   const [name, setName] = useState(data?.name);
-//   const [description, setDescription] = useState(data?.description);
-
-//   const onResetHandler = () => {
-//     setName(data?.name);
-//     setDescription(data?.description);
-//   };
-
-//   const onSaveHandler = () => {
-//     onSave({ classId: data.id, name, description });
-//   };
-
-//   return (
-//     <div>
-//       <Modal open={open} setOpen={setOpen}>
-//         {(Icon: any) => (
-//           <Box>
-//             <Icon />
-//             <h3 className="text-indigo-400">Edit Class</h3>
-//             <div>
-//               <Input
-//                 autoFocus
-//                 defaultValue={name}
-//                 value={name}
-//                 text="name"
-//                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-//                   setName(e.target?.value)
-//                 }
-//               />
-//               <Input
-//                 defaultValue={description}
-//                 value={description}
-//                 text="description"
-//                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-//                   setDescription(e.target?.value)
-//                 }
-//               />
-//               <button onClick={onResetHandler}>reset</button>
-//             </div>
-//             <div className="flex items-center justify-between">
-//               <BtnPrime onClick={onSaveHandler}>save</BtnPrime>
-//               <BtnWarm onClick={() => setOpen(false)}>cancel</BtnWarm>
-//             </div>
-//           </Box>
-//         )}
-//       </Modal>
-//     </div>
-//   );
-// }

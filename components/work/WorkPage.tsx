@@ -10,7 +10,7 @@ import CategoryList from "./topic/category/CategoryList";
 import TopicMainContent from "./topic/TopicMainContent";
 import WorkSide from "./WorkSide/WorkSideMain";
 
-export default function WorkPage() {
+export default function WorkPage({ defTempId }: { defTempId: string }) {
   const {
     query: { classId },
   } = useRouter();
@@ -21,7 +21,7 @@ export default function WorkPage() {
     <div className=" min-h-[100vh] flexd flex-col flex  ">
       <LayoutMainHeader />
       <div className="flex max-w-5xl mx-auto w-full p-2  flex-1">
-        <WorkSide classId={classId} />
+        <WorkSide classId={classId} defTempId={defTempId} />
         <div className="flex-[3] flex flex-col">
           {work.content == "dashboard" ? (
             <DashboardMainContent />

@@ -9,6 +9,7 @@ export type CardTypes = {
   ind?: number;
   correct?: boolean;
   def?: boolean;
+  sample?: boolean;
 };
 
 export type FieldType = {

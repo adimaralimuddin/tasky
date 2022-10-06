@@ -10,6 +10,7 @@ export const Topic = objectType({
     t.string("userId");
     t.string("folderId");
     t.string("templateId");
+    t.boolean("sample");
     t.field("template", {
       type: "Template",
       // args: {},
@@ -102,13 +103,21 @@ export const TopicMutation = extendType({
     t.field("deleteTopic", {
       type: Topic,
       args: { topicId: nonNull(stringArg()) },
-      resolve(par, { topicId }, ctx) {
-        return ctx.prisma.topic.delete({
+      async resolve(par, { topicId }, ctx) {
+        const gotTopic = await ctx.prisma.topic.findFirst({
           where: { id: topicId },
-          include: {
-            cards: true,
-          },
         });
+
+        if (!gotTopic?.sample) {
+          return ctx.prisma.topic.delete({
+            where: { id: topicId },
+            include: {
+              cards: true,
+            },
+          });
+        } else {
+          return null;
+        }
       },
     });
 
@@ -116,11 +125,12 @@ export const TopicMutation = extendType({
     t.field("renameTopic", {
       type: Topic,
       args: { topicId: nonNull(stringArg()), name: nonNull(stringArg()) },
-      resolve(par, { topicId, name }, ctx) {
-        return ctx.prisma.topic.update({
-          where: { id: topicId },
+      async resolve(par, { topicId, name }, ctx) {
+        const res = await ctx.prisma.topic.updateMany({
+          where: { id: topicId, sample: false },
           data: { name },
         });
+        return res?.count != 0 ? { id: topicId, name } : null;
       },
     });
   },

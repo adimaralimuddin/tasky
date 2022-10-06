@@ -2,6 +2,21 @@ import request, { gql } from "graphql-request";
 import { ClassCreateType } from "../../components/class/classTypes";
 const url = "/api/graphql";
 
+export const classApiSampleClass = async () => {
+  const q = gql`
+    query SampleClasses {
+      sampleClasses {
+        id
+        name
+        userId
+        description
+      }
+    }
+  `;
+  const res = await request(url, q);
+  return res?.sampleClasses;
+};
+
 export const classApiUserClass = async (userId?: string | any) => {
   const q = gql`
     query Query($userId: String!) {
@@ -46,6 +61,7 @@ export async function classApiGetClass(id: string) {
         id
         name
         description
+        sample
         folders {
           id
           name

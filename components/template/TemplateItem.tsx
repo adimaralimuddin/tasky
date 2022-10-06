@@ -13,6 +13,7 @@ import TemplateEditor from "./TemplateEditor";
 
 type props = {
   template: TemplateType;
+  editable?: boolean;
 };
 
 type FieldType = {
@@ -21,7 +22,7 @@ type FieldType = {
   ind?: number;
 };
 
-export default function TemplateItem({ template }: props) {
+export default function TemplateItem({ template, editable = true }: props) {
   const { user } = useUser();
   const [open, setOpen] = useState(false);
   const [openEditor, setOpenEditor] = useState(false);
@@ -33,9 +34,25 @@ export default function TemplateItem({ template }: props) {
   const { deleteTemplate, templateDeleter, updateTemplate, templateUpdater } =
     useTemplateMutation(user?.sub);
 
+  if (!template) return null;
+
   const onSaveHandler = (data: any) => {
-    updateTemplate({ ...data, id: template.id });
+    if (!editable) {
+      return alert(
+        "sample template will not be edited. you can always login and create or edit your own template."
+      );
+    }
+    updateTemplate({ ...data, id: template?.id });
     setOpen(true);
+  };
+
+  const onDeleteHandler = () => {
+    if (!editable) {
+      return alert(
+        "sample template will not be deleted. you can always login and create or delete your own template."
+      );
+    }
+    deleteTemplate(template?.id);
   };
 
   const onEdithandler = () => {
@@ -48,13 +65,13 @@ export default function TemplateItem({ template }: props) {
       onClick={() => setOpen(true)}
       css="flex flex-col items-center justify-center cursor-pointer min-w-[100px] flex-1 max-w-sm min-h-[80px]"
     >
-      <p className="text-center">{template.name}</p>
+      <p className="text-center">{template?.name}</p>
       <TemplateEditor
-        name_={template.name}
+        name_={template?.name}
         open={openEditor}
         setOpen={setOpenEditor}
-        fronts_={toJson(template.fronts)}
-        backs_={toJson(template.backs)}
+        fronts_={toJson(template?.fronts)}
+        backs_={toJson(template?.backs)}
         onSave={onSaveHandler}
         onCancel={() => {
           setOpen(true);
@@ -72,8 +89,8 @@ export default function TemplateItem({ template }: props) {
             <Icon />
             <h3>{template?.name}</h3>
             <div className="flex gap-2 flex-wrap overflow-auto flex-1 ">
-              <Fields fields={toJson(template.fronts)} />
-              <Fields fields={toJson(template.backs)} text="Backs" />
+              <Fields fields={toJson(template?.fronts)} />
+              <Fields fields={toJson(template?.backs)} text="Backs" />
             </div>
             <div className="flex items-center justify-between">
               <BtnWarm className="" onClick={() => setIsDeleting(true)}>
@@ -88,7 +105,7 @@ export default function TemplateItem({ template }: props) {
         message="are you sure to delete this template?"
         open={isDeleting}
         setOpen={setIsDeleting}
-        onOkay={() => deleteTemplate(template?.id)}
+        onOkay={onDeleteHandler}
       />
       <Loader
         message="deleting template ... "

@@ -13,6 +13,7 @@ type Card {
   id: String
   level: String
   name: String
+  sample: Boolean
   topicId: String
 }
 
@@ -21,6 +22,7 @@ type Class {
   folders: [Folder]
   id: String
   name: String
+  sample: Boolean
   userId: String
 }
 
@@ -61,6 +63,7 @@ type Folder {
   classId: String
   id: String
   name: String
+  sample: Boolean
   topics: [Topic]
 }
 
@@ -94,6 +97,8 @@ type Query {
   classes: [Class]!
   dashboard(userId: String!): [Card]
   foldersByClass(classId: String!): [Folder]
+  sampleClasses: [Class]
+  sampleTemplates: [Template]
   template(id: String!): Template
   templates(userId: String!): [Template]
   topic(topicId: String!): Topic
@@ -119,6 +124,7 @@ type Topic {
   folderId: String
   id: String
   name: String
+  sample: Boolean
   template: Template
   templateId: String
   userId: String

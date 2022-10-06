@@ -25,9 +25,6 @@ export default function CardQuery({
     setFilter(fields?.fronts?.[0]?.text);
   }, [work?.selectedTopic?.id]);
 
-  // useEffect(() => {
-  //   setFilter(fields?.[type]?.[0]?.text);
-  // }, [type]);
 
   const updateFilter = () => setFilter(fields?.[type]?.[0]?.text);
 

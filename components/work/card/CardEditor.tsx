@@ -35,6 +35,11 @@ export default function CardEditor({
   if (!open) return null;
 
   const onUpdateHandler = async () => {
+    if (card?.sample) {
+      return alert(
+        "sample card will not be edited. you can always add, edit and delete your own card instead."
+      );
+    }
     setIsUpdating(true);
     const data: any = {
       fronts,
@@ -128,11 +133,11 @@ function FieldFileEditor({ data, setter }: { data: FieldType; setter: any }) {
 
   const onFileInputHandler = (e: any) => {
     const file: any = e.target?.files?.[0];
-    if (!file) return 
+    if (!file) return;
     const reader = new FileReader();
     reader.onload = (e) => {
       const result: any = e.target?.result;
-      if (!result) return 
+      if (!result) return;
       setSrc(result);
     };
     reader.readAsDataURL(e.target.files?.[0]);

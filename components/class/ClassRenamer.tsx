@@ -20,6 +20,12 @@ export default function ClassRenamer({
   const [name, setName] = useState(data?.name);
 
   const onRenameHandler = () => {
+    if (data?.sample) {
+      alert(
+        "sample class will not be renamed. it's there as sample only. you can always signin and create your own class."
+      );
+      return setName(data?.name);
+    }
     renameClass({ classId: data?.id, name });
     setOpen(false);
   };

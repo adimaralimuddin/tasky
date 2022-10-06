@@ -8,6 +8,7 @@ export async function folderApiGetFoldersByClassId(classId: string) {
       foldersByClass(classId: $classId) {
         name
         id
+        sample
       }
     }
   `;
@@ -27,6 +28,7 @@ export async function folderApiAddFolder({
       createFolder(name: $name, classId: $classId) {
         id
         name
+        sample
       }
     }
   `;
@@ -41,6 +43,7 @@ export async function folderApideleteFolder(deleteFolderId: string) {
       deleteFolder(id: $deleteFolderId) {
         id
         name
+        sample
       }
     }
   `;
@@ -56,8 +59,9 @@ export async function folderApiRenameFolder(args: {
   const q = gql`
     mutation RenameFolder($folderId: String!, $name: String!) {
       renameFolder(folderId: $folderId, name: $name) {
-        name
         id
+        name
+        sample
       }
     }
   `;

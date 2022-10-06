@@ -33,6 +33,7 @@ export const Card = objectType({
     t.string("description");
     t.string("level");
     t.string("category");
+    t.boolean("sample");
     t.boolean("def");
     t.field("_count", { type: Count });
     t.field("Dashboard", {
@@ -142,12 +143,13 @@ export const CardMutaion = extendType({
       type: Card,
       args: { cardId: nonNull(stringArg()) },
       async resolve(par, { cardId }, { prisma }) {
-        await prisma.card.deleteMany({
+        const res = await prisma.card.deleteMany({
           where: {
-            AND: [{ id: cardId }, { def: false }],
+            id: cardId,
+            sample: false,
           },
         });
-        return { id: cardId };
+        return res?.count != 0 ? { id: cardId } : null;
       },
     });
 

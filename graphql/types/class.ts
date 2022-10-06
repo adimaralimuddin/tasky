@@ -8,6 +8,7 @@ export const Class = objectType({
     t.string("name");
     t.string("userId");
     t.string("description");
+    t.boolean("sample");
     t.list.field("folders", {
       type: Folder,
       resolve(par, arg, ctx) {
@@ -23,6 +24,16 @@ export const ClassQuery = extendType({
   type: "Query",
 
   definition(t) {
+    // get all sample classes
+    t.list.field("sampleClasses", {
+      type: Class,
+      resolve(par_, arg_, ctx) {
+        return ctx.prisma.class.findMany({
+          where: { sample: true },
+        });
+      },
+    });
+
     // get all classes
     t.nonNull.list.field("classes", {
       type: "Class",
@@ -30,16 +41,6 @@ export const ClassQuery = extendType({
         return ctx.prisma.class.findMany();
       },
     });
-
-    //defaul classes
-    // t.list.field('defaultClasses', {
-    //   type: Class,
-    //   resolve(par_, arg_, ctx) {
-    //     return ctx.prisma.class.findMany({
-    //       where:{classi}
-    //     })
-    //   }
-    // })
 
     // Get user class
     t.list.field("userClasses", {
@@ -86,11 +87,12 @@ export const ClassMutation = extendType({
         classId: nonNull(stringArg()),
         name: nonNull(stringArg()),
       },
-      resolve(par, { classId, name }, ctx) {
-        return ctx.prisma.class.update({
-          where: { id: classId },
+      async resolve(par, { classId, name }, ctx) {
+        const res: any = await ctx.prisma.class.updateMany({
+          where: { id: classId, sample: false },
           data: { name },
         });
+        return res?.count !== 0 ? { id: classId, name } : null;
       },
     });
 
@@ -101,12 +103,13 @@ export const ClassMutation = extendType({
         name: stringArg(),
         description: stringArg(),
       },
-      resolve(par, { classId, ...x }, ctx) {
+      async resolve(par, { classId, ...x }, ctx) {
         const data: any = x;
-        return ctx.prisma.class.update({
-          where: { id: classId },
+        const res: any = await ctx.prisma.class.updateMany({
+          where: { id: classId, sample: false },
           data: data,
         });
+        return res?.count !== 0 ? { id: classId, ...x } : null;
       },
     });
 
@@ -114,10 +117,11 @@ export const ClassMutation = extendType({
     t.field("deleteClass", {
       type: Class,
       args: { classId: nonNull(stringArg()) },
-      resolve(par, { classId }, ctx) {
-        return ctx.prisma.class.delete({
-          where: { id: classId },
+      async resolve(par, { classId }, ctx) {
+        const res = await ctx.prisma.class.deleteMany({
+          where: { id: classId, sample: false },
         });
+        return res?.count !== 0 ? { id: classId } : null;
       },
     });
   },

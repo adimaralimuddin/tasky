@@ -29,7 +29,7 @@ export default function ActionButtons() {
         <div
           onClick={(_) => setOpen((p) => !p)}
           className="flex items-center px-2 cursor-pointer 
-          bg-white dark:bg-slate-200"
+          bg-white dark:bg-slate-200 text-indigo-400"
         >
           {open ? <UpIcon /> : <DownIcon />}
         </div>

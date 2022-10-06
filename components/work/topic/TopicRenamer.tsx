@@ -1,18 +1,31 @@
 import React from "react";
+import { TopicType } from "../../../features/topic/topicType";
 import useTopic from "../../../features/topic/useTopic";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
 import Input from "../../elements/Input";
 import Modal from "../../elements/Modal";
 
-function TopicRenamer({ open, setOpen, data }: any) {
+type props = {
+  open: boolean;
+  setOpen: any;
+  data: TopicType;
+};
+
+function TopicRenamer({ open, setOpen, data }: props) {
   const { renameTopic } = useTopic(data?.folderId);
   const onSaveHandler = (e: any) => {
     e.preventDefault();
     const name = e.target.name.value;
+    if (data?.sample) {
+      return alert(
+        "sample topic will not be renamed. you can always create, edit and delete your own topic"
+      );
+    }
     renameTopic({ name, topicId: data?.id });
     setOpen(false);
   };
+
   return (
     <div>
       <Modal open={open} setOpen={setOpen}>

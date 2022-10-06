@@ -10,11 +10,13 @@ import Input from "../../elements/Input";
 import Loader from "../../elements/Loader";
 import Modal from "../../elements/Modal";
 import Select from "../../elements/Select";
-
 export default function TopicAdder() {
   const { user } = useUser();
-  const { templates } = useTemplates(user?.sub || DEF_USER);
-  const options = templates?.data?.map((temp: any) => [temp?.name, temp?.id]);
+  const { templates, sampleTemplates } = useTemplates(user?.sub || DEF_USER);
+
+  const options_ = sampleTemplates?.data?.concat(templates?.data);
+  const options: any[] = options_?.map((temp: any) => [temp?.name, temp?.id]);
+
   const [templateId, setTemplateId] = useState(options?.[0]?.[1]);
   const { work, setOpenTopicAdder } = useWork();
   const { createTopic, topicAdder } = useTopic(work?.selectedFolder);
@@ -22,13 +24,15 @@ export default function TopicAdder() {
   const onCreateHandler = (e: any) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
-
+    if (!data?.name) return alert("you must enter a topic name");
     const topicData: any = {
       folderId: work?.selectedFolder,
       userId: user?.sub || DEF_USER,
       templateId: templateId || options?.[0]?.[1],
       ...data,
     };
+
+    console.log("data ", topicData);
     createTopic(topicData);
     setOpenTopicAdder(false);
   };

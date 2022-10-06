@@ -43,6 +43,16 @@ export const Template = objectType({
 export const TemplateQuery = extendType({
   type: "Query",
   definition(t) {
+    //sample templates
+    t.list.field("sampleTemplates", {
+      type: Template,
+      resolve(par_, arg_, ctx) {
+        return ctx.prisma.template.findMany({
+          where: { sample: true },
+        });
+      },
+    });
+
     //template
     t.field("template", {
       type: Template,
@@ -88,11 +98,12 @@ export const TemplateMutation = extendType({
     t.field("deleteTemplate", {
       type: Template,
       args: { templateId: nonNull(stringArg()) },
-      resolve(par, { templateId }, ctx) {
-        return ctx.prisma.template.update({
-          where: { id: templateId },
+      async resolve(par, { templateId }, ctx) {
+        const res: any = await ctx.prisma.template.updateMany({
+          where: { id: templateId, sample: false },
           data: { deleted: true },
         });
+        return res?.count !== 0 ? { id: templateId } : null;
       },
     });
 
@@ -104,12 +115,13 @@ export const TemplateMutation = extendType({
         fronts: list(FieldsListInputType),
         backs: list(FieldsListInputType),
       },
-      resolve(par, { id, name, fronts, backs }, ctx) {
+      async resolve(par, { id, name, fronts, backs }, ctx) {
         const data: any = { name, fronts, backs };
-        return ctx.prisma.template.update({
-          where: { id },
+        const res: any = await ctx.prisma.template.updateMany({
+          where: { id, sample: false },
           data,
         });
+        return res?.count != 0 ? { id, name, fronts, backs } : null;
       },
     });
   },

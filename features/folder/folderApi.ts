@@ -23,6 +23,7 @@ export async function folderApiAddFolder({
   classId?: string;
   name: string;
 }) {
+  console.log("to add folder", { classId, name });
   const q = gql`
     mutation CreateFolder($name: String!, $classId: String!) {
       createFolder(name: $name, classId: $classId) {

@@ -1,12 +1,12 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
 import { useCardMutation } from "../../../features/card/useCardMutation";
 import useCards from "../../../features/card/useCards";
 import useTemplate from "../../../features/template/useTemplate";
 import useWork from "../../../features/work/useWork";
-import { ImageIcon, Mp3 } from "../../../lib/icons";
+import { ImageIcon, Mp3, XIcon } from "../../../lib/icons";
 import { defUser, DEF_USER } from "../../../lib/public";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
@@ -202,6 +202,7 @@ export function Field({ data, side = "" }: any) {
 function FileInput({ text, side, Icon, type }: any) {
   const [imgSrc, setImgSrc] = useState();
   const [file, setFile] = useState<any>();
+  const inf: any = useRef();
 
   useEffect(() => {
     if (!file) return;
@@ -210,13 +211,28 @@ function FileInput({ text, side, Icon, type }: any) {
     reader.readAsDataURL(file);
   }, [file]);
 
+  const onCancel = () => {
+    inf.current.value = null;
+    setFile(null);
+    setImgSrc(undefined);
+  };
+
   return (
-    <div className="flex items-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-500 p-1 rounded-md cursor-pointer">
+    <div className="flex items-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-500 p-1 rounded-md ">
       <div className="flex flex-col">
-        <p className="flex items-center gap-2 whitespace-nowrap ring-1 px-2 rounded-md">
-          <Icon className="text-xl" />
-          <label htmlFor={text + "%*" + side}> choose {type}</label>
-        </p>
+        <div className="flex gap-2 items-center">
+          <p className=" flex items-center gap-2 whitespace-nowrap ring-1 px-2 rounded-md">
+            <Icon className="text-xl" />
+            <label className="cursor-pointer" htmlFor={text + "%*" + side}>
+              {" "}
+              choose {type}
+            </label>
+          </p>
+          <XIcon
+            onClick={onCancel}
+            className="hover:scale-110 transition cursor-pointer p-1 text-2xl rounded-full dark:bg-orange-600 bg-orange-600 text-white"
+          />
+        </div>
         {imgSrc &&
           (type == "audio" ? (
             <div className="my-2">
@@ -242,6 +258,8 @@ function FileInput({ text, side, Icon, type }: any) {
       </div>
       <input
         id={text + "%*" + side}
+        ref={inf}
+        // value={file}
         onInput={(e: any) => setFile(e.target?.files?.[0])}
         type="file"
         accept={type == "image" ? "image/*" : "audio/*"}

@@ -8,7 +8,7 @@ import {
 } from "./topicApi";
 import { TopicType } from "./topicType";
 
-export default function useTopic(folderId?: string) {
+export default function useTopic(folderId?: string, onSuccess?: any) {
   const dispatch = useDispatch();
   const client = useQueryClient();
   const topicAdder = useMutation(topicApiCreateTopic, {
@@ -16,6 +16,7 @@ export default function useTopic(folderId?: string) {
       client.setQueryData(["topics", folderId], (topics: any) => {
         return [...topics, createdTopic];
       });
+      onSuccess?.(createdTopic);
     },
   });
   const topicDeleter = useMutation(topicApiDeleteTopic, {

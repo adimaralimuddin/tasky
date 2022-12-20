@@ -19,7 +19,7 @@ export default function CategoryItem({ field, topicId, classId }: props) {
         onClick={() => setCategory(field)}
         css="flex-1 cursor-pointer ring-1 ring-slate-200 dark:ring-slate-500 hover:-translate-y-[2px] transition ease-in-out duration-200 hover:shadow-lg"
       >
-        <h3>{field}</h3>
+        <h3 className="text-indigo-400 dark:text-indigo-300">{field}</h3>
         <p>{cards?.length} items</p>
       </Box>
     </div>

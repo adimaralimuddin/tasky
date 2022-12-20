@@ -48,7 +48,7 @@ export default function Select({
                 <div
                   key={option?.[0]?.toString()}
                   onClick={(_) => onInputHandler(option)}
-                  className="hover:bg-slate-100 cursor-pointer px-4 p-1"
+                  className="hover:bg-slate-100 dark:hover:bg-slate-600 cursor-pointer px-4 p-1"
                 >
                   {option[0]?.toString()}
                 </div>

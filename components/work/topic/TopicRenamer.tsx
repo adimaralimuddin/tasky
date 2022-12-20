@@ -18,9 +18,10 @@ function TopicRenamer({ open, setOpen, data }: props) {
     e.preventDefault();
     const name = e.target.name.value;
     if (data?.sample) {
-      return alert(
+      alert(
         "sample topic will not be renamed. you can always create, edit and delete your own topic"
       );
+      return setOpen(false);
     }
     renameTopic({ name, topicId: data?.id });
     setOpen(false);
@@ -33,7 +34,13 @@ function TopicRenamer({ open, setOpen, data }: props) {
           <Box>
             <Icon />
             <form onSubmit={onSaveHandler}>
-              <Input defaultValue={data?.name} text="name" />
+              <Input
+                onLoad={(e) => e.target?.select()}
+                autoFocus
+                autoSelect
+                defaultValue={data?.name}
+                text="name"
+              />
               <BtnPrime type="submit">save</BtnPrime>
             </form>
           </Box>

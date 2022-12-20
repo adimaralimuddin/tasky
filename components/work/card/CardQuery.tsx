@@ -25,8 +25,12 @@ export default function CardQuery({
     setFilter(fields?.fronts?.[0]?.text);
   }, [work?.selectedTopic?.id]);
 
-
-  const updateFilter = () => setFilter(fields?.[type]?.[0]?.text);
+  const updateFilter = (type_ = type) => {
+    const x = fields?.[type_]?.find((p: any) => p?.text == filter);
+    if (!x) {
+      setFilter(fields?.[type_]?.[0]?.text);
+    }
+  };
 
   const onSearchHandler = (e: any) => {
     const val = e.target.value?.toLowerCase();
@@ -60,7 +64,11 @@ export default function CardQuery({
           placeholder={`search ${type} ${filter}`}
         />
       </span>
-      <SelectItem text="filter" onInput={(e: any) => setFilter(e.target.value)}>
+      <SelectItem
+        value={filter}
+        text="filter"
+        onInput={(e: any) => setFilter(e.target.value)}
+      >
         {fields?.[type]?.map((f: any) =>
           f?.type == "text" || f?.type == "number" ? (
             <option value={f?.text}>{f?.text}</option>
@@ -71,7 +79,7 @@ export default function CardQuery({
         text="side"
         onInput={(e: any) => {
           setType(e.target.value);
-          updateFilter();
+          updateFilter(e.target.value);
         }}
       >
         <option value="fronts">fronts</option>
@@ -82,7 +90,7 @@ export default function CardQuery({
   );
 }
 
-function SelectItem({ children, onInput, text }: any) {
+function SelectItem({ children, onInput, text, value }: any) {
   return (
     <span className="flex flex-col hover:scale-[1.1]d transition cursor-pointer hover:shadow-lg p-1 rounded-lg hover:ring-1 ring-slate-200 dark:ring-slate-500  bg-white dark:bg-transparent">
       <label className="text-sm">{text}</label>
@@ -91,6 +99,7 @@ function SelectItem({ children, onInput, text }: any) {
         name=""
         id=""
         onInput={onInput}
+        value={value}
       >
         {children}
       </select>

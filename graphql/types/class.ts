@@ -1,4 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { SAMPLE } from "../../lib/public";
 import { Folder } from "./folder";
 
 export const Class = objectType({
@@ -38,7 +39,7 @@ export const ClassQuery = extendType({
     t.nonNull.list.field("classes", {
       type: "Class",
       resolve(par_, arg_, ctx) {
-        return ctx.prisma.class.findMany();
+        return ctx.prisma.class.findMany({ where: { sample: false } });
       },
     });
 
@@ -76,7 +77,12 @@ export const ClassMutation = extendType({
         description: stringArg(),
       },
       resolve(par, data, ctx) {
-        return ctx.prisma.class.create({ data });
+        return ctx.prisma.class.create({
+          data: {
+            ...data,
+            sample: SAMPLE,
+          },
+        });
       },
     });
 

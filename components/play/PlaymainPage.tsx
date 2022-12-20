@@ -27,6 +27,7 @@ export default function PlaymainPage({}: any) {
   const [side, setSide] = useState<string>(startSide);
 
   const onNextHandler = (level: string) => {
+    new Audio("/correct.mp3")?.play();
     setCardLevel({ cardId: current?.id, level });
     setPlayInd((p) => {
       if (p >= cards?.length - 1) {

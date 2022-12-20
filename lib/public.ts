@@ -1,5 +1,6 @@
 export const DEF_USER = "defuserid";
 export const URL = "/api/graphql";
+export const SAMPLE = false;
 
 export function defUser() {
   const val = "" + Math.random() * 10;

@@ -22,22 +22,22 @@ export default function DashboardMainContent() {
   );
 
   return (
-    <Box css="flex-1 p-4 flex flex-col gap-3 p-[5%] ">
+    <Box css="flex-1 p-4 flex flex-col gap-3 px-[7%] py-[3%] ">
       <div className="p-3 flex items-center justify-center">
         <h1 className="text-slate-500">
-          total cards{" "}
+          Total Cards{" "}
           <span className="text-indigo-400 font-bold text-3xl"> {total}</span>
         </h1>
       </div>
       <h2>Level</h2>
-      <div className="flex gap-5 flex-wrap">
+      <div className="flex gap-7 flex-wrap">
         <LevelItem data={data} value="easy" field="level" />
         <LevelItem data={data} value="normal" field="level" />
         <LevelItem data={data} value="hard" field="level" />
       </div>
       <br /> <hr />
       <h2>Category</h2>
-      <div className="flex gap-5 flex-wrap">
+      <div className="flex gap-7 flex-wrap">
         <LevelItem data={data} value="new" field="category" />
         <LevelItem data={data} value="passed" field="category" />
         <LevelItem data={data} value="left" field="category" />

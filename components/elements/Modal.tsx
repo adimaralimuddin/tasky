@@ -4,10 +4,12 @@ export default function Modal({
   children: Children,
   open,
   setOpen,
+  css,
 }: {
   children: any;
   open: boolean;
   setOpen?: any;
+  css?: string;
 }) {
   if (!open) return null;
 
@@ -35,7 +37,10 @@ export default function Modal({
 
   return (
     <div
-      className="top-0 left-0 w-full h-full backdrop-blur-sm bg-opacity-60 fixed flex items-center justify-center bg-slate-900 flex-col z-50 p-2"
+      className={
+        "top-0 left-0 w-full h-full backdrop-blur-sm bg-opacity-60 fixed flex items-center justify-center bg-slate-900 flex-col z-50 p-2 " +
+        css
+      }
       onClick={stopPropa}
       onMouseEnter={stopPropa}
       onMouseDown={stopPropa}

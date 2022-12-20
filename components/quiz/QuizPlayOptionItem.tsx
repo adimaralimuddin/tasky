@@ -55,6 +55,7 @@ export default function QuizPlayOptionItem({
   const onSelectHandler = () => {
     if (hasChosen) return;
     if (card?.id == current?.id) {
+      new Audio("/correct.mp3")?.play();
       setHasChosen(true);
       setCorrect(true);
       updateResult();
@@ -63,6 +64,7 @@ export default function QuizPlayOptionItem({
         pass();
       });
     } else {
+      new Audio("/wrong.mp3")?.play();
       setCorrect(false);
       setWasWrong(true);
       updateResult(false);
@@ -90,7 +92,7 @@ export default function QuizPlayOptionItem({
         isCorrect(
           "ring-green-400 hover:ring-green-500",
           isWasWrong(
-            "ring-red-400",
+            "ring-red-400 dark:ring-red-400",
             !hasChosen && "hover:ring-indigo-400 hover:shadow-lg"
           )
         )
@@ -114,7 +116,11 @@ export default function QuizPlayOptionItem({
         card={card}
         side={side == "fronts" ? "backs" : "fronts"}
         allowOption={false}
-        css="m-0 flexd my-0 flex-1 ring-0 h-full "
+        css={
+          "m-0 flexd my-0 flex-1 ring-0  h-full " +
+          isWasWrong("dark:ring-red-400") +
+          isCorrect("dark:ring-green-400")
+        }
         imageViewer={false}
       />
     </div>

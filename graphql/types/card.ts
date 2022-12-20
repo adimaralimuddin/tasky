@@ -7,6 +7,7 @@ import {
   objectType,
   stringArg,
 } from "nexus";
+import { SAMPLE } from "../../lib/public";
 import { Field } from "./field";
 
 const Count = objectType({
@@ -131,6 +132,7 @@ export const CardMutaion = extendType({
             description: arg.description,
             level: arg.level,
             category: arg.category,
+            sample: SAMPLE,
             fronts: { create: arg.fronts },
             backs: { create: arg.backs },
           },

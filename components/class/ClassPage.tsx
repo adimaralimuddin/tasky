@@ -14,7 +14,7 @@ function PageMainClass({ defClass }: any) {
   return (
     <div className="min-h-screen dark:bg-slate-800">
       <LayoutMainHeader />
-      <div className="p-5 flex gap-3 flex-wrap content-center justify-center max-w-5xl mx-auto">
+      <div className="p-5 py-[5%] flex gap-3 flex-wrap content-center justify-center max-w-5xl mx-auto">
         <ClassAdder />
 
         {sampleClasses?.map((data: ClassType) => (

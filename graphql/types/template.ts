@@ -6,6 +6,7 @@ import {
   objectType,
   stringArg,
 } from "nexus";
+import { SAMPLE } from "../../lib/public";
 
 const Xamp = objectType({
   name: "Xamp",
@@ -90,7 +91,9 @@ export const TemplateMutation = extendType({
         backs: list(FieldsListInputType),
       },
       resolve(par, data: any, ctx) {
-        return ctx.prisma.template.create({ data });
+        return ctx.prisma.template.create({
+          data: { ...data, sample: SAMPLE },
+        });
       },
     });
 

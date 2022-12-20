@@ -1,6 +1,7 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
 import useTemplates from "../../../features/template/useTemplates";
+import { TopicType } from "../../../features/topic/topicType";
 import useTopic from "../../../features/topic/useTopic";
 import useWork from "../../../features/work/useWork";
 import { DEF_USER } from "../../../lib/public";
@@ -18,8 +19,14 @@ export default function TopicAdder() {
   const options: any[] = options_?.map((temp: any) => [temp?.name, temp?.id]);
 
   const [templateId, setTemplateId] = useState(options?.[0]?.[1]);
-  const { work, setOpenTopicAdder } = useWork();
-  const { createTopic, topicAdder } = useTopic(work?.selectedFolder);
+  const { work, setOpenTopicAdder, setTopic } = useWork();
+  const { createTopic, topicAdder } = useTopic(
+    work?.selectedFolder,
+    (createdTopic: TopicType) => {
+      console.log("oh yeah done ", createdTopic);
+      setTopic(createdTopic);
+    }
+  );
 
   const onCreateHandler = (e: any) => {
     e.preventDefault();
@@ -31,8 +38,6 @@ export default function TopicAdder() {
       templateId: templateId || options?.[0]?.[1],
       ...data,
     };
-
-    console.log("data ", topicData);
     createTopic(topicData);
     setOpenTopicAdder(false);
   };
@@ -42,7 +47,11 @@ export default function TopicAdder() {
   }
 
   return (
-    <Modal open={work.openTopicAdder} setOpen={setOpenTopicAdder}>
+    <Modal
+      open={work.openTopicAdder}
+      setOpen={setOpenTopicAdder}
+      css={`overflow-auto px-2`}
+    >
       {(Icon: any) => (
         <Box css="p-2">
           <Icon />

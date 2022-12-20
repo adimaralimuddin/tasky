@@ -1,4 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { SAMPLE } from "../../lib/public";
 import { Class } from "./class";
 import { Topic } from "./topic";
 
@@ -55,12 +56,11 @@ export const FolderMutation = extendType({
     t.field("createFolder", {
       type: Folder,
       args: {
-        // userId: nonNull(stringArg()),
         name: nonNull(stringArg()),
         classId: nonNull(stringArg()),
       },
       resolve(par, data, ctx) {
-        return ctx.prisma.folder.create({ data });
+        return ctx.prisma.folder.create({ data: { ...data, sample: SAMPLE } });
       },
     });
 

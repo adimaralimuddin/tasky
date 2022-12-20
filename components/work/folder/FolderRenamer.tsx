@@ -24,9 +24,10 @@ export default function FolderRenamer({
     e.preventDefault();
     const val = e.target.name?.value;
     if (data?.sample) {
-      return alert(
+      alert(
         "sample folder will not be renamed. you can always create, rename and delete your own folder."
       );
+      return setOpen(false);
     }
     renameFolder({ folderId: data?.id, name: val });
     setOpen(false);

@@ -68,7 +68,7 @@ export default function CardItem({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       css={
-        "flexd ring-1 ring-slate-200 items-center p-0 my-5 min-w-[100px] shadow-lg bg-white dark:bg-slate-600 dark:ring-1 dark:ring-slate-600 " +
+        "flexd ring-1 dark:ring-2 ring-slate-200 items-center p-0 my-5 min-w-[100px] shadow-lg bg-white  dark:ring-1 dark:ring-slate-600 dark:bg-slate-600 " +
         css
       }
     >
@@ -214,10 +214,15 @@ function FieldItem({
     <div>
       <div className="flex gap-2 items-start py-1">
         {lebel && (
-          <p className={"text-slate-400 " + textSize}>{field?.text} :</p>
+          <p className={"text-slate-400 dark:text-slate-400 " + textSize}>
+            {field?.text} :
+          </p>
         )}
         {field?.type !== "image" && field?.type !== "audio" && (
-          <p className={"flex-1 " + textSize}> {field?.value}</p>
+          <p className={"flex-1 dark:text-slate-200 " + textSize}>
+            {" "}
+            {field?.value}
+          </p>
         )}
         {field?.type == "image" && field?.value && (
           <ImageItem

@@ -83,8 +83,9 @@ export async function topicApiCreateTopic(data: {
       }
     }
   `;
-
+  console.log("on creating topic ", { q, data });
   const ret = await request(url, q, data);
+  console.log("create topic ret ", ret);
   return ret.createTopic;
 }
 

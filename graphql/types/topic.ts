@@ -1,4 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { SAMPLE } from "../../lib/public";
 import { Card } from "./card";
 
 export const Topic = objectType({
@@ -89,13 +90,16 @@ export const TopicMutation = extendType({
         folderId: nonNull(stringArg()),
         templateId: nonNull(stringArg()),
       },
-      resolve(par, data: any, ctx) {
-        return ctx.prisma.topic.create({
-          data,
+      async resolve(par, data: any, ctx) {
+        console.log("c topic -----");
+        const x: any = await ctx.prisma.topic.create({
+          data: { ...data, sample: SAMPLE },
           include: {
             Template: true,
           },
         });
+        console.log("x ", x);
+        return x;
       },
     });
 
@@ -108,7 +112,9 @@ export const TopicMutation = extendType({
           where: { id: topicId },
         });
 
-        if (!gotTopic?.sample) {
+        console.log("got topic ", gotTopic);
+
+        if (gotTopic?.sample === false) {
           return ctx.prisma.topic.delete({
             where: { id: topicId },
             include: {

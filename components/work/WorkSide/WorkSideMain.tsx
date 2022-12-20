@@ -47,7 +47,7 @@ export default function WorkSide<Type>({ classId }: props) {
   const Content = (
     <div
       className={
-        "bg-white dark:bg-slate-700 rounded-xl flex-1 max-w-xs m-0 p-0 pb-2 px-1 py-1 " +
+        "bg-white dark:bg-slate-700 rounded-xl flex-1 max-w-xs m-0 p-0 pb-2 px-1 py-1  " +
         (!open && " hidden")
       }
     >
@@ -96,7 +96,7 @@ export default function WorkSide<Type>({ classId }: props) {
   return (
     <div
       className={
-        "z-50 py-4 dark:bg-slate-700 bg-white rounded-xl " +
+        " z-50 py-4 dark:bg-slate-700 bg-white rounded-xl " +
         isCol("relative", " px-[2%] flex-1 mr-3 m-1 shadow-sm")
       }
     >

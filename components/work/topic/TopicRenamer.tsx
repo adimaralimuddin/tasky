@@ -35,7 +35,7 @@ function TopicRenamer({ open, setOpen, data }: props) {
             <Icon />
             <form onSubmit={onSaveHandler}>
               <Input
-                onLoad={(e) => e.target?.select()}
+                onLoad={(e: any) => e.target?.select()}
                 autoFocus
                 autoSelect
                 defaultValue={data?.name}

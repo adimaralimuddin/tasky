@@ -62,8 +62,8 @@ export default function QuizMainContent({ classId }: any) {
   }
 
   const Content = (
-    <>
-      <div className="flex items-center gap-2 flex-wrap">
+    <div className="px-3 py-2">
+      <div className="flex items-center gap-2 flex-wrap ">
         <CardQueryView />
         <QuizOptions
           optionCount={optionCount}
@@ -79,7 +79,7 @@ export default function QuizMainContent({ classId }: any) {
         </p>
       </div>
       <TrivItem current={current()} />
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap gap-1 p-5 ">
         {options?.map((opt) => (
           <QuizPlayOptionItem
             key={Math.random()}
@@ -91,11 +91,11 @@ export default function QuizMainContent({ classId }: any) {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 
   return (
-    <Box css="flex-1 flex flex-col ">
+    <Box css="flex-1 flex flex-col  ">
       <ContentHeader />
       {cards?.length > 0 ? Content : <NoCards text="No Cards For Quiz" />}
     </Box>

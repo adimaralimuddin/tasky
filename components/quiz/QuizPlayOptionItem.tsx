@@ -88,7 +88,7 @@ export default function QuizPlayOptionItem({
     <div
       onClick={onSelectHandler}
       className={
-        "flex-1  ring-2 ring-slate-200 rounded-xl cursor-pointer m-1 animate-wiggle  " +
+        "flex-1  ring-2 ring-slate-200 rounded-xl cursor-pointer m-1 animate-wiggle max-w-[400px]  " +
         isCorrect(
           "ring-green-400 hover:ring-green-500",
           isWasWrong(

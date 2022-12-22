@@ -68,7 +68,7 @@ export default function CardItem({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       css={
-        "flexd ring-1 dark:ring-2 ring-slate-200 items-center p-0 my-5 min-w-[100px] shadow-lg bg-white  dark:ring-1 dark:ring-slate-600 dark:bg-slate-600 " +
+        "flexd ring-1 dark:ring-2 ring-slate-200 items-center my-5 min-w-[100px] shadow-lg bg-white  dark:ring-1 dark:ring-slate-600 dark:bg-slate-600 " +
         css
       }
     >

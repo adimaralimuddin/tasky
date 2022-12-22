@@ -12,7 +12,7 @@ export default function TopicMainContent({ classId }: any) {
   const { selectedTopic: topic } = work;
 
   return (
-    <Box css="flex-1 flex flex-col p-0">
+    <Box css="flex-1 flex flex-col ">
       <ContentHeader Action={BtnCardAdder} />
       <div className="ring-1d flex-1 flex flex-col items-center justify-center ">
         <main className="flex flex-wrap  items-center justify-center ">

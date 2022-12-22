@@ -16,7 +16,7 @@ export default function BtnBack({
 
   return (
     <button
-      className="m-0 py-0 px-2 hover:ring-1 ring-slate-200"
+      className="m-0 py-0 mx-5 px-2 hover:ring-1 ring-slate-200"
       onClick={(_) => {
         setCategory(category);
         setContent(content);

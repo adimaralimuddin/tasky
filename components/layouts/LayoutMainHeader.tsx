@@ -47,7 +47,7 @@ function LayoutMainHeader() {
           <Link href="/">
             <div className="flex items-center justif-center gap-1">
               <AppLogo />
-              {!col && <h2>Flasky</h2>}
+              {!col && <h2 className=" text-xl font-bold">Tasky</h2>}
             </div>
           </Link>
           {col && <ColMenu />}

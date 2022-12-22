@@ -32,7 +32,8 @@ export default function CardAdder({ classId }: { classId: string | any }) {
         user={user}
         classId={classId}
       />
-      <div className="my-2">
+
+      <div className="p-2">
         {cards?.data
           ?.map((c: CardTypes, ind: number) => ({ ...c, ind }))
           ?.sort((a: any, b: any) => b?.ind - a?.ind)
@@ -104,10 +105,10 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
   };
 
   return (
-    <Box css="flex flex-col shadow-md ring-2 ring-slate-200 p-3 bg-slate-50d">
-      <h1 className="py-3 font-bold text-indigo-400 text-center">Add Card</h1>
+    <Box css="flex flex-col ">
+      <h1 className=" font-bold text-indigo-400 text-center">Add Card</h1>
       <Loader message="adding card ... " open={cardCreator?.isLoading} />
-      <form onSubmit={onAddCardHandler}>
+      <form className="p-3" onSubmit={onAddCardHandler}>
         <div className="flex gap-3 flex-wrap ">
           <Fields side="front" fields={fronts} />
           <Fields side="back" fields={backs} />
@@ -117,7 +118,6 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
             <BtnPrime type="submit" css="m-0">
               save
             </BtnPrime>
-            <small className="text-slate-400">(enter) to save</small>
           </span>
         </div>
       </form>
@@ -127,7 +127,7 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
 
 function Fields({ fields, side }: any) {
   return (
-    <div className="ring-1 rounded-xl p-1 ring-indigo-100 flex-1 bg-white dark:bg-slate-600">
+    <div className="ring-1 rounded-xl p-1 ring-indigo-100d flex-1 bg-white dark:bg-slate-700 dark:ring-2 dark:ring-slate-600">
       <h2 className="text-indigo-400 text-center">{side}</h2>
       {fields?.map((field: any) => (
         <Field data={field} side={side} key={field?.id} />
@@ -218,7 +218,7 @@ function FileInput({ text, side, Icon, type }: any) {
   };
 
   return (
-    <div className="flex items-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-500 p-1 rounded-md ">
+    <div className="flex items-center gap-2  hover:bg-slate-200 dark:hover:bg-slate-500 p-1 rounded-md ">
       <div className="flex flex-col">
         <div className="flex gap-2 items-center">
           <p className=" flex items-center gap-2 whitespace-nowrap ring-1 px-2 rounded-md">

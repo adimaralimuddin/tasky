@@ -19,7 +19,7 @@ export default function PlayButtons({ onFlip, onNext, side }: any) {
         easy
       </button>
       <button
-        className="bg-lime-400 text-white"
+        className="bg-green-400 text-white"
         onClick={(_) => onNext("normal")}
       >
         normal

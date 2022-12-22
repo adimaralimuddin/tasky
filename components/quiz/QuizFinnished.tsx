@@ -27,9 +27,9 @@ export default function QuizFinnished({
   return (
     <Box css="flex-1">
       <BtnBack onClick={onBackHandler} />
-      <div className="flex flex-col items-center justify-center py-3">
-        <h1 className="text-3xl font-bold text-indigo-400 dark:text-indigo-400">
-          finish
+      <div className="flex flex-col items-center justify-center py-10">
+        <h1 className="text-4xl font-bold text-indigo-400 dark:text-indigo-300">
+          finish!
         </h1>
         <h2>Quiz Results</h2>
         <BtnSec css="my-3" onClick={onBackHandler}>
@@ -39,7 +39,7 @@ export default function QuizFinnished({
       <div className="px-3 text-slate-500">
         <p>cards: {result?.length}</p>
       </div>
-      <div>
+      <div className="px-3">
         {result?.map((res) => (
           <ResItem res={res} singleWrong={singleWrong} key={res?.card?.id} />
         ))}
@@ -74,7 +74,7 @@ function ResItem({ res, singleWrong }: ResetItemProps) {
           correct {!singleWrong && res?.correct?.length}
         </p>
       </div>
-      <CardItem card={res?.card} />
+      <CardItem card={res?.card} css="my-0 mt-2 mb-2" />
     </div>
   );
 }

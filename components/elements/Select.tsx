@@ -43,7 +43,7 @@ export default function Select({
         </p>
         {open && (
           <div className="relative z-20">
-            <Box css=" shadow-xl ring-1 ring-slate-200 absolute top-0 left-0 p-0 overflow-hidden min-w-[80px] ">
+            <Box css=" shadow-xl ring-1 ring-slate-200 absolute top-0 left-0 p-0d overflow-hidden min-w-[80px] ">
               {options?.map((option) => (
                 <div
                   key={option?.[0]?.toString()}

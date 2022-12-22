@@ -56,23 +56,29 @@ export default function PlaymainPage({}: any) {
   }
 
   const QuizContent = (
-    <>
+    <div className="ring-1d px-4 pb-5 flex-1 flex flex-col">
       <PlayHeader startSide={startSide} setStartSide={setStartSide} />
-      <PlayNav cards={cards} setPlayInd={setPlayInd} playInd={playInd} />
-      <div className={"flex flex-col items-center flex-1  justify-center"}>
+
+      <div
+        className={"flex flex-col items-center flex-1  justify-center ring-1d"}
+      >
+        <PlayNav cards={cards} setPlayInd={setPlayInd} playInd={playInd} />
         <div
-          className={" px-1 rounded-xl " + (side == "backs" && "bg-indigo-400")}
+          className={
+            " px-1 flex-1d rounded-xl " + (side == "backs" && "bg-indigo-400")
+          }
         >
           <CardItem card={current} side={side} />
         </div>
       </div>
       <PlayButtons onFlip={onFlipHandler} onNext={onNextHandler} side={side} />
-    </>
+    </div>
   );
 
   return (
-    <Box css="py-2 flex-1">
+    <Box css=" flex-1 flex flex-col">
       <ContentHeader />
+
       {cards?.length > 0 ? QuizContent : <NoCards text="No Cards To Play" />}
     </Box>
   );

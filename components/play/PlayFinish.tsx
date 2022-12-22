@@ -32,23 +32,24 @@ export default function PlayFinish({ setFinish, cards, setPlayInd }: props) {
   };
 
   return (
-    <div>
-      <Box css="flex flex-col min-h-[300px] justify-center">
+    <div className="flex-1  flex flex-col">
+      <Box css="flex flex-col flex-1 min-h-[300px] ">
         <div>
           <BtnBack />
         </div>
-        <div className="flex flex-col items-center">
-          <h1 className="font-bold text-green-400 ">Finish!</h1>
+        <div className="flex flex-1 justify-center flex-col items-center">
+          <h1 className="font-bold text-5xl p-3 text-green-400 dark:text-green-300 ">
+            Finish!
+          </h1>
           <p> cards: {cards && cards?.length - 1}</p>
           <div className="p-2 ring-1 rounded-lg ring-slate-300 my-2 bg-slate-50 dark:bg-slate-500">
             <Item level="easy" filter={filter} onSelect={onItemSelect} />
             <Item level="normal" filter={filter} onSelect={onItemSelect} />
             <Item level="hard" filter={filter} onSelect={onItemSelect} />
           </div>
-        </div>
-        <div className="flex gap-2 items-center justify-center">
           <BtnPrime onClick={onRepeatHandler}>Repeat</BtnPrime>
         </div>
+        <div className="flex gap-2 items-center justify-center"></div>
       </Box>
       <Modal open={open} setOpen={setOpen}>
         {(Icon: any) => (

@@ -15,11 +15,11 @@ export default function BtnCardAdder() {
 
   if (user?.sub) {
     if (topic?.userId !== user?.sub) {
-      return "";
+      return <></>;
     }
   } else {
     if (topic?.userId !== DEF_USER) {
-      return "";
+      return <></>;
     }
   }
 

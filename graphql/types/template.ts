@@ -70,7 +70,7 @@ export const TemplateQuery = extendType({
       args: { userId: nonNull(stringArg()) },
       resolve(par, { userId }, ctx) {
         return ctx.prisma.template.findMany({
-          where: { userId, deleted: false },
+          where: { userId, deleted: false, sample: false },
         });
       },
     });

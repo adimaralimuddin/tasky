@@ -10,6 +10,7 @@ export const Folder = objectType({
     t.string("name");
     t.boolean("sample");
     t.string("classId");
+    t.string("userId");
 
     // folder's class
     t.field("class", {
@@ -56,6 +57,7 @@ export const FolderMutation = extendType({
     t.field("createFolder", {
       type: Folder,
       args: {
+        userId: nonNull(stringArg()),
         name: nonNull(stringArg()),
         classId: nonNull(stringArg()),
       },
@@ -67,10 +69,10 @@ export const FolderMutation = extendType({
     //delete folder
     t.field("deleteFolder", {
       type: Folder,
-      args: { id: nonNull(stringArg()) },
-      async resolve(par, { id }, ctx) {
+      args: { userId: nonNull(stringArg()), id: nonNull(stringArg()) },
+      async resolve(par, { id, userId }, ctx) {
         const res = await ctx.prisma.folder.deleteMany({
-          where: { id, sample: false },
+          where: { id, userId, sample: false },
         });
         return res?.count !== 0 ? { id } : null;
       },
@@ -79,10 +81,14 @@ export const FolderMutation = extendType({
     // rename folder
     t.field("renameFolder", {
       type: Folder,
-      args: { folderId: nonNull(stringArg()), name: nonNull(stringArg()) },
-      async resolve(par, { folderId, name }, ctx) {
+      args: {
+        userId: nonNull(stringArg()),
+        folderId: nonNull(stringArg()),
+        name: nonNull(stringArg()),
+      },
+      async resolve(par, { folderId, name, userId }, ctx) {
         const res: any = await ctx.prisma.folder.updateMany({
-          where: { id: folderId, sample: false },
+          where: { id: folderId, sample: false, userId },
           data: { name },
         });
         return res?.count !== 0 ? { id: folderId, name } : null;

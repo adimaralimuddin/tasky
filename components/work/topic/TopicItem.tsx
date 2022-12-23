@@ -1,8 +1,10 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
 import { TopicType } from "../../../features/topic/topicType";
 import useTopic from "../../../features/topic/useTopic";
 import useWork from "../../../features/work/useWork";
 import { Pencil, Plus, TopicIcon, Trash } from "../../../lib/icons";
+import { DEF_USER } from "../../../lib/public";
 import Loader from "../../elements/Loader";
 import Option from "../../elements/Option";
 import Verifier from "../../elements/Verifier";
@@ -20,6 +22,7 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
   const [renaming, setRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const { user } = useUser();
   const { setTopic, work, setContent } = useWork();
   const { deleteTopic, topicDeleter } = useTopic(data?.folderId);
 
@@ -32,29 +35,37 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
         "sample topic will not be deleted. you can always create, edit and delete your own topic"
       );
     }
-    deleteTopic(data?.id);
+    deleteTopic({ userId: user?.sub || DEF_USER, topicId: data?.id });
   };
 
-  const options = [
-    {
-      icon: <Plus />,
-      text: "card",
-      action: () => {
-        setContent("cardadder");
-        setSideBar();
+  const options = () => {
+    const ret = [
+      {
+        icon: <Plus />,
+        text: "card",
+        action: () => {
+          setContent("cardadder");
+          setSideBar();
+        },
       },
-    },
-    {
-      icon: <Pencil />,
-      text: "rename",
-      action: () => setRenaming(true),
-    },
-    {
-      icon: <Trash />,
-      text: "delete",
-      action: () => setIsDeleting(true),
-    },
-  ];
+      {
+        icon: <Pencil />,
+        text: "rename",
+        action: () => setRenaming(true),
+      },
+      {
+        icon: <Trash />,
+        text: "delete",
+        action: () => setIsDeleting(true),
+      },
+    ];
+    let notUserOptions = [{ text: "you're not allowed" }];
+    if (user?.sub) {
+      return user?.sub == data?.userId ? ret : notUserOptions;
+    } else {
+      return data?.userId !== DEF_USER ? notUserOptions : ret;
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -76,7 +87,7 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
             ? data?.name?.substring(0, 20) + "..."
             : data?.name}
         </small>
-        {hovered && <Option options={options} />}
+        {hovered && <Option options={options()} />}
       </div>
       <TopicRenamer data={data} open={renaming} setOpen={setRenaming} />
       <Verifier

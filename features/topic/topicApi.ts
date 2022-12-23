@@ -89,10 +89,16 @@ export async function topicApiCreateTopic(data: {
   return ret.createTopic;
 }
 
-export async function topicApiDeleteTopic(topicId: string) {
+export async function topicApiDeleteTopic({
+  userId,
+  topicId,
+}: {
+  userId: string;
+  topicId: string;
+}) {
   const q = gql`
-    mutation DeleteTopic($topicId: String!) {
-      deleteTopic(topicId: $topicId) {
+    mutation Mutation($userId: String!, $topicId: String!) {
+      deleteTopic(userId: $userId, topicId: $topicId) {
         name
         id
         userId
@@ -101,25 +107,28 @@ export async function topicApiDeleteTopic(topicId: string) {
       }
     }
   `;
-  const ret = await request(url, q, { topicId });
+  const ret = await request(url, q, { userId, topicId });
   return ret?.deleteTopic;
 }
 
 export async function topicApiRenameTopic({
+  userId,
   name,
   topicId,
 }: {
+  userId: string;
   name: string;
   topicId: string;
 }) {
   const q = gql`
-    mutation RenameTopic($topicId: String!, $name: String!) {
-      renameTopic(topicId: $topicId, name: $name) {
+    mutation Mutation($topicId: String!, $name: String!, $userId: String!) {
+      renameTopic(topicId: $topicId, name: $name, userId: $userId) {
         name
         id
+        userId
       }
     }
   `;
-  const ret = await request(url, q, { topicId, name });
+  const ret = await request(url, q, { topicId, name, userId });
   return ret.renameTopic;
 }

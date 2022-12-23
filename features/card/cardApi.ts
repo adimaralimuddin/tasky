@@ -7,6 +7,7 @@ export async function cardApiGetCardsByTopic(topicId: string) {
     query CardsByTopic($topicId: String!) {
       cardsByTopic(topicId: $topicId) {
         id
+        userId
         name
         description
         level
@@ -97,6 +98,7 @@ export async function cardApiCreateCard(data: {
         backs: $backs
       ) {
         id
+        userId
         name
         description
         level
@@ -133,15 +135,21 @@ export async function cardApiCreateCard(data: {
   return ret.createCard;
 }
 
-export async function cardApiDeleteCard(cardId: string) {
+export async function cardApiDeleteCard({
+  userId,
+  cardId,
+}: {
+  userId: string;
+  cardId: string;
+}) {
   const q = gql`
-    mutation DeleteCard($cardId: String!) {
-      deleteCard(cardId: $cardId) {
+    mutation Mutation($userId: String!, $cardId: String!) {
+      deleteCard(userId: $userId, cardId: $cardId) {
         id
       }
     }
   `;
-  const ret = await request(url, q, { cardId });
+  const ret = await request(url, q, { cardId, userId });
   return ret?.deleteCard;
 }
 

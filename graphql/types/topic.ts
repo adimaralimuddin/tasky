@@ -1,3 +1,4 @@
+import { prisma } from "@prisma/client";
 import { extendType, nonNull, objectType, stringArg } from "nexus";
 import { SAMPLE } from "../../lib/public";
 import { Card } from "./card";
@@ -106,14 +107,12 @@ export const TopicMutation = extendType({
     // delete topic
     t.field("deleteTopic", {
       type: Topic,
-      args: { topicId: nonNull(stringArg()) },
-      async resolve(par, { topicId }, ctx) {
+      args: { userId: nonNull(stringArg()), topicId: nonNull(stringArg()) },
+      async resolve(par, { userId, topicId }, ctx) {
         const gotTopic = await ctx.prisma.topic.findFirst({
-          where: { id: topicId },
+          where: { id: topicId, userId },
         });
-
         console.log("got topic ", gotTopic);
-
         if (gotTopic?.sample === false) {
           return ctx.prisma.topic.delete({
             where: { id: topicId },
@@ -130,13 +129,17 @@ export const TopicMutation = extendType({
     //rename topic
     t.field("renameTopic", {
       type: Topic,
-      args: { topicId: nonNull(stringArg()), name: nonNull(stringArg()) },
-      async resolve(par, { topicId, name }, ctx) {
+      args: {
+        userId: nonNull(stringArg()),
+        topicId: nonNull(stringArg()),
+        name: nonNull(stringArg()),
+      },
+      async resolve(par, { userId, topicId, name }, ctx) {
         const res = await ctx.prisma.topic.updateMany({
-          where: { id: topicId, sample: false },
+          where: { id: topicId, sample: false, userId },
           data: { name },
         });
-        return res?.count != 0 ? { id: topicId, name } : null;
+        return res?.count != 0 ? { id: topicId, name, userId } : null;
       },
     });
   },

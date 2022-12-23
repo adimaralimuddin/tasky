@@ -1,6 +1,8 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
 import { TopicType } from "../../../features/topic/topicType";
 import useTopic from "../../../features/topic/useTopic";
+import { DEF_USER } from "../../../lib/public";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
 import Input from "../../elements/Input";
@@ -13,6 +15,7 @@ type props = {
 };
 
 function TopicRenamer({ open, setOpen, data }: props) {
+  const { user } = useUser();
   const { renameTopic } = useTopic(data?.folderId);
   const onSaveHandler = (e: any) => {
     e.preventDefault();
@@ -23,7 +26,7 @@ function TopicRenamer({ open, setOpen, data }: props) {
       );
       return setOpen(false);
     }
-    renameTopic({ name, topicId: data?.id });
+    renameTopic({ userId: user?.sub || DEF_USER, name, topicId: data?.id });
     setOpen(false);
   };
 

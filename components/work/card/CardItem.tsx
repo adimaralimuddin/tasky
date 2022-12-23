@@ -1,8 +1,10 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState, useEffect } from "react";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
 import { useCardMutation } from "../../../features/card/useCardMutation";
 import useWork from "../../../features/work/useWork";
 import { Pencil, Trash } from "../../../lib/icons";
+import { DEF_USER } from "../../../lib/public";
 import AudioElement from "../../elements/AudioEl";
 import Box from "../../elements/Box";
 import ImageItem from "../../elements/ImageItem";
@@ -27,6 +29,7 @@ export default function CardItem({
   allowOption = true,
   imageViewer = true,
 }: props) {
+  const { user } = useUser();
   const [card, setCard] = useState(card_);
   const [isEditing, setIsEditing] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -36,28 +39,37 @@ export default function CardItem({
   const size: any = work?.imageSize;
   const imageSize = parseInt(size);
   const lebel = work.viewLebel;
-  const options = [
-    {
-      text: "edit",
-      icon: <Pencil />,
-      action: () => {
-        setIsEditing(true);
-        setHovered(false);
+
+  const options = () => {
+    let ret = [
+      {
+        text: "edit",
+        icon: <Pencil />,
+        action: () => {
+          setIsEditing(true);
+          setHovered(false);
+        },
       },
-    },
-    {
-      text: "delete",
-      icon: <Trash />,
-      action: () => {
-        if (card?.sample) {
-          return alert(
-            "sample card will not be deleted. you can always add, edit and delete your own card instead."
-          );
-        }
-        deleteCard(card.id);
+      {
+        text: "delete",
+        icon: <Trash />,
+        action: () => {
+          if (card?.sample) {
+            return alert(
+              "sample card will not be deleted. you can always add, edit and delete your own card instead."
+            );
+          }
+          deleteCard({ userId: user?.sub || DEF_USER, cardId: card.id });
+        },
       },
-    },
-  ];
+    ];
+    let notAllowed = [{ text: "you're not allowed" }];
+    if (user?.sub) {
+      return user?.sub == card?.userId ? ret : notAllowed;
+    } else {
+      return DEF_USER == card?.userId ? ret : notAllowed;
+    }
+  };
 
   useEffect(() => {
     setCard(card_);
@@ -79,9 +91,10 @@ export default function CardItem({
           </small>
         </span>
       )}
+
       <span className="relative flex justify-end p-1">
         <div className="absolute">
-          {hovered && allowOption && <Option options={options} left={true} />}
+          {hovered && allowOption && <Option options={options()} left={true} />}
         </div>
       </span>
       {!isEditing && (

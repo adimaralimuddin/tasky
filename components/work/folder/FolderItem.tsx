@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TopicType } from "../../../features/topic/topicType";
 import useTopics from "../../../features/topic/useTopics";
 import useWork from "../../../features/work/useWork";
@@ -17,6 +17,8 @@ import FolderRenamer from "./FolderRenamer";
 import Verifier from "../../elements/Verifier";
 import Loader from "../../elements/Loader";
 import { FolderType } from "./folderTypes";
+import { useUser } from "@auth0/nextjs-auth0";
+import { DEF_USER } from "../../../lib/public";
 
 type props = {
   data: FolderType;
@@ -25,7 +27,8 @@ type props = {
 };
 
 export default function FolderItem({ data, classId, setSideBar }: props) {
-  const { id, name } = data;
+  const { user } = useUser();
+  const { id, name, userId } = data;
   const { topics } = useTopics(id);
   const { deleteFolder, folderDeleter } = useFolderMutation(classId);
   const { setOpenTopicAdder, setSelectedFolder } = useWork();
@@ -36,23 +39,27 @@ export default function FolderItem({ data, classId, setSideBar }: props) {
   const [renaming, setRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const options = [
-    {
-      icon: <PlusBig />,
-      text: "topic",
-      action: () => {
-        setOpenTopicAdder(true);
-        setSelectedFolder(id);
-        setOpen(true);
+  const options = () => {
+    let ret = [
+      {
+        icon: <PlusBig />,
+        text: "topic",
+        action: () => {
+          setOpenTopicAdder(true);
+          setSelectedFolder(id);
+          setOpen(true);
+        },
       },
-    },
-    { icon: <Pencil />, text: "rename", action: () => setRenaming(true) },
-    { icon: <Trash />, text: "delete", action: () => setIsDeleting(true) },
-  ];
-  const topOptions = [
-    { icon: "", text: "+ topic" },
-    { icon: "", text: "+ folder" },
-  ];
+      { icon: <Pencil />, text: "rename", action: () => setRenaming(true) },
+      { icon: <Trash />, text: "delete", action: () => setIsDeleting(true) },
+    ];
+    let notUserOptions = [{ text: "you're not allowed" }];
+    if (user?.sub) {
+      return user?.sub == userId ? ret : notUserOptions;
+    } else {
+      return userId !== DEF_USER ? notUserOptions : ret;
+    }
+  };
 
   const ondeleteHandler = () => {
     if (data?.sample) {
@@ -60,7 +67,7 @@ export default function FolderItem({ data, classId, setSideBar }: props) {
         "sample folder will not be deleted. you can always create, edit and delete your own folder."
       );
     }
-    deleteFolder(id);
+    deleteFolder(user?.sub || DEF_USER, id);
   };
 
   return (
@@ -79,7 +86,7 @@ export default function FolderItem({ data, classId, setSideBar }: props) {
           {name?.length > 20 ? name.substring(0, 20) + "..." : name}
         </small>
         {!open ? <DownIcon /> : <UpIcon />}
-        {hovered && <Option options={options} />}
+        {hovered && <Option options={options()} />}
       </div>
       {open && (
         <div className="ml-3 border-l-2 px-2">

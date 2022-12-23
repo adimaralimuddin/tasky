@@ -58,7 +58,7 @@ type ResetItemProps = { res: ResItemType; singleWrong: boolean };
 function ResItem({ res, singleWrong }: ResetItemProps) {
   return (
     <div className="shadow-md ring-1 bg-slate-50 dark:bg-slate-600 ring-slate-200 p-2 my-5 rounded-xl ">
-      <div className="flex items-center gap-3 text-slate-400">
+      <div className="flex px-2 items-center gap-3 text-slate-400">
         <p
           className={
             res?.wrong?.length > 0 ? " text-red-400 dark:text-red-400 " : ""

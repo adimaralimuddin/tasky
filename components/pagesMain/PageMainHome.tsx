@@ -30,9 +30,6 @@ function Caption({ defClass }: { defClass: string }) {
       <Link href={`/class/${defClass}`}>
         <BtnPrime css="text-2xl rounded-full px-6 py-2">Get Started</BtnPrime>
       </Link>
-      {/* <Link href={`/class/${process.env.NEXT_PUBLIC_DEF_CLASS}`}>
-        <BtnPrime css="text-2xl rounded-full px-6 py-2">Get Started</BtnPrime>
-      </Link> */}
     </div>
   );
 }

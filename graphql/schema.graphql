@@ -15,6 +15,7 @@ type Card {
   name: String
   sample: Boolean
   topicId: String
+  userId: String
 }
 
 type Class {
@@ -65,25 +66,26 @@ type Folder {
   name: String
   sample: Boolean
   topics: [Topic]
+  userId: String
 }
 
 type Mutation {
   createCard(backs: [CommentInputType], category: String = "new", description: String, fronts: [CommentInputType], level: String = "hard", name: String!, topicId: String!, userId: String!): Card
   createClass(description: String, name: String!, userId: String): Class!
   createFieldFront(frontId: String!, ind: Int!, name: String!, type: String!, value: String!): Field
-  createFolder(classId: String!, name: String!): Folder
+  createFolder(classId: String!, name: String!, userId: String!): Folder
   createTemplate(backs: [FieldListInputType], fronts: [FieldListInputType], name: String!, userId: String!): Template
   createTopic(description: String, folderId: String!, name: String!, templateId: String!, userId: String!): Topic
   createUser(email: String!, id: String!, name: String!): User!
-  deleteCard(cardId: String!): Card
+  deleteCard(cardId: String!, userId: String!): Card
   deleteClass(classId: String!): Class
-  deleteFolder(id: String!): Folder
+  deleteFolder(id: String!, userId: String!): Folder
   deleteTemplate(templateId: String!): Template
-  deleteTopic(topicId: String!): Topic
+  deleteTopic(topicId: String!, userId: String!): Topic
   deleteUser(id: String!): User
   renameClass(classId: String!, name: String!): Class
-  renameFolder(folderId: String!, name: String!): Folder
-  renameTopic(name: String!, topicId: String!): Topic
+  renameFolder(folderId: String!, name: String!, userId: String!): Folder
+  renameTopic(name: String!, topicId: String!, userId: String!): Topic
   setCardLevel(cardId: String!, level: String): Card
   updateClass(classId: String!, description: String, name: String): Class
   updateField(id: String!, newValue: String!, val: String!): Field

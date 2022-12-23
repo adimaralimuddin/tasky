@@ -4,6 +4,8 @@ import Input from "../../elements/Input";
 import Modal from "../../elements/Modal";
 import useFolderMutation from "../../../features/folder/useFolderMutation";
 import { FolderType } from "./folderTypes";
+import { useUser } from "@auth0/nextjs-auth0";
+import { DEF_USER } from "../../../lib/public";
 
 type props = {
   renaming: boolean;
@@ -19,6 +21,7 @@ export default function FolderRenamer({
   classId,
 }: props) {
   const { renameFolder } = useFolderMutation(classId);
+  const { user } = useUser();
 
   const onRenameHandler = (e: any) => {
     e.preventDefault();
@@ -29,7 +32,11 @@ export default function FolderRenamer({
       );
       return setOpen(false);
     }
-    renameFolder({ folderId: data?.id, name: val });
+    renameFolder({
+      folderId: data?.id,
+      name: val,
+      userId: user?.sub || DEF_USER,
+    });
     setOpen(false);
   };
 

@@ -30,6 +30,7 @@ export const Card = objectType({
   definition(t) {
     t.string("id");
     t.string("topicId");
+    t.string("userId");
     t.string("name");
     t.string("description");
     t.string("level");
@@ -143,11 +144,15 @@ export const CardMutaion = extendType({
     // delete card
     t.field("deleteCard", {
       type: Card,
-      args: { cardId: nonNull(stringArg()) },
-      async resolve(par, { cardId }, { prisma }) {
+      args: {
+        userId: nonNull(stringArg()),
+        cardId: nonNull(stringArg()),
+      },
+      async resolve(par, { cardId, userId }, { prisma }) {
         const res = await prisma.card.deleteMany({
           where: {
             id: cardId,
+            userId,
             sample: false,
           },
         });

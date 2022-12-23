@@ -1,5 +1,6 @@
 export type CardTypes = {
   id: string;
+  userId: string;
   name: string;
   description?: string;
   level?: string;

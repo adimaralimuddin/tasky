@@ -30,7 +30,8 @@ export default function useFolderMutation(classId: string) {
 
   return {
     folderDeleter,
-    deleteFolder: (folderId: string) => folderDeleter.mutate(folderId),
+    deleteFolder: (userId: string, deleteFolderId: string) =>
+      folderDeleter.mutate({ userId, deleteFolderId }),
     renameFolder: renameFolder.mutate,
   };
 }

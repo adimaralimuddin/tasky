@@ -13,7 +13,7 @@ export default function CategoryList({ classId }: any) {
   const cards = category(work.selectedCategory);
 
   return (
-    <Box css=" flex-1  ">
+    <Box css=" flex-1  flex flex-col ">
       <ContentHeader />
       {cards?.length > 0 ? (
         <CardList classId={classId} cards={cards} />

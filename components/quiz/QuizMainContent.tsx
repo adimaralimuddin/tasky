@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CardTypes } from "../../features/card/CardType";
 import useCards from "../../features/card/useCards";
 import useQuiz from "../../features/quiz/useQuiz";
@@ -18,10 +18,13 @@ export default function QuizMainContent({ classId }: any) {
   const { selectedTopic, selectedCategory } = work;
   const { category } = useCards(selectedTopic?.id);
   const cards = category(selectedCategory);
-  const [optionCount, setOptionCount] = useState(4);
-  const [options, setOptions] = useState(
-    ranNum(optionCount, cards?.length - 1, playInd)
+  const [optionCount, setOptionCount] = useState(
+    cards?.length <= 4 ? cards?.length : 4
   );
+  const [options, setOptions] = useState(
+    ranNum(optionCount, cards?.length, playInd)
+  );
+
   const [finish, setFinish] = useState(false);
   const [result, setResult] = useState(resetResult());
 

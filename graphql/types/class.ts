@@ -48,7 +48,7 @@ export const ClassQuery = extendType({
       type: "Class",
       args: { userId: nonNull(stringArg()) },
       resolve(par, { userId }, ctx) {
-        return ctx.prisma.class.findMany({ where: { userId } });
+        return ctx.prisma.class.findMany({ where: { userId, sample: false } });
       },
     });
 

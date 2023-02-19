@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { FolderType } from "../../../../features/folder/folderTypes";
-import FolderItemTopics from "./FolderItemTopics";
+// import FolderItemTopics from "./FolderItemTopics";
 
 const FolderDeleter = dynamic(() => import("../folderEditor/FolderDeleter"), {
   ssr: false,
@@ -11,10 +11,10 @@ const FolderRenamer = dynamic(() => import("../folderEditor/FolderRenamer"), {
 });
 const FolderOptions = dynamic(() => import("./FolderOptions"), { ssr: false });
 
-// const FolderItemTopics = dynamic(() => import("./FolderItemTopics"), {
-//   ssr: false,
-//   // loading: () => "topics...",
-// });
+const FolderItemTopics = dynamic(() => import("./FolderItemTopics"), {
+  ssr: false,
+  // loading: () => "topics...",
+});
 
 interface Props {
   data: FolderType;
@@ -24,7 +24,6 @@ interface Props {
   open: boolean;
   id: string;
   setSelected: any;
-  setSideBar: any;
 }
 
 function FolderItemContent({
@@ -35,7 +34,6 @@ function FolderItemContent({
   hovered,
   setOpen,
   setSelected,
-  setSideBar,
 }: Props) {
   const [renaming, setRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -45,7 +43,6 @@ function FolderItemContent({
         <FolderItemTopics
           id={id}
           setSelected={setSelected}
-          setSideBar={setSideBar}
         />
       )}
       <div className="absolute right-0 top-0">

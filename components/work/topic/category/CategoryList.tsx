@@ -1,25 +1,21 @@
+import { useRouter } from "next/router";
 import React from "react";
 import useCards from "../../../../features/card/useCards";
-import useWork from "../../../../features/work/useWork";
-import Box from "../../../elements/Box";
 import ContentHeader from "../../../elements/ContentHeader";
-import NoCards from "../../../elements/NoCards";
 import CardList from "../../card/CardList";
 
 export default function CategoryList({ classId }: any) {
-  const { work } = useWork();
-  const { category } = useCards(work.selectedTopic?.id);
+  const { query } = useRouter();
+  const topicId = query?.topicId;
+  const selectedCategory = String(query?.category);
 
-  const cards = category(work.selectedCategory);
+  const { category } = useCards(topicId);
+  const cards = category(selectedCategory);
 
   return (
     <div className=" flex-1  flex flex-col container_   ">
       <ContentHeader />
-      {cards?.length > 0 ? (
-        <CardList classId={classId} cards={cards} />
-      ) : (
-        <NoCards button={false} />
-      )}
+      <CardList classId={classId} cards={cards} />
     </div>
   );
 }

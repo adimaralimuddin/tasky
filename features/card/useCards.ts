@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { cardApiGetCardsByTopic } from "./cardApi";
+import request, { gql } from "graphql-request";
+import { CardUrl } from "./cardApi";
 import { CardTypes } from "./CardType";
 
 export default function useCards(topicId?: string | any) {
@@ -20,4 +21,42 @@ export default function useCards(topicId?: string | any) {
     ...cards,
     category,
   };
+}
+
+export async function cardApiGetCardsByTopic(topicId: string) {
+  const q = gql`
+    query CardsByTopic($topicId: String!) {
+      cardsByTopic(topicId: $topicId) {
+        id
+        userId
+        name
+        description
+        level
+        category
+        sample
+        def
+        fronts {
+          id
+          text
+          type
+          value
+          frontId
+          backId
+          ind
+        }
+        backs {
+          id
+          text
+          type
+          value
+          frontId
+          backId
+          ind
+        }
+      }
+    }
+  `;
+
+  const ret = await request(CardUrl, q, { topicId });
+  return ret?.cardsByTopic;
 }

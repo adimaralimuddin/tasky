@@ -1,37 +1,47 @@
+import Link from "next/link";
 import React from "react";
 import { CardTypes } from "../../../../features/card/CardType";
 import useCards from "../../../../features/card/useCards";
 import useWork from "../../../../features/work/useWork";
+import _useWorkRoutes from "../../../../lib/_routes/_useWorkRoutes";
 import Box from "../../../elements/Box";
 
 type props = {
-  field: string;
+  field: "all" | "new" | "passed" | "left";
   topicId?: string;
   classId?: string;
+  onSelect: any;
 };
 
-export default function CategoryItem({ field, topicId, classId }: props) {
+export default function CategoryItem({
+  field,
+  onSelect,
+  topicId,
+  classId,
+}: props) {
+  // const { getNavQueries, query } = _useWorkRoutes();
+
   const { category, isLoading } = useCards(topicId);
-  const { setCategory } = useWork();
+  // const { category, isLoading } = useCards(topicId);
+  // const { setCategory } = useWork();
   const cards = category(field);
 
   if (isLoading) return <Loading />;
 
   return (
-    <div
-      onClick={() => setCategory(field)}
-      className=" card min-h-[100px]  cursor-pointer ring_ hover:pop_ transition_ hover:shadow-lg "
-    >
-      <p className="text-indigo-400 dark:text-indigo-300">{field}</p>
-      <div className="flex_ justify-between flex-wrap">
-        <div className="flex_">
-          <p className="text-xl font-bold">{cards?.length} </p>
-          <p className="text-lg">items</p>
+    <Link passHref replace href={onSelect(field)}>
+      <div className=" card min-h-[100px]  cursor-pointer ring_ hover:pop_ transition_ hover:shadow-lg ">
+        <p className="text-indigo-400 dark:text-indigo-300">{field}</p>
+        <div className="flex_ justify-between flex-wrap">
+          <div className="flex_">
+            <p className="text-xl font-bold">{cards?.length} </p>
+            <p className="text-lg">items</p>
+          </div>
+          <LevelField cards={cards} filter="hard" />
+          <LevelField cards={cards} filter="normal" />
         </div>
-        <LevelField cards={cards} filter="hard" />
-        <LevelField cards={cards} filter="normal" />
       </div>
-    </div>
+    </Link>
   );
 }
 

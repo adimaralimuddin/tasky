@@ -1,8 +1,19 @@
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { CardTypes } from "../../../features/card/CardType";
-import ActionButtons from "../../elements/ActionButtons";
+import NoCards from "../../elements/NoCards";
+// import ActionButtons from "../../elements/ActionButtons";
 import CardItem from "./CardItem";
-import CardQuery from "./CardQuery";
+// import CardQuery from "./CardQuery";
+
+const CardQuery = dynamic(() => import("./CardQuery"), {
+  ssr: false,
+  loading: () => <p>card query herer . . . .</p>,
+});
+const ActionButtons = dynamic(() => import("../../elements/ActionButtons"), {
+  ssr: false,
+  loading: () => <p>action button . . . .</p>,
+});
 
 type props = {
   classId: string;
@@ -21,9 +32,13 @@ export default function CardList({ classId, cards: cards_ }: props) {
         <CardQuery classId={classId} cards={cards_} setCards={setCards} />
         <ActionButtons />
       </div>
-      {cards?.map((card: CardTypes) => (
-        <CardItem card={card} key={card?.id} index={true} />
-      ))}
+      {!cards?.length ? (
+        <NoCards />
+      ) : (
+        cards?.map((card: CardTypes) => (
+          <CardItem card={card} key={card?.id} index={true} />
+        ))
+      )}
     </div>
   );
 }

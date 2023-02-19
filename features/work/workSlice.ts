@@ -53,6 +53,7 @@ export const workSlice = createSlice({
       state.fronts = fields?.fronts;
       state.backs = fields?.backs;
     },
+
     setCategory: (state, action: PayloadAction<string>) => {
       state.selectedCategory = action.payload;
       state.content = "category";

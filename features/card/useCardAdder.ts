@@ -1,24 +1,41 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
+import _useWorkRoutes from "../../lib/_routes/_useWorkRoutes";
 import { CardUrl, fieldsSolve } from "./cardApi";
 
-export default function useCardAdder(topicId: string) {
+export default function useCardAdder() {
+  const { user } = useUser();
+  const { topic } = _useWorkRoutes();
+  const topicId = topic?.id;
   const client = useQueryClient();
+
   const cardCreator = useMutation(cardApiCreateCard, {
     onMutate: (cardPayload) => {
+      // console.log("card payload", cardPayload);
+      // console.log(`topic`, topicId);
+
       client.setQueryData(["cards", topicId], (cards: any) => {
         return [...cards, cardPayload];
       });
     },
     onSuccess: (createdCard) => {
-      //   client.setQueryData(["cards", topicId], (cards: any) => {
-      //     return [...cards, createdCard];
-      //   });
+      // console.log("card added", createdCard);
+      // client.setQueryData(["cards", topicId], (cards: any) => {
+      //   return [...cards, createdCard];
+      // });
     },
   });
 
-  const addCard = (data: PayloadProps, cb?: any) => {
-    cardCreator.mutate(data);
+  const addCard = (
+    data: Omit<PayloadProps, "topicId" | "userId">,
+    cb?: any
+  ) => {
+    cardCreator.mutate({
+      topicId,
+      userId: user?.sub || undefined,
+      ...data,
+    });
     cb?.(data);
   };
 
@@ -35,7 +52,7 @@ type Field = {
 };
 interface PayloadProps {
   classId?: string;
-  userId: string;
+  userId: string | undefined;
   topicId: string;
   name: string;
   description: string;
@@ -43,6 +60,7 @@ interface PayloadProps {
   backs: Field[];
 }
 export async function cardApiCreateCard(data: PayloadProps) {
+  console.log("about to create card", data);
   const backs = await fieldsSolve(data?.backs);
   const fronts = await fieldsSolve(data?.fronts);
 
@@ -51,7 +69,7 @@ export async function cardApiCreateCard(data: PayloadProps) {
     data.userId = "google-oauth2|117745479963692189418";
   }
 
-  // remove the classId to uninclude from model
+  // remove the classId to un include from model
   delete data?.classId;
 
   const q = gql`

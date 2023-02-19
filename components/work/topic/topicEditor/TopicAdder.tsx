@@ -21,6 +21,7 @@ export default function TopicAdder() {
 
   const [templateId, setTemplateId] = useState(options?.[0]?.[1]);
   const { work, setOpenTopicAdder, setTopic } = useWork();
+  
   const { createTopic, topicAdder } = useTopic(
     work?.selectedFolder,
     (createdTopic: TopicType) => {

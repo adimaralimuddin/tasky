@@ -133,6 +133,7 @@ export default function CardItem({
         )}
         {work?.viewCategory && <p>category: {card?.category}</p>}
       </div>
+
       <CardEditor
         open={isEditing}
         setOpen={setIsEditing}

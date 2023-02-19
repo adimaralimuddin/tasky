@@ -1,12 +1,13 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React from "react";
-import useWork from "../../../features/work/useWork";
 import DashboardMainContent from "../../dashboard/DashboardMainContent";
-// import CardItemLoader from "../card/cardLoader/CardItemLoader";
-// import CategoryList from "../topic/category/CategoryList";
-// import WorkContentLoader from "./WorkContentLoader";
+import PlaymainPage from "../../play/PlaymainPage";
+import QuizMainContent from "../../quiz/QuizMainContent";
 
+const CardAdder = dynamic(() => import("../card/cardEditor/CardAdder"), {
+  ssr: false,
+});
 const CategoryList = dynamic(() => import("../topic/category/CategoryList"), {
   ssr: false,
 });
@@ -15,27 +16,25 @@ const TopicMainContent = dynamic(() => import("../topic/TopicMainContent"), {
 });
 
 function WorkContent() {
-  const { work } = useWork();
-  const {
-    query: { classId },
-  } = useRouter();
+  const router = useRouter();
+
+  const content = router.query?.content;
+  const classId = router.query?.classId;
   return (
     <div>
-      {work.content == "dashboard" ? (
+      {content == "dashboard" ? (
         <DashboardMainContent />
-      ) : // <WorkContentLoader />
-      // ) :
-      work.content == "topic" ? (
+      ) : content == "topic" ? (
         <TopicMainContent classId={classId} />
-      ) : work.content == "category" ? (
+      ) : content == "category" ? (
         <CategoryList classId={classId} />
-      ) : // work.content == "cardadder" ? (
-      //   <CardAdder classId={classId} />
-      // ) : work.content == "play" ? (
-      //   <PlaymainPage classId={classId} />
-      // ) : work.content == "quiz" ? (
-      //   <QuizMainContent classId={classId} />
-      null}
+      ) : content == "cardadder" ? (
+        <CardAdder classId={classId} />
+      ) : content == "play" ? (
+        <PlaymainPage classId={classId} />
+      ) : content == "quiz" ? (
+        <QuizMainContent classId={classId} />
+      ) : null}
     </div>
   );
 }

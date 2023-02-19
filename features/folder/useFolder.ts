@@ -25,6 +25,5 @@ export async function folderApiGetFoldersByClassId(classId: string) {
     }
   `;
   const ret = await request(FolderUrl, q, { classId });
-  console.log("folders ", ret);
   return ret.foldersByClass;
 }

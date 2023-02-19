@@ -25,10 +25,9 @@ import FolderItemContent from "./FolderItemContent";
 type props = {
   data: FolderType;
   classId: string | any;
-  setSideBar: any;
 };
 
-export default function FolderItem({ data, classId, setSideBar }: props) {
+export default function FolderItem({ data, classId }: props) {
   const { id, name } = data;
 
   const [open, setOpen] = useState(true);
@@ -63,7 +62,6 @@ export default function FolderItem({ data, classId, setSideBar }: props) {
         id={id}
         open={open}
         setSelected={setSelected}
-        setSideBar={setSideBar}
       />
     </div>
   );

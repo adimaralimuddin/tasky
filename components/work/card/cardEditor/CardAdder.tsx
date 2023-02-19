@@ -1,119 +1,75 @@
-import { useUser } from "@auth0/nextjs-auth0";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import React, { LegacyRef, useEffect, useRef, useState } from "react";
-import { CardTypes, FieldType } from "../../../../features/card/CardType";
+import React, { useEffect, useRef, useState } from "react";
+import { FieldType } from "../../../../features/card/CardType";
 import useCardAdder from "../../../../features/card/useCardAdder";
-import { useCardMutation } from "../../../../features/card/useCardMutation";
-import useCards from "../../../../features/card/useCards";
-import useTemplate from "../../../../features/template/useTemplate";
-import useWork from "../../../../features/work/useWork";
 import { ImageIcon, Mp3, XIcon } from "../../../../lib/icons";
-import { defUser, DEF_USER } from "../../../../lib/public";
-import Box from "../../../elements/Box";
+import _useWorkRoutes from "../../../../lib/_routes/_useWorkRoutes";
 import BtnPrime from "../../../elements/BtnPrime";
 import ContentHeader from "../../../elements/ContentHeader";
-import Input from "../../../elements/Input";
-import Loader from "../../../elements/Loader";
-import CardItem from "../CardItem";
+
+const CardLists = dynamic(() => import("../cardLists/CardLists"), {
+  loading: () => <p>cards lists..</p>,
+});
 
 export default function CardAdder({ classId }: { classId: string | any }) {
-  const { user } = useUser();
-  const { work } = useWork();
-  const { data } = useCards(work.selectedTopic?.id);
-
-  const {
-    template: { data: template },
-  } = useTemplate(work.selectedTopic?.templateId);
-
+  const { topic } = _useWorkRoutes();
+  const template = topic?.template as any;
   return (
-    <div className="container_">
+    <div className="container_ flex-col">
       <ContentHeader />
-      <AdderItem
-        template={template}
-        topic={work.selectedTopic}
-        user={user}
-        classId={classId}
-      />
-
-      <div className="p-2">
-        {data
-          ?.map((c: CardTypes, ind: number) => ({ ...c, ind }))
-          ?.sort((a: any, b: any) => b?.ind - a?.ind)
-          ?.map((card: CardTypes) => (
-            <CardItem card={card} key={card?.id} index={true} />
-          ))}
-      </div>
+      <AdderItem classId={classId} template={template} />
+      <CardLists />
     </div>
   );
 }
 
-export function AdderItem({ template, topic, user, index, classId }: any) {
+export function AdderItem({ index, template, classId }: any) {
   const parseFields = (type: string) => JSON.parse(template?.[type] || "[]");
-  const [fronts, setFronts] = useState(parseFields("fronts"));
-  const [backs, setbacks] = useState(parseFields("backs"));
-  // const { createCard, cardCreator } = useCardMutation(topic?.id);
+  const [frontsFieldsParsed, setFronts] = useState(parseFields("fronts"));
+  const [backsFieldsParsed, setbacks] = useState(parseFields("backs"));
 
-  const { addCard } = useCardAdder(topic?.id);
+  const { addCard } = useCardAdder();
 
   useEffect(() => {
     const parseFields = (type: string) => JSON.parse(template?.[type] || "[]");
     setFronts(parseFields("fronts"));
     setbacks(parseFields("backs"));
-  }, [template, topic, user]);
+  }, [template]);
 
   const onAddCardHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    const tar = e.target;
-    const x = defUser();
-    console.log("x", x);
+    const formElem = e.target;
 
-    const front = filterFields("front", tar, fronts);
-    const back = filterFields("back", tar, backs);
+    const fronts = filterFields("front", formElem, frontsFieldsParsed);
+    const backs = filterFields("back", formElem, backsFieldsParsed);
 
     const data = {
       classId,
-      userId: user?.sub || DEF_USER,
-      topicId: topic?.id,
       name: "",
       description: "",
-      fronts: front,
-      backs: back,
+      fronts,
+      backs,
     };
 
     addCard(data, () => {
-      fronts?.map((f: any) => localStorage.removeItem(f.text + "front"));
-      backs?.map((f: any) => localStorage.removeItem(f.text + "back"));
+      // clear fields from local storage
+      frontsFieldsParsed?.map((f: FieldType) =>
+        localStorage.removeItem(f.text + "front")
+      );
+      backsFieldsParsed?.map((f: FieldType) =>
+        localStorage.removeItem(f.text + "back")
+      );
     });
-  };
-
-  const filterFields = (type: string, tar: any, lists: any) => {
-    const ret = lists?.map((f: FieldType, ind: number) => {
-      const x = tar?.[f.text + "%*" + type];
-      if (x) {
-        return {
-          ...f,
-          ind,
-          value:
-            x.type === "text" || x.type === "number" ? x.value : x.files?.[0],
-        };
-      }
-    });
-    const x = ret.filter((p: any) => {
-      if (p != undefined) {
-        return true;
-      }
-    });
-    return x;
   };
 
   return (
     <div className="col_ px-4">
       <h1 className=" font-bold text-indigo-400 text-center">Add Card</h1>
-      {/* <Loader message="adding card ... " open={cardCreator?.isLoading} /> */}
       <form className="p-3" onSubmit={onAddCardHandler}>
         <div className="flex gap-6  flex-wrap ">
-          <Fields side="front" fields={fronts} />
-          <Fields side="back" fields={backs} />
+          <Fields side="front" fields={frontsFieldsParsed} />
+          <Fields side="back" fields={backsFieldsParsed} />
         </div>
         <div className="flex p-1 gap-2 py-4">
           <span className="flex flex-col">
@@ -127,12 +83,39 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
   );
 }
 
+const filterFields = (type: "front" | "back", formElem: any, lists: any) => {
+  // map through form input elements
+  // to select only the input with specified type: front or back
+  const mappedFields = lists?.map((fields: FieldType, ind: number) => {
+    const inputElem = formElem?.[fields.text + "%*" + type];
+
+    if (inputElem) {
+      return {
+        ...fields,
+        ind,
+        value:
+          inputElem.type === "text" || inputElem.type === "number"
+            ? inputElem.value
+            : inputElem.files?.[0],
+      };
+    }
+    // if no input element, just return undefined
+    // this returned map will then be filtered bellow to remove undefined fields
+  });
+
+  // filter to remove all undefined fields
+  const filteredFields = mappedFields.filter((p: any) => p);
+
+  // return filtered fields
+  return filteredFields;
+};
+
 function Fields({ fields, side }: any) {
   return (
     <div className="ring-1 ring-slate-200 rounded-xl p-6 ring-indigo-100d flex-1 bg-white dark:bg-slate-700 dark:ring-2 dark:ring-slate-600">
       <h2 className="text-indigo-400 text-center">{side}</h2>
-      {fields?.map((field: any) => (
-        <Field data={field} side={side} key={field?.id} />
+      {fields?.map((field: any, ind: number) => (
+        <Field data={field} side={side} key={field?.text + ind} />
       ))}
     </div>
   );
@@ -160,23 +143,8 @@ export function Field({ data, side = "" }: any) {
     />
   );
 
-  const inputProps = () => ({
-    text: data.text,
-    name: data.text + "%*" + side,
-    defaultValue: localVal || data?.value,
-    "data-type": data.type,
-    "data-name": data.text,
-    onInput: onInputHandler,
-    type: data?.type || "text",
-    className: "bg-slate-100 dark:ring-1 dark:ring-slate-500 w-full",
-  });
-
   const type = () => {
     switch (data.type) {
-      // case "text":
-      //   return <Input text={data.text} {...inputProps} />;
-      // case "number":
-      //   return <Input text={data.text} {...inputProps} />;
       case "audio":
         return (
           <FileInput
@@ -197,7 +165,6 @@ export function Field({ data, side = "" }: any) {
         );
       default:
         return <InputC />;
-      // return <Input text={data.text} {...inputProps} />;
     }
   };
 
@@ -273,7 +240,6 @@ function FileInput({ text, side, Icon, type }: any) {
       <input
         id={text + "%*" + side}
         ref={inf}
-        // value={file}
         onInput={(e: any) => setFile(e.target?.files?.[0])}
         type="file"
         accept={type == "image" ? "image/*" : "audio/*"}

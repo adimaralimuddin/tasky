@@ -5,21 +5,19 @@ import TextLoader from "../../elements/TextLoader";
 import FolderItem from "../folder/folderItem/FolderItem";
 
 function WorkSideFolders({ classId }: { classId: string }) {
-  const { data } = useFolder(classId);
+  const { data, isLoading } = useFolder(classId);
+
+  if (isLoading) return <Loader />;
 
   return (
     <div>
-      {/* work side {data?.length} */}
       {!data?.length ? (
-        <Loader />
+        <div>
+          <p>no folders!</p>
+        </div>
       ) : (
         data?.map((folder: FolderType) => (
-          <FolderItem
-            data={folder}
-            key={folder?.id}
-            classId={classId}
-            setSideBar={() => () => {}}
-          />
+          <FolderItem data={folder} key={folder?.id} classId={classId} />
         ))
       )}
     </div>

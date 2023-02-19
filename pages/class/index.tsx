@@ -9,10 +9,12 @@ export default PageMainClass;
 // }
 
 export const getStaticProps = async () => {
-  // const defClass = process.env.DEF_CLASS;
+  const defClass = process.env.DEF_CLASS;
 
   return {
-    props: {},
+    props: {
+      defClass: defClass || null,
+    },
   };
 };
 

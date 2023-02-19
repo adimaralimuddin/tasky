@@ -4,23 +4,24 @@ import React, { useState } from "react";
 // import { HiOutlineFolder } from "react-icons/hi";
 import { FolderType } from "../../../../features/folder/folderTypes";
 import TextLoader from "../../../elements/TextLoader";
+import FolderItemContent from "./FolderItemContent";
 // import FolderItemContent from "./FolderItemContent";
 // import FolderItemActions from "./FolderItemContent";
 // import { TopicType } from "../../../../features/topic/topicType";
 // import useTopics from "../../../../features/topic/useTopics";
 // import { DownIcon, UpIcon } from "../../../../lib/icons";
 
-const FolderItemContent = dynamic(() => import("./FolderItemContent"), {
-  ssr: false,
-  loading: () => (
-    <div>
-      content..
-      <TextLoader />
-      <TextLoader />
-      <TextLoader />
-    </div>
-  ),
-});
+// const FolderItemContent = dynamic(() => import("./FolderItemContent"), {
+//   ssr: false,
+//   loading: () => (
+//     <div>
+//       content..
+//       <TextLoader />
+//       <TextLoader />
+//       <TextLoader />
+//     </div>
+//   ),
+// });
 
 type props = {
   data: FolderType;

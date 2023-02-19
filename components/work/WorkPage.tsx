@@ -1,12 +1,13 @@
 import dynamic from "next/dynamic";
 import LayoutHeaderLoader from "../layouts/LayoutHeaderLoader";
 import WorkContentLoader from "./workContent/WorkContentLoader";
-import WorkSideLoader from "./WorkSide/WorkSideLoader";
+// import WorkSideLoader from "./WorkSide/WorkSideLoader";
+import WorkSide from "./WorkSide/WorkSideMain";
 
-const WorkSide = dynamic(() => import("./WorkSide/WorkSideMain"), {
-  ssr: false,
-  loading: WorkSideLoader,
-});
+// const WorkSide = dynamic(() => import("./WorkSide/WorkSideMain"), {
+//   ssr: false,
+//   loading: WorkSideLoader,
+// });
 const WorkHeader = dynamic(() => import("./workHeader/WorkHeader"), {
   ssr: false,
   loading: LayoutHeaderLoader,

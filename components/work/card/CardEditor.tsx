@@ -92,9 +92,9 @@ function Fields({
           ?.sort((a, b) => a?.ind - b?.ind)
           ?.map((field) =>
             field?.type == "text" || field?.type == "number" ? (
-              <FieldEditor data={field} setter={setter} />
+              <FieldEditor key={field.id} data={field} setter={setter} />
             ) : (
-              <FieldFileEditor data={field} setter={setter} />
+              <FieldFileEditor key={field.id} data={field} setter={setter} />
             )
           )}
       </div>

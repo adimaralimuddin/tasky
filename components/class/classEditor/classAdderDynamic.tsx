@@ -14,7 +14,7 @@ interface Props {
   //   description: string;
   //   open?: boolean;
 }
-function classAdderDynamic({}: Props) {
+function ClassAdderDynamic({}: Props) {
   const [name, setName] = useState("");
   const [description, setDesc] = useState("");
   const [open, setOpen] = useState(false);
@@ -57,4 +57,4 @@ function classAdderDynamic({}: Props) {
   );
 }
 
-export default classAdderDynamic;
+export default ClassAdderDynamic;

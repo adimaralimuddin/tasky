@@ -1,7 +1,9 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { BiBookAlt } from "react-icons/bi";
 import { TopicType } from "../../../../features/topic/topicType";
-import useWork from "../../../../features/work/useWork";
+// import useWork from "../../../../features/work/useWork";
 import _charLimits from "../../../../lib/utils/_charLimits";
 import TopicDeleter from "../topicEditor/TopicDeleter";
 import TopicRenamer from "../topicEditor/TopicRenamer";
@@ -20,10 +22,16 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [changedName, setChangedName] = useState(false);
-  const { setTopic, work } = useWork();
+  // const { setTopic, work } = useWork();
+  const { query } = useRouter();
+  const { classId } = query;
 
-  const isSelected = (a: any = true, b: any = false) =>
-    work?.selectedTopic?.id === data.id ? a : b;
+  const isSelected = (a: any = true, b: any = false) => {
+    // if (query.id) {
+    return query?.id === data.id ? a : b;
+    // }
+    // return work?.selectedTopic?.id === data.id ? a : b;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -35,50 +43,68 @@ export default function TopicItem({ data, selectFolder, setSideBar }: props) {
     }
   }, [data?.name]);
 
+  const onSelectTopic = () => {
+    // setTopic(data);
+    selectFolder(true);
+  };
+  // const { template, ...queryProps } = data;
+
+  // console.log(data);
+
   return (
-    <div className="flex flex-col">
-      <div
-        onAnimationEnd={(e) => {
-          const div = e.target as HTMLDivElement;
-          if (div.classList.contains("popy")) {
-            setChangedName(false);
+    <Link
+      passHref
+      replace={true}
+      href={{
+        pathname: `/work/${classId}/content`,
+        query: {
+          id: data.id,
+          name: data.name,
+          selectedCategory: "all",
+        },
+      }}
+    >
+      <div className="flex flex-col">
+        <div
+          onAnimationEnd={(e) => {
+            const div = e.target as HTMLDivElement;
+            if (div.classList.contains("popy")) {
+              setChangedName(false);
+            }
+          }}
+          onMouseEnter={(_) => setHovered(true)}
+          onMouseLeave={(_) => setHovered(false)}
+          onClick={onSelectTopic}
+          className={
+            "cursor-pointer flex items-center  dark:hover:bg-slate-600 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
+            isSelected(
+              " bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-600",
+              "hover:bg-slate-50"
+            ) +
+            (changedName && " popy")
           }
-        }}
-        onMouseEnter={(_) => setHovered(true)}
-        onMouseLeave={(_) => setHovered(false)}
-        onClick={() => {
-          setTopic(data);
-          selectFolder(true);
-        }}
-        className={
-          "cursor-pointer flex items-center  dark:hover:bg-slate-600 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
-          isSelected(
-            " bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-600",
-            "hover:bg-slate-50"
-          ) +
-          (changedName && " popy")
-        }
-      >
-        <BiBookAlt className="mr-1 text-indigo-600" />
-        <small title={data?.name} className="flex-1 py-1 whitespace-nowrap">
-          {_charLimits(data?.name, 20)}
-        </small>
-        <TopicOptions
-          hovered={hovered}
-          setRenaming={setRenaming}
-          setIsDeleting={setIsDeleting}
+        >
+          <BiBookAlt className="mr-1 text-indigo-600" />
+          <small title={data?.name} className="flex-1 py-1 whitespace-nowrap">
+            {_charLimits(data?.name, 20)}
+          </small>
+          <TopicOptions
+            hovered={hovered}
+            setRenaming={setRenaming}
+            setIsDeleting={setIsDeleting}
+            data={data}
+            setSideBar={setSideBar}
+          />
+        </div>
+
+        <TopicRenamer data={data} open={renaming} setOpen={setRenaming} />
+
+        <TopicDeleter
           data={data}
-          setSideBar={setSideBar}
+          isDeleting={isDeleting}
+          setIsDeleting={setIsDeleting}
         />
       </div>
-
-      <TopicRenamer data={data} open={renaming} setOpen={setRenaming} />
-
-      <TopicDeleter
-        data={data}
-        isDeleting={isDeleting}
-        setIsDeleting={setIsDeleting}
-      />
-    </div>
+    </Link>
   );
 }

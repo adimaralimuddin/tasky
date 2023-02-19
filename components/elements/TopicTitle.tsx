@@ -1,13 +1,16 @@
+import { useRouter } from "next/router";
 import React from "react";
 import useCards from "../../features/card/useCards";
 import useWork from "../../features/work/useWork";
 
 export default function TopicTitle({ css }: any) {
+  const { query } = useRouter();
   const {
     work: { selectedCategory, selectedTopic },
   } = useWork();
   const { category } = useCards(selectedTopic?.id);
-  const cards = category(selectedCategory);
+  const cards = category(String(query?.selectedCategory) || selectedCategory);
+  console.log("q", query);
   return (
     <div
       className={
@@ -15,9 +18,11 @@ export default function TopicTitle({ css }: any) {
         css
       }
     >
-      <p className="text-cyan-600   ">{selectedTopic?.name}</p>
+      <p className="text-cyan-600"> {query?.name || selectedTopic?.name}</p>
       <p className="text-slate-400">/</p>
-      <p className="text-slate-500">{selectedCategory}</p>
+      <p className="text-slate-500">
+        {query?.selectedCategory || selectedCategory}
+      </p>
       <p className="text-slate-400">/</p>
       <p className="text-cyan-500">
         {cards?.length} card{cards?.length > 1 && "s"}

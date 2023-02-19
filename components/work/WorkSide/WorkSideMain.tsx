@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { RxDashboard } from "react-icons/rx";
@@ -54,7 +55,7 @@ export default function WorkSide<Type>() {
             onClick={(_) => setContent("dashboard")}
           >
             <RxDashboard />
-            Dashboard
+            <Link href={`/work/${classId}`}>Dashboard</Link>
           </h3>
         </div>
         <hr className="" />

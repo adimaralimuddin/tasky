@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import LayoutHeaderLoader from "../layouts/LayoutHeaderLoader";
-import WorkContentLoader from "./workContent/WorkContentLoader";
+// import WorkContentLoader from "./workContent/WorkContentLoader";
 import WorkSideLoader from "./WorkSide/WorkSideLoader";
 
 const WorkSide = dynamic(() => import("./WorkSide/WorkSideMain"), {
@@ -11,10 +11,10 @@ const WorkHeader = dynamic(() => import("./workHeader/WorkHeader"), {
   ssr: false,
   loading: LayoutHeaderLoader,
 });
-const WorkContent = dynamic(() => import("./workContent/WorkContent"), {
-  ssr: false,
-  loading: WorkContentLoader,
-});
+// const WorkContent = dynamic(() => import("./workContent/WorkContent"), {
+//   ssr: false,
+//   loading: WorkContentLoader,
+// });
 
 export default function WorkPage() {
   return (
@@ -23,7 +23,7 @@ export default function WorkPage() {
         <WorkSide />
         <div className="flex-[3] flex flex-col border-b-1 shadow-sm ">
           <WorkHeader />
-          <WorkContent />
+          {/* <WorkContent /> */}
         </div>
       </div>
     </div>

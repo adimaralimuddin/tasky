@@ -13,11 +13,11 @@ import TextLoader from "../../elements/TextLoader";
 // import TopicAdder from "../topic/topicEditor/TopicAdder";
 
 const TopicAdder = dynamic(() => import("../topic/topicEditor/TopicAdder"), {
-  // ssr: false,
+  ssr: false,
 });
 const FolderAdder = dynamic(
-  () => import("../folder/folderEditor/FolderAdder")
-  // { ssr: false }
+  () => import("../folder/folderEditor/FolderAdder"),
+  { ssr: false }
 );
 
 const WorkSideFolders = dynamic(() => import("./WorkSideFolders"), {
@@ -32,11 +32,14 @@ const WorkSideFolders = dynamic(() => import("./WorkSideFolders"), {
 });
 
 export default function WorkSide() {
-  const {
-    query: { classId },
-  } = useRouter();
+  // const {
+  //   query: { classId },
+  // } = useRouter();
 
-  const { getNavQueries } = _useWorkRoutes();
+  const {
+    getNavQueries,
+    query: { classId },
+  } = _useWorkRoutes();
 
   const Content = (
     <div className={" rounded-xl flex-1 max-w-xs   "}>

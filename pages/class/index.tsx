@@ -10,6 +10,7 @@ export default PageMainClass;
 
 export const getStaticProps = async () => {
   const defClass = process.env.DEF_CLASS;
+  console.log("class index = ", defClass);
 
   return {
     props: {

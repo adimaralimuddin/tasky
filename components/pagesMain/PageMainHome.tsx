@@ -13,6 +13,8 @@ function PageMainHome({ defClass }: { defClass: string }) {
       <LayoutMainHeader />
       <A />
 
+      <small>defcal {defClass}</small>
+
       <Caption defClass={defClass} />
     </div>
   );
@@ -21,6 +23,7 @@ function PageMainHome({ defClass }: { defClass: string }) {
 export default PageMainHome;
 
 function Caption({ defClass }: { defClass: string }) {
+  if (!defClass) return null;
   return (
     <div className="m-auto gap-2 flex flex-col items-center justify-center z-20 text-center">
       <h1 className="text-cyan-500 text-5xl font-bold drop-shadow-lg">

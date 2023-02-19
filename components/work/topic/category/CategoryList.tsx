@@ -13,13 +13,13 @@ export default function CategoryList({ classId }: any) {
   const cards = category(work.selectedCategory);
 
   return (
-    <Box css=" flex-1  flex flex-col ">
+    <div className=" flex-1  flex flex-col container_   ">
       <ContentHeader />
       {cards?.length > 0 ? (
         <CardList classId={classId} cards={cards} />
       ) : (
         <NoCards button={false} />
       )}
-    </Box>
+    </div>
   );
 }

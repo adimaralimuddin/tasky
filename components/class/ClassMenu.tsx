@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import useClass from "../../features/class/useClass";
 import { Pencil, Trash } from "../../lib/icons";
-import Loader from "../elements/Loader";
 import Option from "../elements/Option";
-import Verifier from "../elements/Verifier";
+import ClassDeleter from "./classEditor/ClassDeleter";
 import ClassRenamer from "./ClassRenamer";
 import { ClassType } from "./classTypes";
 
 export default function ClassMenu({ data }: { data: ClassType }) {
-  const { deleteClass, classDeleter } = useClass(data?.id);
   const [isRenameing, setIsRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -25,14 +22,6 @@ export default function ClassMenu({ data }: { data: ClassType }) {
     },
   ];
 
-  const onDeleteHandler = () => {
-    if (data?.sample)
-      return alert(
-        "sample class will not be deleted. it's there as sample only. you can always signin and create your own class."
-      );
-    deleteClass(data?.id);
-  };
-
   return (
     <div>
       <div
@@ -41,21 +30,21 @@ export default function ClassMenu({ data }: { data: ClassType }) {
         onMouseLeave={(_) => setHovered(false)}
         className="hover:bg-slate-100 dark:hover:bg-slate-600 cursor-pointer rounded-lg flex items-center justify-between text-cyan-600 dark:text-white ring-1d px-3"
       >
-        <h2 className="whitespace-nowrap">
-          {data?.name && data?.name?.length > 15
+        <h3 className="whitespace-nowrap">
+          {data?.name && data?.name?.length > 25
             ? data?.name?.substring(0, 15) + "..."
             : data?.name}
-        </h2>
+        </h3>
         {hovered && <Option options={options} left={true} />}
       </div>
       <ClassRenamer data={data} open={isRenameing} setOpen={setIsRenaming} />
-      <Verifier
-        message="are you sure to delete this class"
-        open={isDeleting}
-        setOpen={setIsDeleting}
-        onOkay={onDeleteHandler}
+      <ClassDeleter
+        data={data}
+        editable={true}
+        isDeleting={isDeleting}
+        setIsDeleting={setIsDeleting}
+        setIsEditing={() => {}}
       />
-      <Loader message="deleting class ... " open={classDeleter?.isLoading} />
     </div>
   );
 }

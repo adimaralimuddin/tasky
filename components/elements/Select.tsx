@@ -31,24 +31,24 @@ export default function Select({
   };
 
   return (
-    <div className={" " + css}>
-      <p className="mx-2 whitespace-nowrap">{text}</p>
+    <div className={"flex items-center gap-1 " + css}>
+      <small className="mx-2 flex-1 whitespace-nowrap">{text} </small>
       <div>
         <p
           onClick={(_) => setOpen((p) => !p)}
-          className="	 cursor-pointer hover:shadow-smd hover:ring-1 ring-slate-200 rounded-lg m-1 w-mind  p-2 bg-slate-100 dark:bg-slate-600 min-w-[70px] flex items-center justify-between"
+          className="	text-sm cursor-pointer hover:shadow-smd hover:ring-1 ring-slate-200 rounded-lg p-1 px-2 bg-slate-100 dark:bg-slate-600 min-w-[70px] flex items-center justify-between gap-2"
         >
           {val?.[0]?.toString()}
           {open ? <UpIcon /> : <DownIcon />}
         </p>
         {open && (
           <div className="relative z-20">
-            <Box css=" shadow-xl ring-1 ring-slate-200 absolute top-0 left-0 p-0d overflow-hidden min-w-[80px] ">
+            <Box css=" shadow-xl ring-1 ring-slate-200 absolute top-0 left-0 overflow-hidden min-w-[80px] ">
               {options?.map((option) => (
                 <div
                   key={option?.[0]?.toString()}
                   onClick={(_) => onInputHandler(option)}
-                  className="hover:bg-slate-100 dark:hover:bg-slate-600 cursor-pointer px-4 p-1"
+                  className="hover:bg-slate-100 dark:hover:bg-slate-600 cursor-pointer px-4 p-1 text-sm"
                 >
                   {option[0]?.toString()}
                 </div>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
 import useTemplate from "../../../features/template/useTemplate";
 import useWork from "../../../features/work/useWork";
+import SearchBox from "../../elements/SearchBox";
+import Select from "../../elements/Select";
 import CardQueryView from "./CardQueryView";
 
 export default function CardQuery({
@@ -50,60 +52,38 @@ export default function CardQuery({
   };
 
   return (
-    <div className="flex flex-wrap items-end gap-1 ">
-      <span
-        className="flex flex-col flex-1 hover:scale-[1.2] transition 
-      cursor-pointer hover:shadow-lg  bg-white dark:bg-slate-700 p-1 rounded-lg 
-      hover:ring-1 ring-slate-300  dark:ring-slate-400 hover:text-sm hover:p-3 min-w-[120px]"
-      >
-        <label htmlFor="">search</label>
-        <input
-          onInput={onSearchHandler}
-          type="text"
-          className="ring-1 px-2 m-0 p-0 w-full ring-slate-300 dark:ring-slate-500 outline-indigo-400 dark:outline-nond "
-          placeholder={`search ${type} ${filter}`}
-        />
-      </span>
-      <SelectItem
-        value={filter}
-        text="filter"
-        onInput={(e: any) => setFilter(e.target.value)}
-      >
-        {fields?.[type]?.map((f: any) =>
-          f?.type == "text" || f?.type == "number" ? (
-            <option value={f?.text}>{f?.text}</option>
-          ) : null
-        )}
-      </SelectItem>
-      <SelectItem
-        text="side"
-        onInput={(e: any) => {
-          setType(e.target.value);
-          updateFilter(e.target.value);
+    <div className="flex flex-wrap gap-1 items-center">
+      <SearchBox
+        onInput={onSearchHandler}
+        placeholder={`search ${type} ${filter}`}
+      />
+
+      <Select
+        onInput={(side: string) => {
+          setType(side);
+          updateFilter(side);
         }}
-      >
-        <option value="fronts">fronts</option>
-        <option value="backs">backs</option>
-      </SelectItem>
+        text="filter"
+        options={fields?.[type]
+          ?.filter((f: any) =>
+            f?.type == "text" || f?.type == "number" ? true : null
+          )
+          .map((f: any) => [f?.text, f?.text])}
+      />
+
+      <Select
+        onInput={(side: string) => {
+          setType(side);
+          updateFilter(side);
+        }}
+        text="Side"
+        options={[
+          ["fronts", "fronts"],
+          ["backs", "backs"],
+        ]}
+      />
       <CardQueryView />
     </div>
-  );
-}
-
-function SelectItem({ children, onInput, text, value }: any) {
-  return (
-    <span className="flex flex-col hover:scale-[1.1]d transition cursor-pointer hover:shadow-lg p-1 rounded-lg hover:ring-1 ring-slate-200 dark:ring-slate-500  bg-white dark:bg-transparent">
-      <label className="text-sm">{text}</label>
-      <select
-        className="m-0 p-0 ring-1 px-1 ring-slate-300 dark:ring-slate-500"
-        name=""
-        id=""
-        onInput={onInput}
-        value={value}
-      >
-        {children}
-      </select>
-    </span>
   );
 }
 

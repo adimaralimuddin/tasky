@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         text: {
           light: "#d2bab0",
+          
         },
       },
       animation: {

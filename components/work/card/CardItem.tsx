@@ -1,5 +1,5 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
 import { useCardMutation } from "../../../features/card/useCardMutation";
 import useWork from "../../../features/work/useWork";
@@ -80,7 +80,7 @@ export default function CardItem({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       css={
-        "flexd ring-1 dark:ring-2 ring-slate-200 items-center my-5 min-w-[100px] shadow-lg bg-white  dark:ring-1 dark:ring-slate-600 dark:bg-slate-600 " +
+        "flexd ring-1d dark:ring-2 ring-slate-200 items-center my-5 min-w-[100px] shadow-none bg-white  dark:ring-1 dark:ring-slate-600 dark:bg-slate-600 " +
         css
       }
     >
@@ -91,7 +91,6 @@ export default function CardItem({
           </small>
         </span>
       )}
-
       <span className="relative flex justify-end p-1">
         <div className="absolute">
           {hovered && allowOption && <Option options={options()} left={true} />}
@@ -175,11 +174,11 @@ export function CardFronts({
   return (
     <div
       className={
-        "ring-1d m-1 flex flex-col gap-2 justify-center  flex-1 px-2 p-1 " +
+        " m-1 flex  gap-2 justify-center  flex-1 px-2 p-1 " +
         (lebel ? " items-center " : " items-center  ")
       }
     >
-      <div className="ring-1d ring-red-300">
+      <div className="ring-1d ring-red-300 flex flex-wrap gap-3">
         {card?.[type]
           ?.sort((a: FieldType, b: FieldType) => a?.ind - b?.ind)
           ?.map((field: FieldType) => (
@@ -201,7 +200,7 @@ export function CardFronts({
 function FieldItem({
   field,
   textSize,
-  imageSize = 150,
+  imageSize = 100,
   lebel,
   view,
   imageViewer,
@@ -225,23 +224,26 @@ function FieldItem({
 
   return (
     <div>
-      <div className="flex gap-2 items-start py-1">
+      <div className="flex gap-2 items-start py-1 flexd flex-col ">
         {lebel && (
-          <p className={"text-slate-400 dark:text-slate-400 " + textSize}>
+          <p
+            className={
+              "text-slate-400 dark:text-slate-400 text-sm   " + textSize
+            }
+          >
             {field?.text} :
           </p>
         )}
         {field?.type !== "image" && field?.type !== "audio" && (
           <p className={"flex-1 dark:text-slate-200 " + textSize}>
-            {" "}
             {field?.value}
           </p>
         )}
         {field?.type == "image" && field?.value && (
           <ImageItem
             src={field?.value}
-            width={imageSize || 130}
-            height={imageSize || 130}
+            width={imageSize}
+            height={imageSize}
             imageViewer={imageViewer}
           />
         )}

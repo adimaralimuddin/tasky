@@ -17,7 +17,7 @@
 
   input,
   select {
-    @apply bg-slate-100 dark:bg-slate-600;
+    @apply dark:bg-slate-600;
   }
 
   p,
@@ -33,16 +33,47 @@
   }
 }
 
-/* * {
-  outline: none;
-} */
+@layer components {
+  .card {
+    @apply rounded-xl p-4 bg-white flex flex-col dark:bg-slate-700;
+  }
+}
+
+@layer utilities {
+  .col_ {
+    @apply flex flex-col gap-3;
+  }
+  .flex_ {
+    @apply flex  gap-3 items-center;
+  }
+  .container_ {
+    @apply w-full mx-auto max-w-5xl p-2 flex-1 flex;
+  }
+  .title_ {
+    @apply text-slate-600;
+  }
+  .subtitle_ {
+    @apply text-slate-500;
+  }
+  .transition_ {
+    @apply transition ease-in-out duration-200;
+  }
+  .ring_ {
+    @apply ring-1 ring-slate-200 dark:ring-slate-500;
+  }
+  .pop_ {
+    @apply -translate-y-[2px];
+  }
+}
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
 }
 
 a {
@@ -52,7 +83,8 @@ a {
 
 * {
   box-sizing: border-box;
-  font-weight: 600;
+  /* letter-spacing: 0.9px; */
+  font-weight: 500;
 }
 
 a {
@@ -71,6 +103,7 @@ textarea {
   transition: all 0.2s;
   display: flex;
   align-items: center;
+  cursor: pointer;
   gap: 5px;
 }
 
@@ -100,4 +133,27 @@ h2 {
 }
 h3 {
   font-size: large;
+}
+
+.popy {
+  /* background-color: pink; */
+  /* transition: all 1s; */
+  animation: popy 0.8s ease-in-out;
+}
+
+@keyframes popy {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    scale: 1.1;
+    background-color: rgb(173, 179, 242);
+  }
+  75% {
+    scale: 1.1;
+    background-color: rgb(155, 161, 230);
+  }
+  100% {
+    background-color: transparent;
+  }
 }

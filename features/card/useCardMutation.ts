@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  cardApiCreateCard,
+  // cardApiCreateCard,
   cardApiDeleteCard,
   cardApiSetCardLevel,
 } from "./cardApi";
@@ -9,13 +9,13 @@ import { CardTypes } from "./CardType";
 export function useCardMutation(topicId?: string) {
   const client = useQueryClient();
 
-  const cardCreator = useMutation(cardApiCreateCard, {
-    onSuccess: (createdCard) => {
-      client.setQueryData(["cards", topicId], (cards: any) => {
-        return [...cards, createdCard];
-      });
-    },
-  });
+  // const cardCreator = useMutation(cardApiCreateCard, {
+  //   onSuccess: (createdCard) => {
+  //     client.setQueryData(["cards", topicId], (cards: any) => {
+  //       return [...cards, createdCard];
+  //     });
+  //   },
+  // });
 
   const cardDeleter = useMutation(cardApiDeleteCard, {
     onSuccess: (deletedCard) => {
@@ -39,9 +39,9 @@ export function useCardMutation(topicId?: string) {
   });
 
   return {
-    cardCreator,
+    // cardCreator,
     cardDeleter,
-    createCard: cardCreator.mutate,
+    // createCard: cardCreator.mutate,
     deleteCard: cardDeleter.mutate,
     setCardLevel: setCardLevel.mutate,
   };

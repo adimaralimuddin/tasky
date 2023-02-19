@@ -29,6 +29,7 @@ export const Card = objectType({
   name: "Card",
   definition(t) {
     t.string("id");
+    // t.string("classId");
     t.string("topicId");
     t.string("userId");
     t.string("name");
@@ -94,17 +95,39 @@ export const CardQueries = extendType({
     //get new cards
     t.list.field("dashboard", {
       type: Card,
-      args: { userId: nonNull(stringArg()) },
-      resolve(par, { userId }, ctx) {
+      args: { classId: nonNull(stringArg()) },
+      resolve(par, { classId }, ctx) {
         return ctx.prisma.card.groupBy({
           by: ["level", "category"],
-          where: { userId, NOT: [{ topicId: null }] },
+          where: {
+            Topic: {
+              folder: {
+                classId,
+              },
+            },
+          },
           _count: {
             id: true,
           },
         });
       },
     });
+    // t.list.field("dashboard", {
+    //   type: Class,
+    //   args: { classId: nonNull(stringArg()) },
+    //   resolve(par, { classId }, ctx) {
+    //     return ctx.prisma.class.findUnique({
+    //       where: { id: classId },
+    //     });
+    //     // return ctx.prisma.card.groupBy({
+    //     //   by: ["level", "category"],
+    //     //   where: { id, NOT: [{ topicId: null }] },
+    //     //   _count: {
+    //     //     id: true,
+    //     //   },
+    //     // });
+    //   },
+    // });
   },
 });
 

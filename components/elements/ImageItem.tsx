@@ -6,8 +6,8 @@ export default function ImageItem({
   css,
   divCss,
   src,
-  width = 130,
-  height = 130,
+  width = 100,
+  height = 100,
   imageViewer,
 }: any) {
   const [open, setOpen] = useState(false);

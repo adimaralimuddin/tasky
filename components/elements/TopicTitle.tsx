@@ -11,11 +11,11 @@ export default function TopicTitle({ css }: any) {
   return (
     <div
       className={
-        "flex-1 flex items-center gap-x-2 px-[4%] whitespace-nowrapd flex-wrap py-3  " +
+        "flex-1 flex items-center gap-x-2 whitespace-nowrapd flex-wrap py-2 text-sm " +
         css
       }
     >
-      <h3 className="text-cyan-600 text-xl  ">{selectedTopic?.name}</h3>
+      <p className="text-cyan-600   ">{selectedTopic?.name}</p>
       <p className="text-slate-400">/</p>
       <p className="text-slate-500">{selectedCategory}</p>
       <p className="text-slate-400">/</p>

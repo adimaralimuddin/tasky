@@ -1,11 +1,11 @@
-import Box from "../../elements/Box";
-import BtnPrime from "../../elements/BtnPrime";
-import Input from "../../elements/Input";
-import Modal from "../../elements/Modal";
-import useFolderMutation from "../../../features/folder/useFolderMutation";
-import { FolderType } from "./folderTypes";
 import { useUser } from "@auth0/nextjs-auth0";
-import { DEF_USER } from "../../../lib/public";
+import { FolderType } from "../../../../features/folder/folderTypes";
+import useFolderRenamer from "../../../../features/folder/useFolderRenamer";
+import { DEF_USER } from "../../../../lib/public";
+import Box from "../../../elements/Box";
+import BtnPrime from "../../../elements/BtnPrime";
+import Input from "../../../elements/Input";
+import Modal from "../../../elements/Modal";
 
 type props = {
   renaming: boolean;
@@ -20,7 +20,7 @@ export default function FolderRenamer({
   data,
   classId,
 }: props) {
-  const { renameFolder } = useFolderMutation(classId);
+  const { renameFolder } = useFolderRenamer(classId);
   const { user } = useUser();
 
   const onRenameHandler = (e: any) => {

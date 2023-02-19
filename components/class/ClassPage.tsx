@@ -1,29 +1,33 @@
-import React from "react";
-import useClassHooks from "../../hooks/useClassHooks";
-import LayoutMainHeader from "../layouts/LayoutMainHeader";
-import ClassAdder from "./ClassAdder";
-import ClassItem from "./ClassItem";
-import { ClassType } from "./classTypes";
+import dynamic from "next/dynamic";
+import React, { Suspense } from "react";
+import { FaPlus } from "react-icons/fa";
+import LayoutHeader from "../layouts/LayoutHeader";
+import ClassAdderView from "./classEditor/ClassAdderView";
+import ClassListLoader from "./classlists/ClassListLoader";
 
-function PageMainClass({ defClass }: any) {
-  const {
-    classes: { data },
-    sampleClasses: { data: sampleClasses },
-  } = useClassHooks();
+const DynamicClasses = dynamic(() => import("./classlists/Classes"), {
+  ssr: false,
+  loading: ClassListLoader,
+});
+const DynamicClassSamples = dynamic(() => import("./classlists/ClassSamples"), {
+  ssr: false,
+  loading: ClassListLoader,
+});
 
+const DynamicClassAdder = dynamic(() => import("./classEditor/ClassAdder"), {
+  ssr: false,
+  loading: ClassAdderView,
+});
+function PageMainClass() {
   return (
-    <div className="min-h-screen dark:bg-slate-800">
-      <LayoutMainHeader />
-      <div className="p-5 py-[5%] flex gap-3 flex-wrap content-center justify-center max-w-5xl mx-auto">
-        <ClassAdder />
-
-        {sampleClasses?.map((data: ClassType) => (
-          <ClassItem data={data} editable={false} key={data?.id} />
-        ))}
-
-        {data?.map((data: ClassType) => (
-          <ClassItem data={data} key={data?.id} />
-        ))}
+    <div className="min-h-screen dark:bg-slate-800 flex flex-col ">
+      <LayoutHeader />
+      <div className="container py-[1rem]  mx-auto flex-col px-[5%] dring-1 flex-1 ">
+        <DynamicClassAdder />
+        <br />
+        <DynamicClasses title="My Classes" />
+        <br />
+        <DynamicClassSamples title="Sample Classes" />
       </div>
     </div>
   );

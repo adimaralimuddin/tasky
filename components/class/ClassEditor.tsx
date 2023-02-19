@@ -1,21 +1,30 @@
-import { ClassType } from "./classTypes";
 import React, { useState } from "react";
-import Modal from "../elements/Modal";
+import useClassUpdater from "../../features/class/useClassUpdater";
 import Box from "../elements/Box";
-import Input from "../elements/Input";
 import BtnPrime from "../elements/BtnPrime";
 import BtnWarm from "../elements/BtnWarm";
+import Input from "../elements/Input";
+import Modal from "../elements/Modal";
+import { ClassType } from "./classTypes";
 
 type props = {
   open: boolean;
   setOpen: any;
   data: ClassType;
-  onSave: any;
+  setIsEditing: any;
+  editable: boolean;
 };
 
-export default function ClassEditor({ open, setOpen, data, onSave }: props) {
-  const [name, setName] = useState(data?.name);
+export default function ClassEditor({
+  open,
+  setOpen,
+  data,
+  setIsEditing,
+  editable,
+}: props) {
+  const [name, setName] = useState(data.name);
   const [description, setDescription] = useState(data?.description);
+  const { updateClass } = useClassUpdater();
 
   const onResetHandler = () => {
     setName(data?.name);
@@ -23,7 +32,18 @@ export default function ClassEditor({ open, setOpen, data, onSave }: props) {
   };
 
   const onSaveHandler = () => {
-    onSave({ classId: data.id, name, description });
+    if (!editable) {
+      return alert(
+        "sample class will not be edited. you can always login and create or delete your own class"
+      );
+    }
+    const data_ = {
+      classId: data.id,
+      name: name || "",
+      description: description || data.description || "",
+    };
+    updateClass(data_);
+    setIsEditing(false);
   };
 
   return (

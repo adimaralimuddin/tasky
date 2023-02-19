@@ -5,7 +5,7 @@ function BtnPrime(p: any) {
     <button
       {...p}
       className={
-        "bg-indigo-400 dark:bg-indigo-500 font-semibold text-white flex items-center justify-center hover:ring-2 ring-indigo-200 dark:ring-indigo-400 " +
+        "bg-indigo-400 dark:bg-indigo-500 font-semibold text-white flex items-centerd gap-2  justify-centerd hover:ring-2 ring-indigo-200 dark:ring-indigo-400 " +
         p.css
       }
     >

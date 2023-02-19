@@ -1,6 +1,6 @@
 import React from "react";
 
-function Box({ css, ...props }: any) {
+export default function Box({ css, ...props }: any) {
   return (
     <div
       className={
@@ -12,5 +12,3 @@ function Box({ css, ...props }: any) {
     </div>
   );
 }
-
-export default Box;

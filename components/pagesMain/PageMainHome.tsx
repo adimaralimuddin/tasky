@@ -9,7 +9,7 @@ import LayoutMainHeader from "../layouts/LayoutMainHeader";
 function PageMainHome({ defClass }: { defClass: string }) {
   console.log("def ", defClass);
   return (
-    <div className="flex dark:bg-green-500d flex-col min-h-screen bg-slate-100 dark:bg-slate-800 ">
+    <div className="flex flex-col min-h-screen bg-whited bg-slate-100 dark:bg-slate-800 ">
       <LayoutMainHeader />
       <A />
 

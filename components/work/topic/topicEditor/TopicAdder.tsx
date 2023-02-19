@@ -1,16 +1,17 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
-import useTemplates from "../../../features/template/useTemplates";
-import { TopicType } from "../../../features/topic/topicType";
-import useTopic from "../../../features/topic/useTopic";
-import useWork from "../../../features/work/useWork";
-import { DEF_USER } from "../../../lib/public";
-import Box from "../../elements/Box";
-import BtnPrime from "../../elements/BtnPrime";
-import Input from "../../elements/Input";
-import Loader from "../../elements/Loader";
-import Modal from "../../elements/Modal";
-import Select from "../../elements/Select";
+import useTemplates from "../../../../features/template/useTemplates";
+import { TopicType } from "../../../../features/topic/topicType";
+import useTopic from "../../../../features/topic/useTopic";
+import useWork from "../../../../features/work/useWork";
+import { DEF_USER } from "../../../../lib/public";
+import Box from "../../../elements/Box";
+import BtnPrime from "../../../elements/BtnPrime";
+import Input from "../../../elements/Input";
+import Loader from "../../../elements/Loader";
+import Modal from "../../../elements/Modal";
+import Select from "../../../elements/Select";
+
 export default function TopicAdder() {
   const { user } = useUser();
   const { templates, sampleTemplates } = useTemplates(user?.sub || DEF_USER);
@@ -42,9 +43,9 @@ export default function TopicAdder() {
     setOpenTopicAdder(false);
   };
 
-  if (topicAdder.isLoading) {
-    return <Loader message="adding topic ... " open={topicAdder.isLoading} />;
-  }
+  // if (topicAdder.isLoading) {
+  //   return <Loader message="adding topic ... " open={topicAdder.isLoading} />;
+  // }
 
   return (
     <Modal

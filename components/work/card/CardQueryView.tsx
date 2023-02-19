@@ -5,6 +5,7 @@ import useWork from "../../../features/work/useWork";
 import { ViewIcon } from "../../../lib/icons";
 import Box from "../../elements/Box";
 import Input from "../../elements/Input";
+import Select from "../../elements/Select";
 import SelectSimple from "../../elements/SelectSimple";
 
 export default function CardQueryView() {
@@ -39,37 +40,42 @@ export default function CardQueryView() {
   return (
     <div>
       <div
-        className="flex hover:shadow-lg cursor-pointer hover:-translate-y-[2px]d items-center px-2 gap-1 ring-1 ring-slate-300 dark:ring-slate-500 rounded-lg transition m-1 dark:bg-slate-600"
+        className="flex hover:text-indigo-400 cursor-pointer items-center px-2 gap-1  rounded-lg transition  dark:bg-slate-600 "
         title="view"
         onClick={(_) => setOpen((p) => !p)}
       >
-        <ViewIcon className="text-2xl text-slate-600 dark:text-slate-300 " />{" "}
+        <ViewIcon className="text-xl" />
         view
       </div>
       {open && (
         <div className="relative z-50">
           <div className="absolute top-0 right-0 z-20">
-            <Box css="z-20 shadow-xl ring-1 ring-slate-200 pr-3 dark:bg-slate-600 dark:shadow-2xl">
-              <SelectSimple
-                text="Font size"
-                onInput={(e: any) => setTextSize(e.target.value)}
-                defaultValue={work.textSize}
-                value={work.textSize}
-              >
-                <option value="">normal</option>
-                <option value="text-sm">small</option>
-                <option value="text-xl">large</option>
-              </SelectSimple>
-              <SelectSimple
-                text="Image size"
-                onInput={(e: any) => setImageSize(e.target.value)}
-                defaultValue={work?.imageSize}
-              >
-                <option value={150}>normal</option>
-                <option value={100}>small</option>
-                <option value={200}>large</option>
-              </SelectSimple>
-              <div className="py-2 text-slate-500">
+            <Box css="z-20 shadow-xl ring-1 ring-slate-200 pr-3 dark:bg-slate-600 dark:shadow-2xl gap-2 flex flex-col">
+              <p className="text-center text-sm py-2 text-slate-500">
+                Fields Sizes
+              </p>
+              <Select
+                text="Font Size"
+                onInput={setTextSize}
+                options={[
+                  ["normal", ""],
+                  ["small", "text-sm"],
+                  ["large", "text-xl"],
+                ]}
+              />
+              <Select
+                text="Image Size"
+                onInput={setImageSize}
+                options={[
+                  ["normal", 110],
+                  ["small", 80],
+                  ["large", 150],
+                  ["xl", 180],
+                ]}
+              />
+
+              <div className="py-1  text-slate-500">
+                <Divider>Show Fields</Divider>
                 <Input
                   text="lebel"
                   onInput={(e: any) => setViewLebel(e.target.checked)}
@@ -82,7 +88,6 @@ export default function CardQueryView() {
                   onInput={(e: any) => setViewLevel(e.target.checked)}
                   type="checkbox"
                 />
-
                 <Input
                   text="category"
                   defaultChecked={work.viewCategory}
@@ -90,8 +95,8 @@ export default function CardQueryView() {
                   type="checkbox"
                 />
               </div>
-              <p>View Fronts</p>
-              <div className="ring-1 ring-slate-200 rounded-lg mx-1 py-1d text-slate-500">
+              <div className="py-1">
+                <Divider>View Fronts</Divider>
                 {work?.fronts?.map((f: any) => (
                   <Input
                     onInput={(e: any) =>
@@ -104,8 +109,9 @@ export default function CardQueryView() {
                   />
                 ))}
               </div>
-              <p>View Backs</p>
-              <div className="ring-1 ring-slate-200 rounded-lg mx-1 py-1d text-slate-500">
+              <div className="py-1">
+                <Divider>View Backs</Divider>
+
                 {work?.backs?.map((f: any) => (
                   <Input
                     onInput={(e: any) =>
@@ -141,3 +147,18 @@ export function templateFields(template: { data: TemplateType }) {
     backs,
   };
 }
+
+const Divider = (props: any) => {
+  return (
+    <>
+      <hr />
+      <p
+        className={
+          "text-center text-sm pt-2 text-slate-500 " + props?.className
+        }
+      >
+        {props?.children}
+      </p>
+    </>
+  );
+};

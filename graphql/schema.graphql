@@ -96,8 +96,9 @@ type Mutation {
 type Query {
   cardsByTopic(topicId: String!): [Card]
   class(id: String!): Class
+  classDashboard(id: String!): Class
   classes: [Class]!
-  dashboard(userId: String!): [Card]
+  dashboard(classId: String!): [Card]
   foldersByClass(classId: String!): [Folder]
   sampleClasses: [Class]
   sampleTemplates: [Template]

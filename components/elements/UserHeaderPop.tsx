@@ -10,19 +10,21 @@ export default function UserHeaderPop() {
   const [open, setOpen] = useState(false);
 
   if (!user) {
-    return null;
+    return (
+      <p className="hover:text-indigo-400">
+        <Link href="/api/auth/login">Login</Link>
+      </p>
+    );
   }
 
   return (
     <div className="flex items-center z-50">
       <div className="flex items-center" onMouseEnter={() => setOpen(true)}>
         {user?.picture && (
-          <Image
-            className="rounded-full"
+          <img
+            className="rounded-full w-[clamp(40px,40px,40px)]"
             src={user?.picture}
-            width={40}
-            height={40}
-            alt="user avatar"
+            alt=""
           />
         )}
       </div>

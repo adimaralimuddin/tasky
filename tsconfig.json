@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/play/[classId]", "lib/prisma.js", "graphql/context.js", "pages/_document.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/play/[classId]", "lib/prisma.js", "graphql/context.js", "pages/_document.js", "features/folder/testsnippets.tsx"],
   "exclude": ["node_modules"]
 }

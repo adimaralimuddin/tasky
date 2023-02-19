@@ -56,9 +56,8 @@ export default function PlaymainPage({}: any) {
   }
 
   const QuizContent = (
-    <div className="ring-1d px-4 pb-5 flex-1 flex flex-col">
+    <div className=" pb-5 flex-1 col_">
       <PlayHeader startSide={startSide} setStartSide={setStartSide} />
-
       <div
         className={"flex flex-col items-center flex-1  justify-center ring-1d"}
       >
@@ -76,10 +75,9 @@ export default function PlaymainPage({}: any) {
   );
 
   return (
-    <Box css=" flex-1 flex flex-col">
+    <div className=" container_ ">
       <ContentHeader />
-
       {cards?.length > 0 ? QuizContent : <NoCards text="No Cards To Play" />}
-    </Box>
+    </div>
   );
 }

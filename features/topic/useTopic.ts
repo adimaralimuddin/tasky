@@ -1,54 +1,82 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { setContent } from "../card/cardSlice";
-import {
-  topicApiCreateTopic,
-  topicApiDeleteTopic,
-  topicApiRenameTopic,
-} from "./topicApi";
+import request, { gql } from "graphql-request";
+import useWork from "../work/useWork";
+import { topicUrl } from "./topicApi";
 import { TopicType } from "./topicType";
 
 export default function useTopic(folderId?: string, onSuccess?: any) {
-  const dispatch = useDispatch();
   const client = useQueryClient();
+  const { setTopic } = useWork();
+
   const topicAdder = useMutation(topicApiCreateTopic, {
+    onMutate: (topicPayload) => {
+      console.log("topic payload", topicPayload);
+      setTopic(topicPayload as TopicType);
+      client.setQueryData(["topics", folderId], (topics: any) => {
+        return [...topics, topicPayload];
+      });
+    },
     onSuccess: (createdTopic) => {
       client.setQueryData(["topics", folderId], (topics: any) => {
-        return [...topics, createdTopic];
-      });
-      onSuccess?.(createdTopic);
-    },
-  });
-  const topicDeleter = useMutation(topicApiDeleteTopic, {
-    onSuccess: (deletedTopic) => {
-      client.setQueryData(["topics", folderId], (topics: any) => {
-        return topics?.filter(
-          (topic: TopicType) => topic?.id !== deletedTopic?.id
-        );
-      });
-      dispatch(setContent("dashboard"));
-    },
-  });
-
-  const topicRenamer = useMutation(topicApiRenameTopic, {
-    onSuccess: (renamedTopic) => {
-      client.setQueryData(["topics", folderId], (topics: any) => {
-        return topics?.map((topic: TopicType) => {
-          if (topic?.id == renamedTopic?.id) {
-            return { ...topic, name: renamedTopic?.name };
+        return topics?.map((t: TopicType) => {
+          if (t.name === createdTopic.name && !t?.id) {
+            return createdTopic;
           }
-          return topic;
+          return t;
         });
+        // return [...topics, createdTopic];
       });
+      // onSuccess?.(createdTopic);
     },
   });
 
   return {
     topicAdder,
-    topicDeleter,
-    topicRenamer,
     createTopic: topicAdder.mutate,
-    deleteTopic: topicDeleter.mutate,
-    renameTopic: topicRenamer.mutate,
   };
+}
+
+export async function topicApiCreateTopic(data: {
+  userId: string;
+  name: string;
+  description: string;
+  folderId: string;
+  templateId: string;
+}): Promise<TopicType> {
+  const q = gql`
+    mutation CreateTopic(
+      $userId: String!
+      $name: String!
+      $description: String!
+      $folderId: String!
+      $templateId: String!
+    ) {
+      createTopic(
+        userId: $userId
+        name: $name
+        description: $description
+        folderId: $folderId
+        templateId: $templateId
+      ) {
+        name
+        description
+        id
+        folderId
+        userId
+        templateId
+        sample
+        template {
+          id
+          name
+          userId
+          fronts
+          backs
+        }
+      }
+    }
+  `;
+  // console.log("on creating topic ", { q, data });
+  const ret = await request(topicUrl, q, data);
+  // console.log("create topic ret ", ret);
+  return ret.createTopic;
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Box from "./Box";
 import { OptionIcon } from "../../lib/icons";
+import Box from "./Box";
 
 type props = {
   Icon?: any;
@@ -21,7 +21,7 @@ export default function Option({
           setOpen((p) => !p);
           e.stopPropagation();
         }}
-        className="hover:bg-slate-300 dark:hover:bg-slate-500  p-1 rounded-md hover:shadow-md cursor-pointer hover:scale-[1.3] transition-all duration-300 dark:text-slate-100"
+        className="hover:bg-slate-200 dark:hover:bg-slate-500  p-1 rounded-full hover:shadow-mdd cursor-pointer hover:scale-[1.2] transition-all duration-300 dark:text-slate-100"
       >
         {Icon}
       </div>

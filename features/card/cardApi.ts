@@ -1,6 +1,6 @@
 import request, { gql } from "graphql-request";
 import { useDb } from "../../lib/db";
-const url = "/api/graphql";
+export const CardUrl = "/api/graphql";
 
 export async function cardApiGetCardsByTopic(topicId: string) {
   const q = gql`
@@ -36,7 +36,7 @@ export async function cardApiGetCardsByTopic(topicId: string) {
     }
   `;
 
-  const ret = await request(url, q, { topicId });
+  const ret = await request(CardUrl, q, { topicId });
   return ret?.cardsByTopic;
 }
 
@@ -60,80 +60,80 @@ export async function fieldsSolve(fields: Field[]) {
   );
 }
 
-export async function cardApiCreateCard(data: {
-  classId?: string;
-  userId: string;
-  topicId: string;
-  name: string;
-  description: string;
-  fronts: Field[];
-  backs: Field[];
-}) {
-  const backs = await fieldsSolve(data?.backs);
-  const fronts = await fieldsSolve(data?.fronts);
+// export async function cardApiCreateCard(data: {
+//   classId?: string;
+//   userId: string;
+//   topicId: string;
+//   name: string;
+//   description: string;
+//   fronts: Field[];
+//   backs: Field[];
+// }) {
+//   const backs = await fieldsSolve(data?.backs);
+//   const fronts = await fieldsSolve(data?.fronts);
 
-  // check if free user or login user
-  if (data.userId == undefined && data.classId == "cl86siwik1391dkjokty3u8na") {
-    data.userId = "google-oauth2|117745479963692189418";
-  }
+//   // check if free user or login user
+//   if (data.userId == undefined && data.classId == "cl86siwik1391dkjokty3u8na") {
+//     data.userId = "google-oauth2|117745479963692189418";
+//   }
 
-  // remove the classId to uninclude from model
-  delete data?.classId;
+//   // remove the classId to uninclude from model
+//   delete data?.classId;
 
-  const q = gql`
-    mutation CreateCard(
-      $userId: String!
-      $topicId: String!
-      $name: String!
-      $description: String
-      $fronts: [CommentInputType]
-      $backs: [CommentInputType]
-    ) {
-      createCard(
-        userId: $userId
-        topicId: $topicId
-        name: $name
-        description: $description
-        fronts: $fronts
-        backs: $backs
-      ) {
-        id
-        userId
-        name
-        description
-        level
-        category
-        def
-        sample
-        fronts {
-          id
-          text
-          type
-          value
-          frontId
-          backId
-          ind
-        }
-        backs {
-          id
-          text
-          type
-          value
-          frontId
-          backId
-          ind
-        }
-      }
-    }
-  `;
+//   const q = gql`
+//     mutation CreateCard(
+//       $userId: String!
+//       $topicId: String!
+//       $name: String!
+//       $description: String
+//       $fronts: [CommentInputType]
+//       $backs: [CommentInputType]
+//     ) {
+//       createCard(
+//         userId: $userId
+//         topicId: $topicId
+//         name: $name
+//         description: $description
+//         fronts: $fronts
+//         backs: $backs
+//       ) {
+//         id
+//         userId
+//         name
+//         description
+//         level
+//         category
+//         def
+//         sample
+//         fronts {
+//           id
+//           text
+//           type
+//           value
+//           frontId
+//           backId
+//           ind
+//         }
+//         backs {
+//           id
+//           text
+//           type
+//           value
+//           frontId
+//           backId
+//           ind
+//         }
+//       }
+//     }
+//   `;
 
-  const ret = await request(url, q, {
-    ...data,
-    fronts,
-    backs,
-  });
-  return ret.createCard;
-}
+//   const ret = await request(url, q, {
+//     ...data,
+//     fronts,
+//     backs,
+//   });
+//   return ret.createCard;
+// }
 
 export async function cardApiDeleteCard({
   userId,
@@ -149,7 +149,7 @@ export async function cardApiDeleteCard({
       }
     }
   `;
-  const ret = await request(url, q, { cardId, userId });
+  const ret = await request(CardUrl, q, { cardId, userId });
   return ret?.deleteCard;
 }
 
@@ -168,14 +168,32 @@ export async function cardApiSetCardLevel({
       }
     }
   `;
-  const ret = await request(url, q, { cardId, level });
+  const ret = await request(CardUrl, q, { cardId, level });
   return ret.setCardLevel;
 }
 
-export async function cardApiDashboard(userId: string) {
+// export async function cardApiDashboard(userId: string) {
+//   const q = gql`
+//     query NewCards($userId: String!) {
+//       dashboard(userId: $userId) {
+//         level
+//         category
+//         _count {
+//           id
+//         }
+//       }
+//     }
+//   `;
+//   const ret = await request(url, q, { userId });
+//   return ret.dashboard;
+// }
+
+export async function cardApiDashboard(classId: any) {
+  //id = classid
+  if (!classId) return console.log("no classid", classId);
   const q = gql`
-    query NewCards($userId: String!) {
-      dashboard(userId: $userId) {
+    query Query($classId: String!) {
+      dashboard(classId: $classId) {
         level
         category
         _count {
@@ -184,6 +202,6 @@ export async function cardApiDashboard(userId: string) {
       }
     }
   `;
-  const ret = await request(url, q, { userId });
+  const ret = await request(CardUrl, q, { classId });
   return ret.dashboard;
 }

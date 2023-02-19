@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { TopicType } from "../topic/topicType";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { TemplateType } from "../template/templateType";
+import { createSlice } from "@reduxjs/toolkit";
 import { FieldType } from "../card/CardType";
+import { TemplateType } from "../template/templateType";
+import { TopicType } from "../topic/topicType";
 
 type fieldVal = {
   text: string;
@@ -33,7 +33,7 @@ const initialState: workType = {
   selectedCategory: "all",
   openTopicAdder: false,
   textSize: "",
-  imageSize: 150,
+  imageSize: 100,
   viewLebel: true,
   viewLevel: false,
   viewCategory: false,

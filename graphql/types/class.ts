@@ -1,3 +1,4 @@
+import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { extendType, nonNull, objectType, stringArg } from "nexus";
 import { SAMPLE } from "../../lib/public";
 import { Folder } from "./folder";
@@ -23,7 +24,6 @@ export const Class = objectType({
 
 export const ClassQuery = extendType({
   type: "Query",
-
   definition(t) {
     // get all sample classes
     t.list.field("sampleClasses", {
@@ -62,6 +62,28 @@ export const ClassQuery = extendType({
         });
       },
     });
+
+    // class dashboard
+    t.field("classDashboard", {
+      type: Class,
+      args: { id: nonNull(stringArg()) },
+      resolve(par_, { id }, ctx) {
+        return ctx.prisma.class.findUnique({
+          where: { id },
+          include: {
+            folders: {
+              include: {
+                topic: {
+                  include: {
+                    cards: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+      },
+    });
   },
 });
 
@@ -76,13 +98,26 @@ export const ClassMutation = extendType({
         name: nonNull(stringArg()),
         description: stringArg(),
       },
-      resolve(par, data, ctx) {
-        return ctx.prisma.class.create({
+      async resolve(par, data, ctx) {
+        // allow user to create more class if user classes are less than limit which is 5
+
+        const classCount = await ctx.prisma.class.count({
+          where: { userId: data.userId },
+        });
+
+        // check if user allowed to create more class
+        if (classCount >= 5) return null;
+
+        // user is still allowed to create new class
+        const createdClass: any = await ctx.prisma.class.create({
           data: {
             ...data,
             sample: SAMPLE,
           },
         });
+
+        // class has been created and to be returned
+        return createdClass;
       },
     });
 

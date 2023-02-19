@@ -1,13 +1,13 @@
-import type { NextPage } from "next";
 import PageMainHome from "../components/pagesMain/PageMainHome";
 
-const Home: NextPage = ({ defClass }: any) => {
+interface HomeProps {
+  defClass: string;
+}
+export default function Home({ defClass }: HomeProps) {
   return <PageMainHome defClass={defClass} />;
-};
+}
 
-export default Home;
-
-export const getServerSideProps = () => {
+export const getStaticProps = () => {
   const defClass = process.env.DEF_CLASS;
   return {
     props: {

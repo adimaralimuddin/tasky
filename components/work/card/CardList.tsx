@@ -16,16 +16,14 @@ export default function CardList({ classId, cards: cards_ }: props) {
   }, [cards_]);
 
   return (
-    <div className="flex-1 px-3">
-      <div className="flex gap-2 items-end ring-slate-200 dark:bg-slate-700 my-2d p-2 rounded-lg bg-white mx-1 flex-wrap">
+    <div className="flex-1 mt-2">
+      <div className="flex gap-2 items-end flex-wrap ">
         <CardQuery classId={classId} cards={cards_} setCards={setCards} />
         <ActionButtons />
       </div>
-      <div className="px-3 flex-1">
-        {cards?.map((card: CardTypes) => (
-          <CardItem card={card} key={card?.id} index={true} />
-        ))}
-      </div>
+      {cards?.map((card: CardTypes) => (
+        <CardItem card={card} key={card?.id} index={true} />
+      ))}
     </div>
   );
 }

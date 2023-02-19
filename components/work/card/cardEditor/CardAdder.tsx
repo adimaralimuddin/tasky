@@ -1,30 +1,32 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import Image from "next/image";
 import React, { LegacyRef, useEffect, useRef, useState } from "react";
-import { CardTypes, FieldType } from "../../../features/card/CardType";
-import { useCardMutation } from "../../../features/card/useCardMutation";
-import useCards from "../../../features/card/useCards";
-import useTemplate from "../../../features/template/useTemplate";
-import useWork from "../../../features/work/useWork";
-import { ImageIcon, Mp3, XIcon } from "../../../lib/icons";
-import { defUser, DEF_USER } from "../../../lib/public";
-import Box from "../../elements/Box";
-import BtnPrime from "../../elements/BtnPrime";
-import ContentHeader from "../../elements/ContentHeader";
-import Loader from "../../elements/Loader";
-import CardItem from "./CardItem";
+import { CardTypes, FieldType } from "../../../../features/card/CardType";
+import useCardAdder from "../../../../features/card/useCardAdder";
+import { useCardMutation } from "../../../../features/card/useCardMutation";
+import useCards from "../../../../features/card/useCards";
+import useTemplate from "../../../../features/template/useTemplate";
+import useWork from "../../../../features/work/useWork";
+import { ImageIcon, Mp3, XIcon } from "../../../../lib/icons";
+import { defUser, DEF_USER } from "../../../../lib/public";
+import Box from "../../../elements/Box";
+import BtnPrime from "../../../elements/BtnPrime";
+import ContentHeader from "../../../elements/ContentHeader";
+import Input from "../../../elements/Input";
+import Loader from "../../../elements/Loader";
+import CardItem from "../CardItem";
 
 export default function CardAdder({ classId }: { classId: string | any }) {
   const { user } = useUser();
   const { work } = useWork();
-  const { cards } = useCards(work.selectedTopic?.id);
+  const { data } = useCards(work.selectedTopic?.id);
 
   const {
     template: { data: template },
   } = useTemplate(work.selectedTopic?.templateId);
 
   return (
-    <Box css="flex-1">
+    <div className="container_">
       <ContentHeader />
       <AdderItem
         template={template}
@@ -34,14 +36,14 @@ export default function CardAdder({ classId }: { classId: string | any }) {
       />
 
       <div className="p-2">
-        {cards?.data
+        {data
           ?.map((c: CardTypes, ind: number) => ({ ...c, ind }))
           ?.sort((a: any, b: any) => b?.ind - a?.ind)
           ?.map((card: CardTypes) => (
             <CardItem card={card} key={card?.id} index={true} />
           ))}
       </div>
-    </Box>
+    </div>
   );
 }
 
@@ -49,7 +51,9 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
   const parseFields = (type: string) => JSON.parse(template?.[type] || "[]");
   const [fronts, setFronts] = useState(parseFields("fronts"));
   const [backs, setbacks] = useState(parseFields("backs"));
-  const { createCard, cardCreator } = useCardMutation(topic?.id);
+  // const { createCard, cardCreator } = useCardMutation(topic?.id);
+
+  const { addCard } = useCardAdder(topic?.id);
 
   useEffect(() => {
     const parseFields = (type: string) => JSON.parse(template?.[type] || "[]");
@@ -76,11 +80,9 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
       backs: back,
     };
 
-    createCard(data, {
-      onSuccess: () => {
-        fronts?.map((f: any) => localStorage.removeItem(f.text + "front"));
-        backs?.map((f: any) => localStorage.removeItem(f.text + "back"));
-      },
+    addCard(data, () => {
+      fronts?.map((f: any) => localStorage.removeItem(f.text + "front"));
+      backs?.map((f: any) => localStorage.removeItem(f.text + "back"));
     });
   };
 
@@ -105,11 +107,11 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
   };
 
   return (
-    <Box css="flex flex-col ">
+    <div className="col_ px-4">
       <h1 className=" font-bold text-indigo-400 text-center">Add Card</h1>
-      <Loader message="adding card ... " open={cardCreator?.isLoading} />
+      {/* <Loader message="adding card ... " open={cardCreator?.isLoading} /> */}
       <form className="p-3" onSubmit={onAddCardHandler}>
-        <div className="flex gap-3 flex-wrap ">
+        <div className="flex gap-6  flex-wrap ">
           <Fields side="front" fields={fronts} />
           <Fields side="back" fields={backs} />
         </div>
@@ -121,13 +123,13 @@ export function AdderItem({ template, topic, user, index, classId }: any) {
           </span>
         </div>
       </form>
-    </Box>
+    </div>
   );
 }
 
 function Fields({ fields, side }: any) {
   return (
-    <div className="ring-1 rounded-xl p-1 ring-indigo-100d flex-1 bg-white dark:bg-slate-700 dark:ring-2 dark:ring-slate-600">
+    <div className="ring-1 ring-slate-200 rounded-xl p-6 ring-indigo-100d flex-1 bg-white dark:bg-slate-700 dark:ring-2 dark:ring-slate-600">
       <h2 className="text-indigo-400 text-center">{side}</h2>
       {fields?.map((field: any) => (
         <Field data={field} side={side} key={field?.id} />
@@ -144,9 +146,10 @@ export function Field({ data, side = "" }: any) {
     localStorage.setItem(data.text + side, val);
   };
 
-  const Input = (props: any) => (
+  const InputC = (props: any) => (
     <input
       {...props}
+      text={data.text}
       name={data.text + "%*" + side}
       defaultValue={localVal || data?.value}
       data-type={data.type}
@@ -157,12 +160,23 @@ export function Field({ data, side = "" }: any) {
     />
   );
 
+  const inputProps = () => ({
+    text: data.text,
+    name: data.text + "%*" + side,
+    defaultValue: localVal || data?.value,
+    "data-type": data.type,
+    "data-name": data.text,
+    onInput: onInputHandler,
+    type: data?.type || "text",
+    className: "bg-slate-100 dark:ring-1 dark:ring-slate-500 w-full",
+  });
+
   const type = () => {
     switch (data.type) {
-      case "text":
-        return <Input />;
-      case "number":
-        return <Input />;
+      // case "text":
+      //   return <Input text={data.text} {...inputProps} />;
+      // case "number":
+      //   return <Input text={data.text} {...inputProps} />;
       case "audio":
         return (
           <FileInput
@@ -182,7 +196,8 @@ export function Field({ data, side = "" }: any) {
           />
         );
       default:
-        return null;
+        return <InputC />;
+      // return <Input text={data.text} {...inputProps} />;
     }
   };
 
@@ -193,7 +208,6 @@ export function Field({ data, side = "" }: any) {
         (data.type == "text" || data.type == "number" ? "flex-col" : "")
       }
     >
-      <p>{data.text}</p>
       {type()}
     </div>
   );

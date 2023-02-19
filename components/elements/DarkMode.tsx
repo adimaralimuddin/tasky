@@ -1,14 +1,14 @@
-import React from "react";
 import { useTheme } from "next-themes";
+import React from "react";
 import { Moon, Sun } from "../../lib/icons";
 
-export default function DarkMode() {
+export default function DarkMode_() {
   const { theme, systemTheme, setTheme } = useTheme();
 
   function IconItem({ val, Icon }: { val: string; Icon: any }) {
     return (
       <div
-        className="p-1 m-3 flex items-center gap-2 justify-center rounded-3xl cursor-pointer  hover:ring-2 ring-slate-300 dark:ring-indigo-500"
+        className=" flex items-center gap-2 justify-center rounded-3xl cursor-pointer  hover:ring-2 ring-slate-300 dark:ring-indigo-500"
         onClick={() => setTheme(val)}
       >
         <Icon className="text-3xl dark:text-white" />
@@ -26,5 +26,5 @@ export default function DarkMode() {
     }
   };
 
-  return <div>{themer()}</div>;
+  return <div className="ring-1">{themer()}</div>;
 }

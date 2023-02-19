@@ -11,7 +11,7 @@ export const getStaticProps = () => {
   const defClass = process.env.DEF_CLASS;
   return {
     props: {
-      defClass,
+      defClass: defClass || null,
     },
   };
 };

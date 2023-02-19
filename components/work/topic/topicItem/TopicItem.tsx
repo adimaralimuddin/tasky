@@ -61,15 +61,6 @@ export default function TopicItem({ data, selectFolder }: props) {
         topicId: data.id,
         topicName: data.name,
       })}
-      // href={{
-      //   pathname: `/class/${router.query.classId}`,
-      //   query: {
-      //     id: data.id,
-      //     name: data.name,
-      //     content: "topic",
-      //     selectedCategory: "all",
-      //   },
-      // }}
       passHref
     >
       <div className="flex flex-col">

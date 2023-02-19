@@ -24,7 +24,6 @@ const WorkSideFolders = dynamic(() => import("./WorkSideFolders"), {
   ssr: false,
   loading: () => (
     <div className="col_">
-      folders loader
       <TextLoader />
       <TextLoader />
     </div>
@@ -54,6 +53,7 @@ export default function WorkSide() {
         <FolderAdder classId={classId} />
       </header>
       <WorkSideFolders classId={String(classId)} />
+      
       <TopicAdder />
     </div>
   );

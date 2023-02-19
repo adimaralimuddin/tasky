@@ -2,12 +2,12 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React from "react";
 import DashboardMainContent from "../../dashboard/DashboardMainContent";
-import PlaymainPage from "../../play/PlaymainPage";
-import QuizMainContent from "../../quiz/QuizMainContent";
+// import PlaymainPage from "../../play/PlaymainPage";
+// import QuizMainContent from "../../quiz/QuizMainContent";
 
-const CardAdder = dynamic(() => import("../card/cardEditor/CardAdder"), {
-  ssr: false,
-});
+// const CardAdder = dynamic(() => import("../card/cardEditor/CardAdder"), {
+//   ssr: false,
+// });
 const CategoryList = dynamic(() => import("../topic/category/CategoryList"), {
   ssr: false,
 });
@@ -29,11 +29,12 @@ function WorkContent() {
       ) : content == "category" ? (
         <CategoryList classId={classId} />
       ) : content == "cardadder" ? (
-        <CardAdder classId={classId} />
-      ) : content == "play" ? (
-        <PlaymainPage classId={classId} />
+        "card adder"
+      ) : // <CardAdder classId={classId} />
+      content == "play" ? (
+        "play" // <PlaymainPage classId={classId} />
       ) : content == "quiz" ? (
-        <QuizMainContent classId={classId} />
+        "quiz" //<QuizMainContent classId={classId} />
       ) : null}
     </div>
   );

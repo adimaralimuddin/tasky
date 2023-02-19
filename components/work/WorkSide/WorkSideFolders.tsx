@@ -17,7 +17,7 @@ function WorkSideFolders({ classId }: { classId: string }) {
         </div>
       ) : (
         data?.map((folder: FolderType) => (
-          <FolderItem data={folder} key={folder?.id} classId={classId} />
+          <FolderItem key={folder?.id} data={folder} classId={classId} />
         ))
       )}
     </div>

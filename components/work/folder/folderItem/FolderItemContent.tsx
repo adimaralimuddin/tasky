@@ -4,15 +4,15 @@ import { FolderType } from "../../../../features/folder/folderTypes";
 // import FolderItemTopics from "./FolderItemTopics";
 
 const FolderDeleter = dynamic(() => import("../folderEditor/FolderDeleter"), {
-  ssr: false,
+  // ssr: false,
 });
 const FolderRenamer = dynamic(() => import("../folderEditor/FolderRenamer"), {
-  ssr: false,
+  // ssr: false,
 });
 const FolderOptions = dynamic(() => import("./FolderOptions"), { ssr: false });
 
 const FolderItemTopics = dynamic(() => import("./FolderItemTopics"), {
-  ssr: false,
+  // ssr: false,
   // loading: () => "topics...",
 });
 
@@ -39,12 +39,7 @@ function FolderItemContent({
   const [isDeleting, setIsDeleting] = useState(false);
   return (
     <div className="  ">
-      {open && (
-        <FolderItemTopics
-          id={id}
-          setSelected={setSelected}
-        />
-      )}
+      {open && <FolderItemTopics id={id} setSelected={setSelected} />}
       <div className="absolute right-0 top-0">
         <FolderOptions
           data={data}

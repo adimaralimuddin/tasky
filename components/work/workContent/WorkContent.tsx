@@ -6,13 +6,13 @@ import PlaymainPage from "../../play/PlaymainPage";
 import QuizMainContent from "../../quiz/QuizMainContent";
 
 const CardAdder = dynamic(() => import("../card/cardEditor/CardAdder"), {
-  ssr: false,
+  // ssr: false,
 });
 const CategoryList = dynamic(() => import("../topic/category/CategoryList"), {
-  ssr: false,
+  // ssr: false,
 });
 const TopicMainContent = dynamic(() => import("../topic/TopicMainContent"), {
-  ssr: false,
+  // ssr: false,
 });
 
 function WorkContent() {

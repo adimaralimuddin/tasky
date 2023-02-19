@@ -4,15 +4,15 @@ import WorkContentLoader from "./workContent/WorkContentLoader";
 import WorkSideLoader from "./WorkSide/WorkSideLoader";
 
 const WorkSide = dynamic(() => import("./WorkSide/WorkSideMain"), {
-  ssr: false,
+  // ssr: false,
   loading: WorkSideLoader,
 });
 const WorkHeader = dynamic(() => import("./workHeader/WorkHeader"), {
-  ssr: false,
+  // ssr: false,
   loading: LayoutHeaderLoader,
 });
 const WorkContent = dynamic(() => import("./workContent/WorkContent"), {
-  ssr: false,
+  // ssr: false,
   loading: WorkContentLoader,
 });
 

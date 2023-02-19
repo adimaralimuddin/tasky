@@ -13,15 +13,15 @@ import TextLoader from "../../elements/TextLoader";
 // import TopicAdder from "../topic/topicEditor/TopicAdder";
 
 const TopicAdder = dynamic(() => import("../topic/topicEditor/TopicAdder"), {
-  ssr: false,
+  // ssr: false,
 });
 const FolderAdder = dynamic(
-  () => import("../folder/folderEditor/FolderAdder"),
-  { ssr: false }
+  () => import("../folder/folderEditor/FolderAdder")
+  // { ssr: false }
 );
 
 const WorkSideFolders = dynamic(() => import("./WorkSideFolders"), {
-  ssr: false,
+  // ssr: false,
   loading: () => (
     <div className="col_">
       folders loader

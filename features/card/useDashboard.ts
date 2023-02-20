@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { cardApiDashboard } from "./cardApi";
+import request, { gql } from "graphql-request";
+import { CardUrl } from "./cardApi";
 
 export default function useDashboard(classId: string | string[] | undefined) {
   const dashboard = useQuery(["dashboard", classId], () =>
@@ -9,4 +10,22 @@ export default function useDashboard(classId: string | string[] | undefined) {
   return {
     dashboard,
   };
+}
+
+export async function cardApiDashboard(classId: any) {
+  //id = classid
+  if (!classId) return console.log("no classid", classId);
+  const q = gql`
+    query Query($classId: String!) {
+      dashboard(classId: $classId) {
+        level
+        category
+        _count {
+          id
+        }
+      }
+    }
+  `;
+  const ret = await request(CardUrl, q, { classId });
+  return ret.dashboard;
 }

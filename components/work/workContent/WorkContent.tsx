@@ -15,7 +15,7 @@ const TopicMainContent = dynamic(() => import("../topic/TopicMainContent"), {
   ssr: false,
 });
 
-function WorkContent() {
+function WorkContent({ post }: any) {
   const router = useRouter();
 
   const content = router.query?.content || "dashboard";
@@ -23,7 +23,7 @@ function WorkContent() {
   return (
     <div>
       {content == "dashboard" ? (
-        <DashboardMainContent />
+        <DashboardMainContent post={post} />
       ) : content == "topic" ? (
         <TopicMainContent classId={classId} />
       ) : content == "category" ? (

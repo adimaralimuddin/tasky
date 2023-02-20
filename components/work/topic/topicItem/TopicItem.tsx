@@ -18,6 +18,8 @@ type props = {
 };
 
 export default function TopicItem({ data, selectFolder }: props) {
+  console.log(`final topic here = `, data);
+
   const [hovered, setHovered] = useState(false);
   const [renaming, setRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);

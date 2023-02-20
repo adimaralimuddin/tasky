@@ -17,7 +17,7 @@ const FolderOptions = dynamic(() => import("./FolderOptions"), { ssr: false });
 // });
 
 interface Props {
-  data: FolderType;
+  data: FolderType | any;
   hovered: boolean;
   classId: string;
   setOpen: any;
@@ -37,11 +37,14 @@ function FolderItemContent({
 }: Props) {
   const [renaming, setRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  console.log(`folderData `, data);
+
   return (
     <div className="  ">
       {open && (
         <FolderItemTopics
           id={id}
+          topics={data?.Topic}
           setSelected={setSelected}
         />
       )}

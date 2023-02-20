@@ -13,7 +13,8 @@ type dashType = {
   _count: { id: number };
 };
 
-export default function DashboardMainContent() {
+export default function DashboardMainContent({ post }: any) {
+  const dashboards = post?.dashboard;
   // const { user } = useUser();
   const {
     query: { classId },
@@ -22,7 +23,7 @@ export default function DashboardMainContent() {
   const {
     dashboard: { data },
   } = useDashboard(classId);
-
+  // console.log("post dashboard", post?.dashboard);
   // console.log("dashboard data ", data);
 
   const total = data?.reduce(
@@ -49,16 +50,16 @@ export default function DashboardMainContent() {
       </div>
       <h4 className="subtitle_  p-1">Level</h4>
       <div className="flex gap-7 flex-wrap ">
-        <LevelItem data={data} value="easy" field="level" />
-        <LevelItem data={data} value="normal" field="level" />
-        <LevelItem data={data} value="hard" field="level" />
+        <LevelItem data={data || dashboards} value="easy" field="level" />
+        <LevelItem data={data || dashboards} value="normal" field="level" />
+        <LevelItem data={data || dashboards} value="hard" field="level" />
       </div>
 
       <h4 className="subtitle_ p-1">Category</h4>
       <div className="flex gap-7 flex-wrap">
-        <LevelItem data={data} value="new" field="category" />
-        <LevelItem data={data} value="passed" field="category" />
-        <LevelItem data={data} value="left" field="category" />
+        <LevelItem data={data || dashboards} value="new" field="category" />
+        <LevelItem data={data || dashboards} value="passed" field="category" />
+        <LevelItem data={data || dashboards} value="left" field="category" />
       </div>
     </div>
   );

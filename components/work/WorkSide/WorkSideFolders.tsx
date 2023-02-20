@@ -4,8 +4,11 @@ import useFolder from "../../../features/folder/useFolder";
 import TextLoader from "../../elements/TextLoader";
 import FolderItem from "../folder/folderItem/FolderItem";
 
-function WorkSideFolders({ classId }: { classId: string }) {
-  const { data, isLoading } = useFolder(classId);
+function WorkSideFolders({ classId, post }: { classId: string; post: any }) {
+  const { data: folderData, isLoading } = useFolder(classId);
+
+
+  const data = post?.folders;
 
   if (isLoading) return <Loader />;
 

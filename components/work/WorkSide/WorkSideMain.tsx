@@ -9,6 +9,7 @@ import _useWorkRoutes from "../../../lib/_routes/_useWorkRoutes";
 // import useWindowResize from "../../../lib/utils/_useWindowResize";
 import AppLogo from "../../elements/AppLogo";
 import TextLoader from "../../elements/TextLoader";
+import WorkSideFolders from "./WorkSideFolders";
 // import WorkSideFolders from "./WorkSideFolders";
 // import TopicAdder from "../topic/topicEditor/TopicAdder";
 
@@ -20,17 +21,17 @@ const FolderAdder = dynamic(
   { ssr: false }
 );
 
-const WorkSideFolders = dynamic(() => import("./WorkSideFolders"), {
-  ssr: false,
-  loading: () => (
-    <div className="col_">
-      <TextLoader />
-      <TextLoader />
-    </div>
-  ),
-});
+// const WorkSideFolders = dynamic(() => import("./WorkSideFolders"), {
+//   ssr: false,
+//   loading: () => (
+//     <div className="col_">
+//       <TextLoader />
+//       <TextLoader />
+//     </div>
+//   ),
+// });
 
-export default function WorkSide() {
+export default function WorkSide({ post }: any) {
   const {
     query: { classId },
   } = useRouter();
@@ -56,7 +57,7 @@ export default function WorkSide() {
         <hr className="" />
         <FolderAdder classId={classId} />
       </header>
-      <WorkSideFolders classId={String(classId)} />
+      <WorkSideFolders post={post} classId={String(classId)} />
 
       <TopicAdder />
     </div>

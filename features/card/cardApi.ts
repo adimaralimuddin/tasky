@@ -74,21 +74,3 @@ export async function cardApiSetCardLevel({
 //   const ret = await request(url, q, { userId });
 //   return ret.dashboard;
 // }
-
-export async function cardApiDashboard(classId: any) {
-  //id = classid
-  if (!classId) return console.log("no classid", classId);
-  const q = gql`
-    query Query($classId: String!) {
-      dashboard(classId: $classId) {
-        level
-        category
-        _count {
-          id
-        }
-      }
-    }
-  `;
-  const ret = await request(CardUrl, q, { classId });
-  return ret.dashboard;
-}

@@ -20,7 +20,6 @@ export async function getStaticPaths() {
   return {
     paths,
     fallback: false,
-    revalidate: 5,
   };
 }
 
@@ -64,5 +63,6 @@ export async function getStaticProps(ctx: any) {
 
   return {
     props: { post },
+    revalidate: 5,
   };
 }

@@ -18,7 +18,7 @@ const TopicMainContent = dynamic(() => import("../topic/TopicMainContent"), {
 function WorkContent() {
   const router = useRouter();
 
-  const content = router.query?.content;
+  const content = router.query?.content || "dashboard";
   const classId = router.query?.classId;
   return (
     <div>

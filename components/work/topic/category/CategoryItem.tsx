@@ -29,7 +29,7 @@ export default function CategoryItem({
   if (isLoading) return <Loading />;
 
   return (
-    <Link passHref replace href={onSelect(field)}>
+    <Link passHref prefetch={false} replace href={onSelect(field)}>
       <div className=" card min-h-[100px]  cursor-pointer ring_ hover:pop_ transition_ hover:shadow-lg ">
         <p className="text-indigo-400 dark:text-indigo-300">{field}</p>
         <div className="flex_ justify-between flex-wrap">

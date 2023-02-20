@@ -52,57 +52,57 @@ export default function TopicItem({ data, selectFolder }: props) {
   };
 
   return (
-    <Link
-      replace
-      href={getNavQueries({
-        topic: data,
-        category: "all",
-        content: "topic",
-        topicId: data.id,
-        topicName: data.name,
-      })}
-      passHref
-    >
-      <div className="flex flex-col">
-        <div
-          onAnimationEnd={(e) => {
-            const div = e.target as HTMLDivElement;
-            if (div.classList.contains("popy")) {
-              setChangedName(false);
-            }
-          }}
-          onMouseEnter={(_) => setHovered(true)}
-          onMouseLeave={(_) => setHovered(false)}
-          onClick={onSelectTopic}
-          className={
-            "cursor-pointer flex items-center  dark:hover:bg-slate-600 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
-            isSelected(
-              " bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-600",
-              "hover:bg-slate-50"
-            ) +
-            (changedName && " popy")
+    // <Link
+    //   replace
+    //   href={getNavQueries({
+    //     topic: data,
+    //     category: "all",
+    //     content: "topic",
+    //     topicId: data.id,
+    //     topicName: data.name,
+    //   })}
+    //   passHref
+    // >
+    <div className="flex flex-col">
+      <div
+        onAnimationEnd={(e) => {
+          const div = e.target as HTMLDivElement;
+          if (div.classList.contains("popy")) {
+            setChangedName(false);
           }
-        >
-          <BiBookAlt className="mr-1 text-indigo-600" />
-          <small title={data?.name} className="flex-1 py-1 whitespace-nowrap">
-            {_charLimits(data?.name, 20)}
-          </small>
-          <TopicOptions
-            hovered={hovered}
-            setRenaming={setRenaming}
-            setIsDeleting={setIsDeleting}
-            data={data}
-          />
-        </div>
-
-        <TopicRenamer data={data} open={renaming} setOpen={setRenaming} />
-
-        <TopicDeleter
-          data={data}
-          isDeleting={isDeleting}
+        }}
+        onMouseEnter={(_) => setHovered(true)}
+        onMouseLeave={(_) => setHovered(false)}
+        onClick={onSelectTopic}
+        className={
+          "cursor-pointer flex items-center  dark:hover:bg-slate-600 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
+          isSelected(
+            " bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-600",
+            "hover:bg-slate-50"
+          ) +
+          (changedName && " popy")
+        }
+      >
+        <BiBookAlt className="mr-1 text-indigo-600" />
+        <small title={data?.name} className="flex-1 py-1 whitespace-nowrap">
+          {_charLimits(data?.name, 20)}
+        </small>
+        <TopicOptions
+          hovered={hovered}
+          setRenaming={setRenaming}
           setIsDeleting={setIsDeleting}
+          data={data}
         />
       </div>
-    </Link>
+
+      <TopicRenamer data={data} open={renaming} setOpen={setRenaming} />
+
+      <TopicDeleter
+        data={data}
+        isDeleting={isDeleting}
+        setIsDeleting={setIsDeleting}
+      />
+    </div>
+    // </Link>
   );
 }

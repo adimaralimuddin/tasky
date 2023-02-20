@@ -51,7 +51,7 @@ function ClassItem({
         </span>
       )}
 
-      <Link href={`/class/${data?.id}`}>
+      <Link prefetch={false} href={`/class/${data?.id}`}>
         <div
           title={`
           ${data?.name}

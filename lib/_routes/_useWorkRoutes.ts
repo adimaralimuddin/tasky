@@ -15,6 +15,17 @@ function _useWorkRoutes() {
   const router = useRouter();
   const { query } = router;
 
+  const setWorkState = ({ pathname, topic, ...otherQueries }: NavProps) => {
+    const returnQueries: { query: NavProps; pathname: string } = {
+      pathname: pathname || `/class/${query?.classId}`,
+      query: { ...query, ...otherQueries },
+    };
+    if (topic) {
+      returnQueries.query.topic = JSON.stringify(topic);
+    }
+    router.push(returnQueries as Url, undefined, { shallow: true });
+  };
+
   const getNavQueries = ({ pathname, topic, ...otherQueries }: NavProps) => {
     const returnQueries: { query: NavProps; pathname: string } = {
       pathname: pathname || `/class/${query?.classId}`,
@@ -35,6 +46,7 @@ function _useWorkRoutes() {
     query,
     topic,
     getNavQueries,
+    setWorkState,
   };
 }
 

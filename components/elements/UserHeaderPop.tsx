@@ -12,7 +12,9 @@ export default function UserHeaderPop() {
   if (!user) {
     return (
       <p className="hover:text-indigo-400">
-        <Link href="/api/auth/login">Login</Link>
+        <Link prefetch={false} href="/api/auth/login">
+          Login
+        </Link>
       </p>
     );
   }
@@ -44,7 +46,9 @@ export default function UserHeaderPop() {
               </div>
               <hr />
               <button className="m-0 dark:text-white">
-                <Link href="/api/auth/logout">logout</Link>
+                <Link prefetch={false} href="/api/auth/logout">
+                  logout
+                </Link>
               </button>
             </Box>
           </div>

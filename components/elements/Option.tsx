@@ -1,4 +1,4 @@
-import Link from "next/link";
+// import Link from "next/link";
 import React, { useState } from "react";
 import { OptionIcon } from "../../lib/icons";
 import Box from "./Box";
@@ -64,13 +64,13 @@ export default function Option({
                   </div>
                 );
 
-                if (option?.link) {
-                  return (
-                    <Link key={option.text} {...option.link}>
-                      {item}
-                    </Link>
-                  );
-                }
+                // if (option?.link) {
+                //   return (
+                //     <Link key={option.text} {...option.link}>
+                //       {item}
+                //     </Link>
+                //   );
+                // }
 
                 return item;
               })}

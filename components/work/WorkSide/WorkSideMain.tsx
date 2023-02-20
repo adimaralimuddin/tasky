@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { RxDashboard } from "react-icons/rx";
@@ -41,19 +41,23 @@ export default function WorkSide() {
     <div className={" rounded-xl flex-1 max-w-xs   "}>
       <header className="flex flex-col gap-2">
         <AppLogo />
-        <Link href={getNavQueries({ content: "dashboard" })}>
-          <div className="col_ ">
-            <h3 className="text-cyan-500ds dark:text-white cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-cyan-600 px-3 self-start rounded-lg flex_ items-center">
-              <RxDashboard />
-              Dashboard
-            </h3>
-          </div>
-        </Link>
+        {/* <Link
+          prefetch={false}
+          shallow={true}
+          href={getNavQueries({ content: "dashboard" })}
+        > */}
+        <div className="col_ ">
+          <h3 className="text-cyan-500ds dark:text-white cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-cyan-600 px-3 self-start rounded-lg flex_ items-center">
+            <RxDashboard />
+            Dashboard
+          </h3>
+        </div>
+        {/* </Link> */}
         <hr className="" />
         <FolderAdder classId={classId} />
       </header>
       <WorkSideFolders classId={String(classId)} />
-      
+
       <TopicAdder />
     </div>
   );

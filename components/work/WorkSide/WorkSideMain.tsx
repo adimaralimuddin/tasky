@@ -2,12 +2,14 @@ import dynamic from "next/dynamic";
 // import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { HiOutlinePlus } from "react-icons/hi";
 import { RxDashboard } from "react-icons/rx";
 // import useClass from "../../../features/class/useClass";
 // import useWork from "../../../features/work/useWork";
 import _useWorkRoutes from "../../../lib/_routes/_useWorkRoutes";
 // import useWindowResize from "../../../lib/utils/_useWindowResize";
 import AppLogo from "../../elements/AppLogo";
+import BtnPrime from "../../elements/BtnPrime";
 import TextLoader from "../../elements/TextLoader";
 import WorkSideFolders from "./WorkSideFolders";
 // import WorkSideFolders from "./WorkSideFolders";
@@ -18,7 +20,15 @@ const TopicAdder = dynamic(() => import("../topic/topicEditor/TopicAdder"), {
 });
 const FolderAdder = dynamic(
   () => import("../folder/folderEditor/FolderAdder"),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <BtnPrime css="flex items-center mx-3">
+        <HiOutlinePlus className="text-md " />
+        <small className="whitespace-nowrap text-center">New Folder</small>
+      </BtnPrime>
+    ),
+  }
 );
 
 // const WorkSideFolders = dynamic(() => import("./WorkSideFolders"), {
@@ -36,7 +46,7 @@ export default function WorkSide({ post }: any) {
     query: { classId },
   } = useRouter();
 
-  const { getNavQueries } = _useWorkRoutes();
+  // const { getNavQueries } = _useWorkRoutes();
 
   const Content = (
     <div className={" rounded-xl flex-1 max-w-xs   "}>

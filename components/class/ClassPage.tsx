@@ -3,21 +3,25 @@ import React, { Suspense } from "react";
 import { FaPlus } from "react-icons/fa";
 import LayoutHeader from "../layouts/LayoutHeader";
 import ClassAdderView from "./classEditor/ClassAdderView";
-import ClassListLoader from "./classlists/ClassListLoader";
+import Classes from "./classlists/Classes";
+// import ClassListLoader from "./classlists/ClassListLoader";
+import ClassSamples from "./classlists/ClassSamples";
 
-const DynamicClasses = dynamic(() => import("./classlists/Classes"), {
-  ssr: false,
-  loading: ClassListLoader,
-});
-const DynamicClassSamples = dynamic(() => import("./classlists/ClassSamples"), {
-  ssr: false,
-  loading: ClassListLoader,
-});
+// const DynamicClasses = dynamic(() => import("./classlists/Classes"), {
+//   ssr: false,
+//   loading: ClassListLoader,
+// });
+// const DynamicClassSamples = dynamic(() => import("./classlists/ClassSamples"), {
+//   ssr: false,
+//   loading: ClassListLoader,
+// });
 
 const DynamicClassAdder = dynamic(() => import("./classEditor/ClassAdder"), {
   ssr: false,
   loading: ClassAdderView,
 });
+
+
 function PageMainClass() {
   return (
     <div className="min-h-screen dark:bg-slate-800 flex flex-col ">
@@ -25,9 +29,9 @@ function PageMainClass() {
       <div className="container py-[1rem]  mx-auto flex-col px-[5%] dring-1 flex-1 ">
         <DynamicClassAdder />
         <br />
-        <DynamicClasses title="My Classes" />
+        <Classes title="My Classes" />
         <br />
-        <DynamicClassSamples title="Sample Classes" />
+        <ClassSamples title="Sample Classes" />
       </div>
     </div>
   );

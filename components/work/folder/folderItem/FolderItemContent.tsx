@@ -37,7 +37,7 @@ function FolderItemContent({
 }: Props) {
   const [renaming, setRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  console.log(`folderData `, data);
+  // console.log(`folderData `, data);
 
   return (
     <div className="  ">

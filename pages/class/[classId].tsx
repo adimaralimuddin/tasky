@@ -11,12 +11,14 @@ export const config = {
 };
 
 export async function getStaticPaths() {
+  const classes = await prisma.class.findMany({ select: { id: true } });
+
+  const paths = classes?.map((class_) => ({
+    params: { classId: class_?.id },
+  }));
+
   return {
-    paths: [
-      {
-        params: { classId: "clbw1w4ce0047ogjolvoflbxb" },
-      },
-    ],
+    paths,
     fallback: false,
   };
 }
@@ -26,6 +28,8 @@ export async function getStaticProps(ctx: any) {
   const classId = params?.classId;
   const dashboard = await test();
   const folders = await getFolders();
+  console.log(`props here = `, params);
+
   async function test() {
     const res = await prisma.card.groupBy({
       by: ["level", "category"],
@@ -40,11 +44,9 @@ export async function getStaticProps(ctx: any) {
         id: true,
       },
     });
-
-    console.log("res======= ", res);
+    // console.log("res======= ", res);
     return res;
   }
-
   async function getFolders() {
     const res = await prisma.folder.findMany({
       where: { classId },
@@ -52,27 +54,14 @@ export async function getStaticProps(ctx: any) {
         Topic: true,
       },
     });
-    console.log(`'folders = '`, res);
+    // console.log(`'folders = '`, res);
 
     return res;
   }
 
-  // const defTempId = process.env.DEF_TEMP;
-  const post = { title: "oyahh kamu" + params?.classId, dashboard, folders };
-  
+  const post = { dashboard, folders };
+
   return {
     props: { post },
   };
 }
-
-// export async function getServerSideProps(ctx: {
-//   req: NextApiRequest;
-//   res: NextApiResponse;
-// }) {
-//   const defTempId = process.env.DEF_TEMP;
-//   const session = getSession(ctx?.req, ctx?.res);
-//   initUser(session?.user);
-//   return {
-//     props: { defTempId },
-//   };
-// }

@@ -18,7 +18,7 @@ type props = {
 };
 
 export default function TopicItem({ data, selectFolder }: props) {
-  console.log(`final topic here = `, data);
+  // console.log(`final topic here = `, data);
 
   const [hovered, setHovered] = useState(false);
   const [renaming, setRenaming] = useState(false);
@@ -28,7 +28,7 @@ export default function TopicItem({ data, selectFolder }: props) {
   // const { setTopic, work } = useWork();
 
   // const router = useRouter();
-  const { getNavQueries, query, topic } = _useWorkRoutes();
+  const { query, topic, setWorkState } = _useWorkRoutes();
   // const { selectTopic } = useTopicSelect();
 
   const isSelected = (a: any = true, b: any = false) =>
@@ -51,6 +51,13 @@ export default function TopicItem({ data, selectFolder }: props) {
     console.log("clicked ///");
     // selectTopic(data);
     selectFolder(true);
+    // setWorkState({
+    //   topic: data,
+    //   category: "all",
+    //   content: "topic",
+    //   topicId: data.id,
+    //   topicName: data.name,
+    // });
   };
 
   return (
@@ -67,6 +74,7 @@ export default function TopicItem({ data, selectFolder }: props) {
     // >
     <div className="flex flex-col">
       <div
+        onClick={onSelectTopic}
         onAnimationEnd={(e) => {
           const div = e.target as HTMLDivElement;
           if (div.classList.contains("popy")) {
@@ -75,7 +83,6 @@ export default function TopicItem({ data, selectFolder }: props) {
         }}
         onMouseEnter={(_) => setHovered(true)}
         onMouseLeave={(_) => setHovered(false)}
-        onClick={onSelectTopic}
         className={
           "cursor-pointer flex items-center  dark:hover:bg-slate-600 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
           isSelected(

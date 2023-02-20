@@ -7,10 +7,9 @@ import FolderItem from "../folder/folderItem/FolderItem";
 function WorkSideFolders({ classId, post }: { classId: string; post: any }) {
   const { data: folderData, isLoading } = useFolder(classId);
 
-
   const data = post?.folders;
 
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
 
   return (
     <div>

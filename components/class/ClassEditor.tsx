@@ -52,6 +52,7 @@ export default function ClassEditor({
         {(Icon: any) => (
           <Box>
             <Icon />
+
             <h3 className="text-indigo-400">Edit Class</h3>
             <div>
               <Input
@@ -74,7 +75,13 @@ export default function ClassEditor({
               <button onClick={onResetHandler}>reset</button>
             </div>
             <div className="flex items-center justify-between">
-              <BtnPrime onClick={onSaveHandler}>save</BtnPrime>
+              <button
+                className="btn-prime"
+                type="submit"
+                onClick={onSaveHandler}
+              >
+                save
+              </button>
               <BtnWarm onClick={() => setOpen(false)}>cancel</BtnWarm>
             </div>
           </Box>

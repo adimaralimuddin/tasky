@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import useCategoryGetter from "../../features/app/category/useCategoryGetter";
 import { CardTypes } from "../../features/card/CardType";
 import { useCardMutation } from "../../features/card/useCardMutation";
 import useCards from "../../features/card/useCards";
-import useWork from "../../features/work/useWork";
-import Box from "../elements/Box";
+import useTopicGetter from "../../features/topic/useTopicGetter";
+import BtnBack from "../elements/BtnBack";
 import ContentHeader from "../elements/ContentHeader";
 import NoCards from "../elements/NoCards";
 import CardItem from "../work/card/CardItem";
@@ -13,13 +14,13 @@ import PlayHeader from "./PlayHeader";
 import PlayNav from "./PlayNavs";
 
 export default function PlaymainPage({}: any) {
-  const { work } = useWork();
-  const { selectedTopic: topic } = work;
+  const topic = useTopicGetter().getSelectedTopic();
+  const { categorizeCards } = useCards(topic?.id);
   const { setCardLevel } = useCardMutation(topic?.id);
-  const { category } = useCards(topic?.id);
-  const cards = category(work.selectedCategory);
+  const selectedCategory = useCategoryGetter().getSelectedCategory();
+  const cards = categorizeCards(selectedCategory);
 
-  // local state
+  // local stated
   const [finish, setFinish] = useState<boolean>(false);
   const [playInd, setPlayInd] = useState<number>(0);
   const current: CardTypes = cards?.[playInd];
@@ -30,7 +31,7 @@ export default function PlaymainPage({}: any) {
     new Audio("/correct.mp3")?.play();
     setCardLevel({ cardId: current?.id, level });
     setPlayInd((p) => {
-      if (p >= cards?.length - 1) {
+      if (cards?.length && p >= cards?.length - 1) {
         setFinish(true);
         return 0;
       }
@@ -56,7 +57,7 @@ export default function PlaymainPage({}: any) {
   }
 
   const QuizContent = (
-    <div className=" pb-5 flex-1 col_">
+    <div className=" pb-5 flex-1 col_  ">
       <PlayHeader startSide={startSide} setStartSide={setStartSide} />
       <div
         className={"flex flex-col items-center flex-1  justify-center ring-1d"}
@@ -75,9 +76,13 @@ export default function PlaymainPage({}: any) {
   );
 
   return (
-    <div className=" container_ ">
-      <ContentHeader />
-      {cards?.length > 0 ? QuizContent : <NoCards text="No Cards To Play" />}
+    <div className=" container_ flex-col ">
+      <ContentHeader Action={<BtnBack content="category" />} />
+      {cards?.length && cards?.length > 0 ? (
+        QuizContent
+      ) : (
+        <NoCards text="No Cards To Play" />
+      )}
     </div>
   );
 }

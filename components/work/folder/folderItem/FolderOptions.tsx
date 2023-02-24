@@ -1,7 +1,8 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { toAddTopic } from "../../../../features/app/appSlice";
 import { FolderType } from "../../../../features/folder/folderTypes";
-import useWork from "../../../../features/work/useWork";
 import { Pencil, PlusBig, Trash } from "../../../../lib/icons";
 import { DEF_USER } from "../../../../lib/public";
 import Option from "../../../elements/Option";
@@ -22,8 +23,7 @@ export default function FolderOptions({
 }: Props) {
   const { user } = useUser();
   const { id, name, userId } = data;
-
-  const { setOpenTopicAdder, setSelectedFolder } = useWork();
+  const patch = useDispatch();
 
   const options = () => {
     let ret = [
@@ -31,8 +31,7 @@ export default function FolderOptions({
         icon: <PlusBig />,
         text: "topic",
         action: () => {
-          setOpenTopicAdder(true);
-          setSelectedFolder(id);
+          patch(toAddTopic(id));
           setOpen(true);
         },
       },
@@ -46,5 +45,5 @@ export default function FolderOptions({
       return userId !== DEF_USER ? notUserOptions : ret;
     }
   };
-  return <div>{hovered && <Option options={options()} />}</div>;
+  return <div>{hovered && <Option left={true} options={options()} />}</div>;
 }

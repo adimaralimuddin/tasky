@@ -43,7 +43,7 @@ function ClassItem({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {hovered && (
+      {hovered && !data?.preview && (
         <span className="relative">
           <div className="absolute top-0 right-0">
             <Option options={options} left={true} />

@@ -1,25 +1,21 @@
 import { useState } from "react";
+import useFieldsGetter from "../../../features/app/fields/useFieldsGetter";
+import useFieldsSetter from "../../../features/app/fields/useFieldsSetter";
 import { FieldType } from "../../../features/card/CardType";
-import { TemplateType } from "../../../features/template/templateType";
-import useWork from "../../../features/work/useWork";
+import useViewer from "../../../features/viewer/useViewer";
 import { ViewIcon } from "../../../lib/icons";
 import Box from "../../elements/Box";
 import Input from "../../elements/Input";
 import Select from "../../elements/Select";
-import SelectSimple from "../../elements/SelectSimple";
 
 export default function CardQueryView() {
   const [open, setOpen] = useState(false);
-  const {
-    work,
-    setBacks,
-    setFronts,
-    setTextSize,
-    setImageSize,
-    setViewLebel,
-    setViewLevel,
-    setviewCategory,
-  } = useWork();
+
+  const viewer = useViewer();
+
+  const { getFields } = useFieldsGetter();
+  const { setFronts, setBacks } = useFieldsSetter();
+  const fields = getFields();
 
   const setView = (
     view: boolean,
@@ -27,7 +23,7 @@ export default function CardQueryView() {
     side: "fronts" | "backs" = "fronts",
     setter: any
   ) => {
-    const newView = work?.[side]?.map((x) => {
+    const newView = fields?.[side]?.map((x) => {
       if (x.text == field.text) {
         return { ...x, view };
       }
@@ -56,16 +52,20 @@ export default function CardQueryView() {
               </p>
               <Select
                 text="Font Size"
-                onInput={setTextSize}
+                // value={work.textSize}
+                value={viewer.textSize}
+                onInput={viewer.setTextSize}
                 options={[
-                  ["normal", ""],
-                  ["small", "text-sm"],
-                  ["large", "text-xl"],
+                  ["normal", 2],
+                  ["small", 1],
+                  ["large", 3],
+                  ["xs", "0"],
+                  ["xl", 4],
                 ]}
               />
               <Select
                 text="Image Size"
-                onInput={setImageSize}
+                onInput={viewer.setImageSize}
                 options={[
                   ["normal", 110],
                   ["small", 80],
@@ -78,26 +78,26 @@ export default function CardQueryView() {
                 <Divider>Show Fields</Divider>
                 <Input
                   text="lebel"
-                  onInput={(e: any) => setViewLebel(e.target.checked)}
-                  defaultChecked={work.viewLebel}
+                  onInput={(e: any) => viewer.setViewLebel(e.target.checked)}
+                  defaultChecked={viewer.viewLebel}
                   type="checkbox"
                 />
                 <Input
                   text="level"
-                  defaultChecked={work.viewLevel}
-                  onInput={(e: any) => setViewLevel(e.target.checked)}
+                  defaultChecked={viewer.viewLevel}
+                  onInput={(e: any) => viewer.setViewLevel(e.target.checked)}
                   type="checkbox"
                 />
                 <Input
                   text="category"
-                  defaultChecked={work.viewCategory}
-                  onInput={(e: any) => setviewCategory(e.target.checked)}
+                  defaultChecked={viewer.viewCategory}
+                  onInput={(e: any) => viewer.setviewCategory(e.target.checked)}
                   type="checkbox"
                 />
               </div>
               <div className="py-1">
                 <Divider>View Fronts</Divider>
-                {work?.fronts?.map((f: any) => (
+                {fields?.fronts?.map((f: any) => (
                   <Input
                     onInput={(e: any) =>
                       setView(e.target.checked, f, "fronts", setFronts)
@@ -112,7 +112,7 @@ export default function CardQueryView() {
               <div className="py-1">
                 <Divider>View Backs</Divider>
 
-                {work?.backs?.map((f: any) => (
+                {fields?.backs?.map((f: any) => (
                   <Input
                     onInput={(e: any) =>
                       setView(e.target.checked, f, "backs", setBacks)
@@ -130,22 +130,6 @@ export default function CardQueryView() {
       )}
     </div>
   );
-}
-
-export function templateFields(template: { data: TemplateType }) {
-  if (!template?.data) return;
-  const fronts = JSON?.parse(template?.data?.fronts)?.map((f: FieldType) => ({
-    ...f,
-    view: true,
-  }));
-  const backs = JSON?.parse(template?.data?.backs)?.map((f: FieldType) => ({
-    ...f,
-    view: true,
-  }));
-  return {
-    fronts,
-    backs,
-  };
 }
 
 const Divider = (props: any) => {

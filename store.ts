@@ -1,13 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import topic from "./features/topic/topicSlice";
-import work from "./features/work/workSlice";
+import app from "./features/app/appSlice";
+import server from "./features/dateState/serverDataSlice";
 import quiz from "./features/quiz/quizSlice";
+import topic from "./features/topic/topicSlice";
+import viewer from "./features/viewer/viewerSlice";
 
 export const store = configureStore({
   reducer: {
+    app,
     topic,
-    work,
     quiz,
+    server,
+    viewer,
   },
 });
 

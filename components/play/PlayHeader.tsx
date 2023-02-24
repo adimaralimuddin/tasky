@@ -1,11 +1,7 @@
-import useWork from "../../features/work/useWork";
 import { SideIcon } from "../../lib/icons";
 import CardQueryView from "../work/card/CardQueryView";
 
 export default function PlayHeader({ startSide, setStartSide }: any) {
-  const {
-    work: { selectedCategory, selectedTopic },
-  } = useWork();
   return (
     <div className="flex_ ">
       <div

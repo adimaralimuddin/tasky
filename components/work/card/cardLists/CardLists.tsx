@@ -1,12 +1,12 @@
 import React from "react";
 import { CardTypes } from "../../../../features/card/CardType";
 import useCards from "../../../../features/card/useCards";
-import _useWorkRoutes from "../../../../lib/_routes/_useWorkRoutes";
+import useTopicGetter from "../../../../features/topic/useTopicGetter";
 import CardItem from "../CardItem";
 
 function CardLists() {
-  const { topic } = _useWorkRoutes();
-  const { data } = useCards(topic?.id);
+  const topicId = useTopicGetter().getSelectedTopicId();
+  const { data } = useCards(topicId);
 
   return (
     <div className="p-2">

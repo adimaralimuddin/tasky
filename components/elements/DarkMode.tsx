@@ -26,5 +26,5 @@ export default function DarkMode_() {
     }
   };
 
-  return <div className="ring-1">{themer()}</div>;
+  return <div className="">{themer()}</div>;
 }

@@ -54,25 +54,6 @@ export const ClassUrl = "/api/graphql";
 //   return ret?.createClass;
 // };
 
-export async function classApiGetClass(id: string) {
-  const q = gql`
-    query Class($id: String!) {
-      class(id: $id) {
-        id
-        name
-        description
-        sample
-        folders {
-          id
-          name
-        }
-      }
-    }
-  `;
-  const res = await request(ClassUrl, q, { id });
-  return res?.class;
-}
-
 export async function classApiRenameClass({
   classId,
   name,

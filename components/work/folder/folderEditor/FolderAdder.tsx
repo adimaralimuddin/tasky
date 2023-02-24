@@ -39,13 +39,20 @@ export default function FolderAdder({ classId }: props) {
         {(Icon: any) => (
           <Box css="w-full max-w-lg p-[3%]">
             <Icon />
-            <Input
-              autoFocus={true}
-              onInput={(e: any) => setFolderName(e.target.value)}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                onAddFolderHandler();
+              }}
             >
-              name
-            </Input>
-            <BtnPrime onClick={onAddFolderHandler}>Create Folder</BtnPrime>
+              <Input
+                autoFocus={true}
+                onInput={(e: any) => setFolderName(e.target.value)}
+              >
+                name
+              </Input>
+              <button type="submit">Create Folder</button>
+            </form>
           </Box>
         )}
       </Modal>

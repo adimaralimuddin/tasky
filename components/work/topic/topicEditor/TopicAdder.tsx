@@ -1,56 +1,63 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
+import { TemplateType } from "../../../../features/template/templateType";
 import useTemplates from "../../../../features/template/useTemplates";
 import { TopicType } from "../../../../features/topic/topicType";
 import useTopic from "../../../../features/topic/useTopic";
-import useWork from "../../../../features/work/useWork";
 import { DEF_USER } from "../../../../lib/public";
 import Box from "../../../elements/Box";
 import BtnPrime from "../../../elements/BtnPrime";
 import Input from "../../../elements/Input";
-import Loader from "../../../elements/Loader";
 import Modal from "../../../elements/Modal";
 import Select from "../../../elements/Select";
 
 export default function TopicAdder() {
   const { user } = useUser();
-  const { templates, sampleTemplates } = useTemplates(user?.sub || DEF_USER);
+  const { createTopic, setOpenTopicAdder, topicAdderOpenState } = useTopic();
 
-  const options_ = sampleTemplates?.data?.concat(templates?.data);
-  const options: any[] = options_?.map((temp: any) => [temp?.name, temp?.id]);
+  const { myTemplates, sampleTemplates } = useTemplates(user?.sub || DEF_USER);
 
-  const [templateId, setTemplateId] = useState(options?.[0]?.[1]);
-  const { work, setOpenTopicAdder, setTopic } = useWork();
-  
-  const { createTopic, topicAdder } = useTopic(
-    work?.selectedFolder,
-    (createdTopic: TopicType) => {
-      console.log("oh yeah done ", createdTopic);
-      setTopic(createdTopic);
-    }
-  );
+  const templates = sampleTemplates?.data?.concat(myTemplates?.data || []);
+  const options = templates?.map((temp: TemplateType) => [
+    temp?.name,
+    temp?.id,
+  ]);
+
+  const [templateId_, setTemplateId] = useState(options?.[0]?.[1]);
+  const template_ =
+    templates?.find((t) => t.id == templateId_) || templates?.[0];
 
   const onCreateHandler = (e: any) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.target));
-    if (!data?.name) return alert("you must enter a topic name");
-    const topicData: any = {
-      folderId: work?.selectedFolder,
-      userId: user?.sub || DEF_USER,
-      templateId: templateId || options?.[0]?.[1],
-      ...data,
-    };
-    createTopic(topicData);
-    setOpenTopicAdder(false);
-  };
 
-  // if (topicAdder.isLoading) {
-  //   return <Loader message="adding topic ... " open={topicAdder.isLoading} />;
-  // }
+    try {
+      const formData = Object.fromEntries(new FormData(e.target));
+      if (!formData?.name) return alert("you must enter a topic name");
+
+      const templateId = templateId_ || options?.[0]?.[1];
+      const template = template_;
+      const name = String(formData?.name);
+      const description = String(formData?.description) || "";
+
+      const preTopicData: Partial<TopicType> = {
+        templateId,
+        name,
+        description,
+        template,
+      };
+
+      if (!templateId || !template || !name)
+        return console.log("topic data missing some properties ", preTopicData);
+
+      createTopic(preTopicData as TopicType);
+    } catch (error) {
+      console.log(`Error: topicAdder onCreateTopic`, error);
+    }
+  };
 
   return (
     <Modal
-      open={work.openTopicAdder}
+      open={topicAdderOpenState}
       setOpen={setOpenTopicAdder}
       css={`overflow-auto px-2`}
     >
@@ -61,12 +68,13 @@ export default function TopicAdder() {
             <h2>create new topic</h2>
           </header>
           <form onSubmit={onCreateHandler}>
-            <Input text="name" />
+            topic adder -
+            <Input autoFocus={true} text="name" />
             <Input text="description" />
             <Select
               onInput={(val: any) => setTemplateId(val)}
               defaultValue={options?.[0]}
-              options={options}
+              options={options || []}
               text="templateId"
             />
             <BtnPrime type="submit">create</BtnPrime>

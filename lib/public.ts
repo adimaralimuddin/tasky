@@ -1,5 +1,6 @@
-export const DEF_USER = "defuserid";
+export const DEF_USER: string = "defuserid";
 export const URL = "/api/graphql";
+export const DBURL = "/api/graphql";
 export const SAMPLE = false;
 export const ClassLimit = 5;
 

@@ -1,51 +1,54 @@
 import React from "react";
-import _useWorkRoutes from "../../../lib/_routes/_useWorkRoutes";
+import useCategorySelecter from "../../../features/app/category/useCategorySelecter";
+import useCards from "../../../features/card/useCards";
+import useTopicGetter from "../../../features/topic/useTopicGetter";
 import BtnCardAdder from "../../elements/BtnCardAdder";
 import BtnPrime from "../../elements/BtnPrime";
 import BtnSec from "../../elements/BtnSec";
 import ContentHeader from "../../elements/ContentHeader";
 import CategoryItem from "./category/CategoryItem";
 
-export default function TopicMainContent({ classId }: any) {
-  const { getNavQueries, query } = _useWorkRoutes();
-
-  const topicId = String(query?.topicId);
+export default function TopicMainContent() {
+  const { selectCategory } = useCategorySelecter();
+  const topicId = useTopicGetter().getSelectedTopicId();
+  const { data: cards } = useCards(topicId);
 
   const onSelectCategory = (field: "all" | "new" | "passed" | "left") => {
-    return getNavQueries({
-      category: field,
-      content: "category",
-    });
+    selectCategory(field);
   };
 
   return (
-    <div className="flex-1 flex flex-col container_">
-      <ContentHeader Action={BtnCardAdder} />
-      <div className="ring-1d flex-1 flex flex-col justify-center ">
-        <main className="grid grid-cols-2 px-6 gap-5 flex-wrap  items-center justify-evenly ">
+    <div className="flex-1 flex flex-col container_ py-2">
+      <ContentHeader Action={<BtnCardAdder />} />
+      <div className="ring-1d flex-1 flex flex-col justify-center bg-green-400d  ">
+        <main className="grid grid-cols-1 px-6 gap-5 flex-wrap  items-center justify-evenly md:grid-cols-2 ">
           <CategoryItem
+            serverCards={cards}
             topicId={topicId}
             onSelect={onSelectCategory}
             field="all"
           />
           <CategoryItem
+            serverCards={cards}
             topicId={topicId}
             onSelect={onSelectCategory}
             field="new"
           />
           <CategoryItem
+            serverCards={cards}
             topicId={topicId}
             onSelect={onSelectCategory}
             field="passed"
           />
           <CategoryItem
+            serverCards={cards}
             topicId={topicId}
             onSelect={onSelectCategory}
             field="left"
           />
         </main>
         <div className="py-5 flex items-center justify-center ">
-          {/* <BtnPrime onClick={() => setContent("play")}>play</BtnPrime> */}
+          {/* <BtnPrime onClick={selectPlay}>play</BtnPrime> */}
           {/* <BtnSec onClick={() => setContent("quiz")}>quiz</BtnSec> */}
         </div>
       </div>

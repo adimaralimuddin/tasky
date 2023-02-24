@@ -1,5 +1,7 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
+import { ClassType } from "../../../features/class/classTypes";
 import useClassAdder from "../../../features/class/useClassAdder";
 import Box from "../../elements/Box";
 import BtnPrime from "../../elements/BtnPrime";
@@ -10,11 +12,16 @@ const DynamicModal = dynamic(() => import("../../elements/Modal"), {
   ssr: false,
 });
 
-function ClassAdder_() {
+function ClassAdder_({ myClasses }: { myClasses: ClassType[] }) {
   const [name, setName] = useState("");
   const [description, setDesc] = useState("");
   const [open, setOpen] = useState(false);
-  const { addClass, checkLimit } = useClassAdder();
+  const { addClass } = useClassAdder();
+  const { user } = useUser();
+
+  const checkLimit = () => {
+    return myClasses?.length >= 5 ? true : false;
+  };
 
   useEffect(() => {}, []);
 
@@ -25,36 +32,43 @@ function ClassAdder_() {
     });
     setOpen(false);
   };
+
+  if (!user) return null;
   return (
     <div onClick={() => setOpen(true)}>
-      {checkLimit() ? (
+      {!checkLimit() ? (
         <ClassAdderView />
       ) : (
         <div>
-          <p>Reached limit</p>
+          <p>you have reach the limit</p>
+          <small>0 class left!</small>
         </div>
       )}
 
-      {checkLimit().toString()}
       {open && (
         <DynamicModal open={open} setOpen={setOpen}>
           {(Icon: any) => (
             <div className="px-5 w-full">
               <Box css="w-fulld max-w-[400px] mx-auto">
                 <Icon />
-                <Input
-                  onInput={(e: any) => setName(e.target.value)}
-                  css="flex-col"
-                >
-                  Name
-                </Input>
-                <Input
-                  onInput={(e: any) => setDesc(e.target.value)}
-                  css="flex-col"
-                >
-                  Description
-                </Input>
-                <BtnPrime onClick={onAddClassHandler}>Create</BtnPrime>
+                <form onSubmit={onAddClassHandler}>
+                  <Input
+                    autoFocus={true}
+                    onInput={(e: any) => setName(e.target.value)}
+                    css="flex-col"
+                  >
+                    Name
+                  </Input>
+                  <Input
+                    onInput={(e: any) => setDesc(e.target.value)}
+                    css="flex-col"
+                  >
+                    Description
+                  </Input>
+                  <button className="btn-prime" type="submit">
+                    Create
+                  </button>
+                </form>
               </Box>
             </div>
           )}

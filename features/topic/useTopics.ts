@@ -1,13 +1,47 @@
 import { useQuery } from "@tanstack/react-query";
-import topicApiGetTopicsByFolder from "./topicApi";
+import request, { gql } from "graphql-request";
+import { TopicUrl } from "./topicApi";
+import { TopicType } from "./topicType";
 
-export default function useTopics(folderId: string) {
+export default function useTopics(folderId: string, initialData?: TopicType[]) {
   const topics = useQuery(
     ["topics", folderId],
-    async () => await topicApiGetTopicsByFolder(folderId)
+    async () => {
+      const res = await topicApiGetTopicsByFolder(folderId);
+      return res;
+    },
+    { initialData }
   );
 
   return {
-    topics,
+    ...topics,
   };
+}
+
+async function topicApiGetTopicsByFolder(folderId: string) {
+  const q = gql`
+    query TopicsByFolders($folderId: String!) {
+      topicsByFolders(folderId: $folderId) {
+        name
+        id
+        description
+        templateId
+        userId
+        folderId
+        sample
+        template {
+          name
+          userId
+          fronts
+          backs
+          id
+        }
+      }
+    }
+  `;
+
+  const ret = await request(TopicUrl, q, { folderId });
+  // console.log(`topics db`, ret.topicsByFolders);
+
+  return ret.topicsByFolders;
 }

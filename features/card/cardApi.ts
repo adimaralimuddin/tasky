@@ -1,5 +1,5 @@
 import request, { gql } from "graphql-request";
-import { useDb } from "../../lib/db";
+import { fileUploader } from "../../lib/db";
 export const CardUrl = "/api/graphql";
 
 type Field = {
@@ -9,7 +9,7 @@ type Field = {
 };
 
 export async function fieldsSolve(fields: Field[]) {
-  const client = useDb();
+  const client = fileUploader();
   return Promise.all(
     fields?.map(async (f) => {
       if (f.type === "audio" || f.type == "image") {
@@ -58,19 +58,3 @@ export async function cardApiSetCardLevel({
   const ret = await request(CardUrl, q, { cardId, level });
   return ret.setCardLevel;
 }
-
-// export async function cardApiDashboard(userId: string) {
-//   const q = gql`
-//     query NewCards($userId: String!) {
-//       dashboard(userId: $userId) {
-//         level
-//         category
-//         _count {
-//           id
-//         }
-//       }
-//     }
-//   `;
-//   const ret = await request(url, q, { userId });
-//   return ret.dashboard;
-// }

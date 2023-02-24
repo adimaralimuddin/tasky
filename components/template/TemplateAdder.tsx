@@ -12,7 +12,8 @@ export default function TemplateAdder() {
   const { createTemplate, templateAdder } = useTemplate(undefined, user?.sub);
   const [open, setOpen] = useState(false);
 
-  const onSaveTemplate = (data: TemplateType) => {
+  // adimar
+  const onSaveTemplate = (data: any) => {
     createTemplate(data);
     setOpen(false);
   };

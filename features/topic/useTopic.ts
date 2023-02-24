@@ -1,23 +1,44 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
-import useWork from "../work/useWork";
-import { topicUrl } from "./topicApi";
+import { nanoid } from "nanoid";
+import { useDispatch, useSelector } from "react-redux";
+import { TopicIcon } from "../../lib/icons";
+import { DEF_USER } from "../../lib/public";
+import { RootState } from "../../store";
+import { setTopicOpenState } from "../app/appSlice";
+import useFolderGetter from "../folder/useFolderGetter";
+import { TopicUrl } from "./topicApi";
 import { TopicType } from "./topicType";
+import useTopicSelecter from "./useTopicSelecter";
 
-export default function useTopic(folderId?: string, onSuccess?: any) {
+export default function useTopic() {
   const client = useQueryClient();
-  const { setTopic } = useWork();
+  const patch = useDispatch();
+  const { user } = useUser();
+
+  const { selectedFolderId } = useFolderGetter();
+
+  const topicAdderOpenState = useSelector(
+    (s: RootState) => s.app.topicAdderOpenState
+  );
+
+  const setOpenTopicAdder = (val: boolean) => patch(setTopicOpenState(val));
+
+  const { selectTopic } = useTopicSelecter();
 
   const topicAdder = useMutation(topicApiCreateTopic, {
     onMutate: (topicPayload) => {
-      console.log("topic payload", topicPayload);
-      setTopic(topicPayload as TopicType);
-      client.setQueryData(["topics", folderId], (topics: any) => {
-        return [...topics, topicPayload];
-      });
+      try {
+        client.setQueryData(["topics", selectedFolderId], (topics: any) => {
+          return [...topics, topicPayload];
+        });
+      } catch (error) {
+        console.log(`Error: useTopicAdder onAddMutate: `, error);
+      }
     },
     onSuccess: (createdTopic) => {
-      client.setQueryData(["topics", folderId], (topics: any) => {
+      client.setQueryData(["topics", selectedFolderId], (topics: any) => {
         return topics?.map((t: TopicType) => {
           if (t.name === createdTopic.name && !t?.id) {
             return createdTopic;
@@ -30,53 +51,77 @@ export default function useTopic(folderId?: string, onSuccess?: any) {
     },
   });
 
+  const createTopic = (topicPayload: TopicType) => {
+    const id = nanoid();
+    const folderId = selectedFolderId;
+    const userId = user?.sub || DEF_USER;
+    const topicFinalData = { ...topicPayload, id, folderId, userId };
+
+    if (!topicFinalData?.template)
+      return console.log(
+        "Validate: useTopicAdder addTopic : template is required:",
+        topicPayload
+      );
+
+    selectTopic(topicFinalData as TopicType, "cardadder");
+    setOpenTopicAdder(false);
+
+    topicAdder.mutate(topicFinalData as TopicType, {
+      onSuccess(x) {
+        console.log(`topic created`, x);
+      },
+    });
+  };
+
   return {
     topicAdder,
-    createTopic: topicAdder.mutate,
+    topicAdderOpenState,
+    createTopic,
+    setOpenTopicAdder,
   };
 }
 
-export async function topicApiCreateTopic(data: {
-  userId: string;
-  name: string;
-  description: string;
-  folderId: string;
-  templateId: string;
-}): Promise<TopicType> {
+export async function topicApiCreateTopic(
+  topicPayload: TopicType
+): Promise<TopicType> {
+  // extract to exclude template, createTopic arguments only needs topic with templateId field
+  const { template, ...topicWithoutTemplate } = topicPayload;
   const q = gql`
-    mutation CreateTopic(
+    mutation Mutation(
+      $id: String!
       $userId: String!
       $name: String!
-      $description: String!
       $folderId: String!
       $templateId: String!
+      $description: String
     ) {
       createTopic(
+        id: $id
         userId: $userId
         name: $name
-        description: $description
         folderId: $folderId
         templateId: $templateId
+        description: $description
       ) {
-        name
-        description
-        id
-        folderId
         userId
         templateId
         sample
+        name
+        id
+        folderId
+        description
         template {
-          id
-          name
           userId
+          name
+          id
           fronts
+          deleted
           backs
         }
       }
     }
   `;
   // console.log("on creating topic ", { q, data });
-  const ret = await request(topicUrl, q, data);
-  // console.log("create topic ret ", ret);
+  const ret = await request(TopicUrl, q, topicWithoutTemplate);
   return ret.createTopic;
 }

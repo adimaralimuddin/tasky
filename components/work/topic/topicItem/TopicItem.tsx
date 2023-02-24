@@ -1,41 +1,32 @@
-import Link from "next/link";
-// import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { BiBookAlt } from "react-icons/bi";
+import { CardTypes } from "../../../../features/card/CardType";
+import { TemplateType } from "../../../../features/template/templateType";
 import { TopicType } from "../../../../features/topic/topicType";
-// import useTopicSelect from "../../../../features/topic/useTopicSelect";
-// import useWork from "../../../../features/work/useWork";
+import useTopicSelecter from "../../../../features/topic/useTopicSelecter";
+
 import _charLimits from "../../../../lib/utils/_charLimits";
-import _useWorkRoutes from "../../../../lib/_routes/_useWorkRoutes";
 import TopicDeleter from "../topicEditor/TopicDeleter";
 import TopicRenamer from "../topicEditor/TopicRenamer";
 import TopicOptions from "./TopicOptions";
 
 type props = {
-  data: TopicType;
+  data: TopicType & { cards?: CardTypes[] };
+  serverData:
+    | (TopicType & { cards?: CardTypes[] } & { Template?: TemplateType[] })
+    | undefined;
   key?: any;
   selectFolder: any;
 };
 
-export default function TopicItem({ data, selectFolder }: props) {
-  // console.log(`final topic here = `, data);
-
+export default function TopicItem({ data, selectFolder, serverData }: props) {
   const [hovered, setHovered] = useState(false);
   const [renaming, setRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [changedName, setChangedName] = useState(false);
-  // const { setTopic, work } = useWork();
 
-  // const router = useRouter();
-  const { query, topic, setWorkState } = _useWorkRoutes();
-  // const { selectTopic } = useTopicSelect();
-
-  const isSelected = (a: any = true, b: any = false) =>
-    query?.topicId === data?.id ? a : b;
-
-  // const isSelected = (a: any = true, b: any = false) =>
-  //   work?.selectedTopic?.id === data.id ? a : b;
+  const { selectTopic, isTopicSelected } = useTopicSelecter();
 
   useEffect(() => {
     setMounted(true);
@@ -48,30 +39,12 @@ export default function TopicItem({ data, selectFolder }: props) {
   }, [data?.name]);
 
   const onSelectTopic = () => {
-    console.log("clicked ///");
-    // selectTopic(data);
+    console.log(`select topic: `, data);
     selectFolder(true);
-    // setWorkState({
-    //   topic: data,
-    //   category: "all",
-    //   content: "topic",
-    //   topicId: data.id,
-    //   topicName: data.name,
-    // });
+    selectTopic(data);
   };
 
   return (
-    // <Link
-    //   replace
-    //   href={getNavQueries({
-    //     topic: data,
-    //     category: "all",
-    //     content: "topic",
-    //     topicId: data.id,
-    //     topicName: data.name,
-    //   })}
-    //   passHref
-    // >
     <div className="flex flex-col">
       <div
         onClick={onSelectTopic}
@@ -85,14 +58,15 @@ export default function TopicItem({ data, selectFolder }: props) {
         onMouseLeave={(_) => setHovered(false)}
         className={
           "cursor-pointer flex items-center  dark:hover:bg-slate-600 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
-          isSelected(
-            " bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-600",
+          isTopicSelected(
+            data?.id,
+            " bg-indigo-50 hover:bg-indigo-100 dark:bg-violet-400 dark:hover:bg-violet-500 ",
             "hover:bg-slate-50"
           ) +
           (changedName && " popy")
         }
       >
-        <BiBookAlt className="mr-1 text-indigo-600" />
+        <BiBookAlt className="mr-1 text-indigo-600 dark:text-violet-400" />
         <small title={data?.name} className="flex-1 py-1 whitespace-nowrap">
           {_charLimits(data?.name, 20)}
         </small>
@@ -112,6 +86,5 @@ export default function TopicItem({ data, selectFolder }: props) {
         setIsDeleting={setIsDeleting}
       />
     </div>
-    // </Link>
   );
 }

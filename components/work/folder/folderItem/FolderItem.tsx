@@ -1,26 +1,9 @@
-// import dynamic from "next/dynamic";
-import dynamic from "next/dynamic";
 import React, { useState } from "react";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 // import { HiOutlineFolder } from "react-icons/hi";
 import { FolderType } from "../../../../features/folder/folderTypes";
-import TextLoader from "../../../elements/TextLoader";
+// import useFolder from "../../../../features/folder/useFolder";
 import FolderItemContent from "./FolderItemContent";
-// import FolderItemActions from "./FolderItemContent";
-// import { TopicType } from "../../../../features/topic/topicType";
-// import useTopics from "../../../../features/topic/useTopics";
-// import { DownIcon, UpIcon } from "../../../../lib/icons";
-
-// const FolderItemContent = dynamic(() => import("./FolderItemContent"), {
-//   ssr: false,
-//   loading: () => (
-//     <div>
-//       content..
-//       {/* <TextLoader /> */}
-//       {/* <TextLoader /> */}
-//       {/* <TextLoader /> */}
-//     </div>
-//   ),
-// });
 
 type props = {
   data: FolderType;
@@ -37,7 +20,7 @@ export default function FolderItem({ data, classId }: props) {
   return (
     <div
       className={
-        "flex flex-col rounded-md relative  " + (selected && "bg-slate-100d ")
+        "flex flex-col rounded-md relative   " + (selected && "bg-slate-100d ")
       }
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -45,14 +28,15 @@ export default function FolderItem({ data, classId }: props) {
       <div
         title={name}
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center hover:bg-slate-100 dark:hover:bg-slate-600 p-1 px-1 rounded-lg cursor-pointer text-slate-600 justify-between text-orange-600d"
+        className="flex items-center overflow-hidden hover:bg-slate-100 dark:hover:bg-slate-600 p-1 px-2 rounded-lg cursor-pointer text-slate-600 justify-between "
       >
         {/* <HiOutlineFolder className="text-2xl mr-2" /> */}
         <small className="flex-1 whitespace-nowrap">
           {name?.length > 20 ? name.substring(0, 20) + "..." : name}
         </small>
-        {!open ? ">" : "<"}
-        {/* {!open ? <DownIcon /> : <UpIcon />} */}
+        <div className="dark:text-violet-400 ">
+          {!open ? <FaAngleDown /> : <FaAngleUp />}
+        </div>
       </div>
       <FolderItemContent
         data={data}

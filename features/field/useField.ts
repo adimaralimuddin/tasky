@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDb } from "../../lib/db";
+import { fileUploader } from "../../lib/db";
 import { CardTypes, FieldType } from "../card/CardType";
 import { fieldApiUpdateField } from "./fieldApi";
 
@@ -8,7 +8,7 @@ export default function useField() {
   const updateField = useMutation(fieldApiUpdateField);
 
   const updateSide = async (fields: FieldType[]) => {
-    const client = useDb();
+    const client = fileUploader();
     return await Promise.all(
       fields?.map(async (f) => {
         if (f.newValue && f?.id) {

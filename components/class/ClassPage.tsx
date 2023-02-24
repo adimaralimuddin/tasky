@@ -1,37 +1,33 @@
 import dynamic from "next/dynamic";
-import React, { Suspense } from "react";
-import { FaPlus } from "react-icons/fa";
-import LayoutHeader from "../layouts/LayoutHeader";
+import React from "react";
+import LayoutMainHeader from "../layouts/LayoutMainHeader";
 import ClassAdderView from "./classEditor/ClassAdderView";
 import Classes from "./classlists/Classes";
-// import ClassListLoader from "./classlists/ClassListLoader";
-import ClassSamples from "./classlists/ClassSamples";
-
-// const DynamicClasses = dynamic(() => import("./classlists/Classes"), {
-//   ssr: false,
-//   loading: ClassListLoader,
-// });
-// const DynamicClassSamples = dynamic(() => import("./classlists/ClassSamples"), {
-//   ssr: false,
-//   loading: ClassListLoader,
-// });
+// import Classes from "./classlists/Classes";
+import ClassLists from "./classlists/ClassLists";
+// import ClassSamples from "./classlists/ClassSamples";
 
 const DynamicClassAdder = dynamic(() => import("./classEditor/ClassAdder"), {
   ssr: false,
   loading: ClassAdderView,
 });
 
+function PageMainClass({ myClasses, sampleClasses }: any) {
+  console.log(`classes`, myClasses, sampleClasses);
 
-function PageMainClass() {
   return (
     <div className="min-h-screen dark:bg-slate-800 flex flex-col ">
-      <LayoutHeader />
+      <LayoutMainHeader />
       <div className="container py-[1rem]  mx-auto flex-col px-[5%] dring-1 flex-1 ">
-        <DynamicClassAdder />
+        <DynamicClassAdder myClasses={myClasses} />
         <br />
-        <Classes title="My Classes" />
+        <Classes serverClasses={myClasses} />
         <br />
-        <ClassSamples title="Sample Classes" />
+        <ClassLists
+          data={sampleClasses}
+          title="Sample Classes"
+          editable={false}
+        />
       </div>
     </div>
   );

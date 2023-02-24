@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import useWork from "../../features/work/useWork";
+import useContentSetter from "../../features/app/contents/useContentSetter";
 import { DownIcon, PlusBig, QuizIcon, UpIcon } from "../../lib/icons";
 import Box from "./Box";
 
 export default function ActionButtons() {
   const [open, setOpen] = useState(false);
-  const { setContent } = useWork();
+
+  const { setContent } = useContentSetter();
 
   const onQuizHandler = () => {
     setContent("quiz");

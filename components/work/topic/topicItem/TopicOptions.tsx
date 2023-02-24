@@ -1,9 +1,9 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
+import useContentSetter from "../../../../features/app/contents/useContentSetter";
 import { TopicType } from "../../../../features/topic/topicType";
 import { Pencil, Plus, Trash } from "../../../../lib/icons";
 import { DEF_USER } from "../../../../lib/public";
-import _useWorkRoutes from "../../../../lib/_routes/_useWorkRoutes";
 import Option from "../../../elements/Option";
 
 type Props = {
@@ -19,18 +19,14 @@ export default function TopicOptions({
   setIsDeleting,
 }: Props) {
   const { user } = useUser();
-  const { getNavQueries } = _useWorkRoutes();
+  const { setContent } = useContentSetter();
 
   const options = () => {
     const ret = [
       {
         icon: <Plus />,
         text: "card",
-        link: {
-          passHref: true,
-          replace: true,
-          href: getNavQueries({ content: "cardadder" }),
-        },
+        action: () => setContent("cardadder"),
       },
       {
         icon: <Pencil />,
@@ -51,5 +47,5 @@ export default function TopicOptions({
     }
   };
 
-  return <div>{hovered && <Option options={options()} />}</div>;
+  return <div>{hovered && <Option left={true} options={options()} />}</div>;
 }

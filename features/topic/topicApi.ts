@@ -1,30 +1,5 @@
 import request, { gql } from "graphql-request";
-export const topicUrl = "/api/graphql";
-export default async function topicApiGetTopicsByFolder(folderId: string) {
-  const q = gql`
-    query TopicsByFolders($folderId: String!) {
-      topicsByFolders(folderId: $folderId) {
-        name
-        id
-        description
-        templateId
-        userId
-        folderId
-        sample
-        template {
-          name
-          userId
-          fronts
-          backs
-          id
-        }
-      }
-    }
-  `;
-
-  const ret = await request(topicUrl, q, { folderId });
-  return ret.topicsByFolders;
-}
+export const TopicUrl = "/api/graphql";
 
 export async function topicApiGetTopic(topicId: string) {
   const q = gql`
@@ -40,7 +15,7 @@ export async function topicApiGetTopic(topicId: string) {
       }
     }
   `;
-  const ret = await request(topicUrl, q, { topicId });
+  const ret = await request(TopicUrl, q, { topicId });
   return ret.topic;
 }
 

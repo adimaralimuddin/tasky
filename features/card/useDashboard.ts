@@ -1,14 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
+import { DashboardType } from "../app/appSlice";
 import { CardUrl } from "./cardApi";
 
-export default function useDashboard(classId: string | string[] | undefined) {
-  const dashboard = useQuery(["dashboard", classId], () =>
-    cardApiDashboard(classId)
+export default function useDashboard(
+  classId: string | string[] | undefined,
+  initialData?: DashboardType[]
+) {
+  const dashboard = useQuery(
+    ["dashboard", classId],
+    () => cardApiDashboard(classId),
+    {
+      initialData,
+    }
   );
 
   return {
-    dashboard,
+    ...dashboard,
   };
 }
 

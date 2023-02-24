@@ -14,8 +14,15 @@ const useWindowResize = (minWidth = 470) => {
 
   useEffect(() => {
     setWidthSize(window.innerWidth);
-    window.onresize = () => {
+
+    const updateOnResize = () => {
       setWidthSize(window.innerWidth);
+    };
+
+    window.addEventListener("resize", updateOnResize);
+
+    return () => {
+      window.removeEventListener("resize", updateOnResize);
     };
   }, []);
 

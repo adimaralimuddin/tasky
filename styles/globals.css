@@ -37,6 +37,9 @@
   .card {
     @apply rounded-xl p-4 bg-white flex flex-col dark:bg-slate-700;
   }
+  .btn-prime {
+    @apply rounded-xl dark:bg-violet-400 dark:text-white;
+  }
 }
 
 @layer utilities {

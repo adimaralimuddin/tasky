@@ -1,16 +1,23 @@
 import { useUser } from "@auth0/nextjs-auth0";
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
+import useFieldsGetter from "../../../features/app/fields/useFieldsGetter";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
-import { useCardMutation } from "../../../features/card/useCardMutation";
-import useWork from "../../../features/work/useWork";
-import { Pencil, Trash } from "../../../lib/icons";
+import useTopicGetter from "../../../features/topic/useTopicGetter";
+import useViewer from "../../../features/viewer/useViewer";
 import { DEF_USER } from "../../../lib/public";
 import AudioElement from "../../elements/AudioEl";
 import Box from "../../elements/Box";
 import ImageItem from "../../elements/ImageItem";
-import Loader from "../../elements/Loader";
-import Option from "../../elements/Option";
-import CardEditor from "./CardEditor";
+
+const CardItemOptions = dynamic(
+  () => import("./cardEditor/cardItem/CardItemOptions"),
+  { ssr: false }
+);
+const CardEditor = dynamic(() => import("./CardEditor"), { ssr: false });
+const CardDeleter = dynamic(() => import("./cardEditor/CardDeleter"), {
+  ssr: false,
+});
 
 type props = {
   card: CardTypes;
@@ -32,44 +39,20 @@ export default function CardItem({
   const { user } = useUser();
   const [card, setCard] = useState(card_);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const { work } = useWork();
-  const { deleteCard, cardDeleter } = useCardMutation(work?.selectedTopic?.id);
-  const textSize = work.textSize;
-  const size: any = work?.imageSize;
-  const imageSize = parseInt(size);
-  const lebel = work.viewLebel;
 
-  const options = () => {
-    let ret = [
-      {
-        text: "edit",
-        icon: <Pencil />,
-        action: () => {
-          setIsEditing(true);
-          setHovered(false);
-        },
-      },
-      {
-        text: "delete",
-        icon: <Trash />,
-        action: () => {
-          if (card?.sample) {
-            return alert(
-              "sample card will not be deleted. you can always add, edit and delete your own card instead."
-            );
-          }
-          deleteCard({ userId: user?.sub || DEF_USER, cardId: card.id });
-        },
-      },
-    ];
-    let notAllowed = [{ text: "you're not allowed" }];
-    if (user?.sub) {
-      return user?.sub == card?.userId ? ret : notAllowed;
-    } else {
-      return DEF_USER == card?.userId ? ret : notAllowed;
-    }
-  };
+  const { getSelectedTopicId } = useTopicGetter();
+  const topicId = getSelectedTopicId();
+
+  const { getFields } = useFieldsGetter();
+  const { fronts, backs } = getFields();
+
+  const viewer = useViewer();
+  const textSize = viewer.textSize;
+  const size: any = viewer?.imageSize;
+  const imageSize = parseInt(size);
+  const lebel = viewer.viewLebel;
 
   useEffect(() => {
     setCard(card_);
@@ -80,22 +63,27 @@ export default function CardItem({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       css={
-        "flexd ring-1d dark:ring-2 ring-slate-200 items-center my-5 min-w-[100px] shadow-none bg-white  dark:ring-1 dark:ring-slate-600 dark:bg-slate-600 " +
+        "flexd ring-1d dark:ring-2 ring-slate-200 items-center my-3 min-w-[100px] shadow-none bg-white  dark:ring-1 dark:ring-slate-600 dark:bg-slate-600 ring-1 p-0 " +
         css
       }
     >
       {index && card?.ind != undefined && (
         <span className="relative">
-          <small className="absolute top-0 left-0 px-2 text-slate-500">
+          <small className="absolute top-2 left-0 px-2 text-slate-500">
             {card?.ind + 1}
           </small>
         </span>
       )}
-      <span className="relative flex justify-end p-1">
-        <div className="absolute">
-          {hovered && allowOption && <Option options={options()} left={true} />}
-        </div>
-      </span>
+      <CardItemOptions
+        allowOption={allowOption}
+        card={card}
+        hovered={hovered}
+        setHovered={setHovered}
+        setIsDeleting={setIsDeleting}
+        setIsEditing={setIsEditing}
+        userId={user?.sub || undefined}
+      />
+
       {!isEditing && (
         <div className=" overflow-hidden flex flex-wrap justify-evenly ">
           {(side == "fronts" || side == "both") && (
@@ -105,7 +93,7 @@ export default function CardItem({
               textSize={textSize}
               imageSize={imageSize}
               lebel={lebel}
-              view={work.fronts}
+              view={fronts}
               side={side}
               imageViewer={imageViewer}
             />
@@ -118,20 +106,30 @@ export default function CardItem({
               textSize={textSize}
               imageSize={imageSize}
               lebel={lebel}
-              view={work.backs}
+              view={backs}
               side={side}
               imageViewer={imageViewer}
             />
           )}
         </div>
       )}
-      <div className={"p-2 text-slate-500 " + work.textSize}>
-        {work?.viewLevel && (
-          <p className="flex flex-cold">
+      <div className={" text-slate-400 flex gap-3  " + viewer.textSize}>
+        {viewer?.viewLevel && (
+          <p
+            style={{ fontSize: fontSize(textSize) }}
+            className="flex flex-cold px-3  p-2 dark:text-slate-400   "
+          >
             level: <span className="text-red-400 px-2"> {card?.level}</span>
           </p>
         )}
-        {work?.viewCategory && <p>category: {card?.category}</p>}
+        {viewer?.viewCategory && (
+          <p
+            style={{ fontSize: fontSize(textSize) }}
+            className="px-3 p-2 dark:text-slate-400 "
+          >
+            category: {card?.category}
+          </p>
+        )}
       </div>
 
       <CardEditor
@@ -146,7 +144,13 @@ export default function CardItem({
           setCard({ ...card, ...data });
         }}
       />
-      <Loader message="deleting card ... " open={cardDeleter?.isLoading} />
+      <CardDeleter
+        cardId={card.id}
+        isDeleting={isDeleting}
+        setIsDeleting={setIsDeleting}
+        topicId={topicId}
+        userId={user?.sub || DEF_USER}
+      />
     </Box>
   );
 }
@@ -172,10 +176,12 @@ export function CardFronts({
   side,
   imageViewer,
 }: CardFrontsProps) {
+  // console.log(`card fronts `, card);
+
   return (
     <div
       className={
-        " m-1 flex  gap-2 justify-center  flex-1 px-2 p-1 " +
+        "m-1 flex  gap-1 justify-center  flex-1 px-3  " +
         (lebel ? " items-center " : " items-center  ")
       }
     >
@@ -213,9 +219,14 @@ function FieldItem({
   view: any;
   imageViewer?: boolean;
 }) {
-  const isView = () => view?.find((f: FieldType) => f?.text == field?.text);
+  // console.log(`view`, view);
+  // console.log(`field`, field);
+
+  const isView = () => view?.find((f: FieldType) => f?.text === field?.text);
 
   if (!isView()?.view) {
+    // console.log(`no view`, isView());
+
     return null;
   }
 
@@ -225,18 +236,27 @@ function FieldItem({
 
   return (
     <div>
-      <div className="flex gap-2 items-start py-1 flexd flex-col ">
+      <div className="flex  gap-2 items-start  flex-col  ">
         {lebel && (
           <p
-            className={
-              "text-slate-400 dark:text-slate-400 text-sm   " + textSize
-            }
+            style={{
+              fontSize: fontSize(textSize),
+            }}
+            className={`text-slate-400 dark:text-slate-400  `}
           >
             {field?.text} :
           </p>
         )}
         {field?.type !== "image" && field?.type !== "audio" && (
-          <p className={"flex-1 dark:text-slate-200 " + textSize}>
+          <p
+            style={{
+              fontSize: fontSize(textSize),
+            }}
+            className={
+              "flex-1 dark:text-slate-200 max-h-[150px] overflow-y-auto " +
+              textSize
+            }
+          >
             {field?.value}
           </p>
         )}
@@ -255,3 +275,23 @@ function FieldItem({
     </div>
   );
 }
+
+const fontSize = (
+  size: string | number = 1,
+  s = ".83rem",
+  n = ".88rem",
+  l = "1rem",
+  xs = ".77rem",
+  xl = "1.2rem"
+) =>
+  size == 1
+    ? s
+    : size == 2
+    ? n
+    : size == 3
+    ? l
+    : size == 0
+    ? xs
+    : size == 4
+    ? xl
+    : n;

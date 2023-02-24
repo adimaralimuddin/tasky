@@ -4,6 +4,7 @@ export type ClassType = {
   description?: string;
   userId?: String;
   sample?: boolean;
+  preview?: boolean;
 };
 
 export type ClassCreateType = {

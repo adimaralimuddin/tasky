@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import useCategoryGetter from "../../features/app/category/useCategoryGetter";
 import { CardTypes } from "../../features/card/CardType";
 import useCards from "../../features/card/useCards";
 import useQuiz from "../../features/quiz/useQuiz";
-import useWork from "../../features/work/useWork";
+import useTopicGetter from "../../features/topic/useTopicGetter";
 import Box from "../elements/Box";
+import BtnBack from "../elements/BtnBack";
 import ContentHeader from "../elements/ContentHeader";
 import NoCards from "../elements/NoCards";
 import CardItem from "../work/card/CardItem";
@@ -14,10 +16,14 @@ import QuizPlayOptionItem from "./QuizPlayOptionItem";
 
 export default function QuizMainContent({ classId }: any) {
   const [playInd, setPlayInd] = useState<number>(0);
-  const { work } = useWork();
-  const { selectedTopic, selectedCategory } = work;
-  const { category } = useCards(selectedTopic?.id);
-  const cards = category(selectedCategory);
+
+  const selectedTopicId = useTopicGetter().getSelectedTopicId();
+  const selectedCategory = useCategoryGetter().getSelectedCategory();
+
+  const { categorizeCards } = useCards(selectedTopicId);
+
+  const cards = categorizeCards(selectedCategory);
+
   const [optionCount, setOptionCount] = useState(
     cards?.length <= 4 ? cards?.length : 4
   );
@@ -99,7 +105,7 @@ export default function QuizMainContent({ classId }: any) {
 
   return (
     <Box css="flex-1 flex flex-col  ">
-      <ContentHeader />
+      <ContentHeader Action={<BtnBack content="category" />} />
       {cards?.length > 0 ? Content : <NoCards text="No Cards For Quiz" />}
     </Box>
   );

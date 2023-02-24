@@ -1,26 +1,23 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
-import _useWorkRoutes from "../../lib/_routes/_useWorkRoutes";
+import useTopicGetter from "../topic/useTopicGetter";
 import { CardUrl, fieldsSolve } from "./cardApi";
 
 export default function useCardAdder() {
   const { user } = useUser();
-  const { topic } = _useWorkRoutes();
-  const topicId = topic?.id;
+  const topicId = useTopicGetter().getSelectedTopicId();
   const client = useQueryClient();
 
   const cardCreator = useMutation(cardApiCreateCard, {
     onMutate: (cardPayload) => {
-      // console.log("card payload", cardPayload);
-      // console.log(`topic`, topicId);
-
       client.setQueryData(["cards", topicId], (cards: any) => {
-        return [...cards, cardPayload];
+        if (cards?.length) return [...cards, cardPayload];
+        return [cardPayload];
       });
     },
     onSuccess: (createdCard) => {
-      // console.log("card added", createdCard);
+      console.log("card added", createdCard);
       // client.setQueryData(["cards", topicId], (cards: any) => {
       //   return [...cards, createdCard];
       // });

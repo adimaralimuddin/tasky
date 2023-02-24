@@ -12,12 +12,15 @@ export default function useClassUpdater() {
   const classUpdater = useMutation(classApiUpdateClass, {
     onMutate({ classId, ...classPayload }) {
       console.log(`here`, classPayload);
-
-      client.setQueryData(["classes", user], (classes: any) =>
-        classes.map((c: ClassType) =>
-          c?.id == classId ? { ...c, ...classPayload } : c
-        )
-      );
+      try {
+        client.setQueryData(["classes", user?.sub], (classes: any) =>
+          classes.map((c: ClassType) =>
+            c?.id == classId ? { ...c, ...classPayload } : c
+          )
+        );
+      } catch (error) {
+        console.log(`Error: classUpdater onMutate :`, error);
+      }
     },
     onSuccess(updatedClass) {
       client.setQueryData(["classes", user], (classes: any) =>

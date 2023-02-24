@@ -14,10 +14,10 @@ export default function NoCards({
   button = true,
 }: props) {
   return (
-    <div className="flex flex-1 flex-col justify-center ring-1d p-3">
+    <div className="flex flex-1 flex-col justify-center items-center ring-1d p-3">
       <div
         className={
-          "flex flex-1 flex-col items-center justify-center bg-slate-50 dark:bg-slate-600 min-h-[200px] rounded-xl  m-autod max-w-xl max-h-[60%]  gap-2 " +
+          "flex flex-1 w-full flex-col items-center justify-center bg-slate-50 dark:bg-slate-600 min-h-[200px] rounded-xl max-w-xl max-h-[60%]  gap-2 " +
           css
         }
       >

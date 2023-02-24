@@ -1,19 +1,34 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
-import { topicUrl } from "./topicApi";
+import { TopicUrl } from "./topicApi";
 import { TopicType } from "./topicType";
+import useTopicSelecter from "./useTopicSelecter";
 
 export default function useTopicRenamer(folderId: string) {
   const client = useQueryClient();
+  const { selectTopic, isTopicSelected } = useTopicSelecter();
+
   const topicRenamer = useMutation(topicApiRenameTopic, {
-    onMutate: ({ topicId, name }) => {
+    onMutate: (topicPayload) => {
+      const { id, name } = topicPayload;
+
+      if (isTopicSelected(id)) {
+        console.log(`yes, this topic is currently selected`, topicPayload);
+        selectTopic(topicPayload);
+      }
+
       client.setQueryData(["topics", folderId], (topics: any) => {
-        return topics?.map((topic: TopicType) => {
-          if (topic?.id == topicId) {
+        if (!topics) {
+          return [{ ...topicPayload }];
+        }
+        const updatedTopics = topics?.map((topic: TopicType) => {
+          if (topic?.id == id) {
             return { ...topic, name };
           }
           return topic;
         });
+
+        return updatedTopics;
       });
     },
     onSuccess: (renamedTopic) => {
@@ -28,28 +43,23 @@ export default function useTopicRenamer(folderId: string) {
     },
   });
 
-  const renameTopic = (payload: ApiProps) => {
+  const renameTopic = (payload: TopicType) => {
     topicRenamer.mutate(payload);
   };
 
   return { renameTopic };
 }
 
-type ApiProps = {
-  userId: string;
-  name: string;
-  topicId: string;
-};
-export async function topicApiRenameTopic({ userId, name, topicId }: ApiProps) {
+export async function topicApiRenameTopic({ userId, name, id }: TopicType) {
   const q = gql`
-    mutation Mutation($topicId: String!, $name: String!, $userId: String!) {
-      renameTopic(topicId: $topicId, name: $name, userId: $userId) {
+    mutation Mutation($id: String!, $name: String!, $userId: String!) {
+      renameTopic(topicId: $id, name: $name, userId: $userId) {
         name
         id
         userId
       }
     }
   `;
-  const ret = await request(topicUrl, q, { topicId, name, userId });
+  const ret = await request(TopicUrl, q, { id, name, userId });
   return ret.renameTopic;
 }

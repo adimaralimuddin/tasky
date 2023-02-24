@@ -1,3 +1,4 @@
+import { CardTypes } from "../card/CardType";
 import { TemplateType } from "../template/templateType";
 
 export type TopicType = {
@@ -8,5 +9,7 @@ export type TopicType = {
   folderId: string;
   userId: string;
   template?: TemplateType;
+  Template?: TemplateType;
   sample?: boolean | string;
+  cards?: CardTypes[];
 };

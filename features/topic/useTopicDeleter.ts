@@ -4,7 +4,7 @@ import request, { gql } from "graphql-request";
 import { useDispatch } from "react-redux";
 import { DEF_USER } from "../../lib/public";
 import { setContent } from "../card/cardSlice";
-import { topicUrl } from "./topicApi";
+import { TopicUrl } from "./topicApi";
 import { TopicType } from "./topicType";
 
 export default function useTopicDeleter(folderId: string) {
@@ -57,6 +57,6 @@ export async function topicApiDeleteTopic({
       }
     }
   `;
-  const ret = await request(topicUrl, q, { userId, topicId });
+  const ret = await request(TopicUrl, q, { userId, topicId });
   return ret?.deleteTopic;
 }

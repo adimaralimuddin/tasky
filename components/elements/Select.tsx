@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DownIcon, UpIcon } from "../../lib/icons";
 import Box from "./Box";
 
@@ -8,6 +8,7 @@ type props = {
   text: string;
   css?: string;
   defaultValue?: any;
+  value?: any;
 };
 type Option = string[];
 
@@ -18,11 +19,14 @@ export default function Select({
   text,
   defaultValue,
   css,
+  value,
 }: props) {
   const [open, setOpen] = useState(false);
-  const [val, setVal] = useState<Option>(
-    defaultValue != undefined ? defaultValue : options?.[0]
-  );
+  const [val, setVal] = useState<Option>(options?.[0]);
+
+  useEffect(() => {
+    setVal(options?.find((p) => p[1] == value) || options?.[0]);
+  }, [value]);
 
   const onInputHandler = (option: Option) => {
     setVal(option);

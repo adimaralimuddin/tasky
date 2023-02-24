@@ -7,14 +7,10 @@ import BtnSec from "../elements/BtnSec";
 import LayoutMainHeader from "../layouts/LayoutMainHeader";
 
 function PageMainHome({ defClass }: { defClass: string }) {
-  console.log("def ", defClass);
   return (
     <div className="flex flex-col min-h-screen bg-whited bg-slate-100 dark:bg-slate-800 ">
       <LayoutMainHeader />
       <A />
-
-      <small>defcal {defClass}</small>
-
       <Caption defClass={defClass} />
     </div>
   );

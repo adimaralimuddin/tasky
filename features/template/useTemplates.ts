@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { templateFields } from "../app/appSlice";
 import { templateApiSampleTemplate, templateApiTemplates } from "./templateApi";
 
 export default function useTemplates(userId?: string | null) {
-  const templates = useQuery(["templates", userId], () =>
+  const myTemplates = useQuery(["templates", userId], () =>
     templateApiTemplates({ userId })
   );
 
@@ -10,5 +11,23 @@ export default function useTemplates(userId?: string | null) {
     ["sampleTemplates"],
     templateApiSampleTemplate
   );
-  return { templates, sampleTemplates };
+
+  const sampleTemplatesParsed = () => {
+    return sampleTemplates?.data?.map((temp) => templateFields(temp));
+  };
+  const myTemplatesParsed = () => {
+    return myTemplates?.data?.map((temp) => templateFields(temp));
+  };
+
+  const templatesParsed = () => {
+    const rawTemplates = sampleTemplates?.data?.concat(myTemplates?.data || []);
+    return rawTemplates?.map((temp) => templateFields(temp));
+  };
+  return {
+    myTemplates,
+    sampleTemplates,
+    templatesParsed,
+    sampleTemplatesParsed,
+    myTemplatesParsed,
+  };
 }

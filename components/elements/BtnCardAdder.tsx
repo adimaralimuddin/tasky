@@ -1,12 +1,13 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
-import useWork from "../../features/work/useWork";
+import useContentSetter from "../../features/app/contents/useContentSetter";
+import useTopicGetter from "../../features/topic/useTopicGetter";
 import { Plus } from "../../lib/icons";
 import { DEF_USER } from "../../lib/public";
 
 export default function BtnCardAdder() {
-  const { setContent, work } = useWork();
-  const { selectedTopic: topic } = work;
+  const { setContent } = useContentSetter();
+  const topic = useTopicGetter().getSelectedTopic();
   const { user } = useUser();
 
   const onClickHandler = () => {

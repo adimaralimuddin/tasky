@@ -5,6 +5,7 @@ export const User = objectType({
   name: "User",
   definition(t) {
     t.string("id");
+    t.string("dbid");
     t.string("name");
     t.string("email");
     t.list.field("class", {
@@ -42,6 +43,17 @@ export const UserQuery = extendType({
           });
         },
       });
+
+    // get single user by dbid
+    t.field("userByDbid", {
+      type: User,
+      args: { dbid: nonNull(stringArg()) },
+      resolve(par, { dbid }, ctx) {
+        return ctx.prisma.user.findFirst({
+          where: { dbid },
+        });
+      },
+    });
   },
 });
 

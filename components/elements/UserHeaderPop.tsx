@@ -24,7 +24,7 @@ export default function UserHeaderPop() {
       <div className="flex items-center" onMouseEnter={() => setOpen(true)}>
         {user?.picture && (
           <img
-            className="rounded-full w-[clamp(40px,40px,40px)]"
+            className="rounded-full w-[clamp(35px,35px,35px)]"
             src={user?.picture}
             alt=""
           />
@@ -39,6 +39,7 @@ export default function UserHeaderPop() {
           >
             <Box css="flex flex-col shadow-xl p-2 ring-1 ring-slate-200 ">
               <div className="p-2 text-center">
+                <small>{user?.sub}</small>
                 <p className="whitespace-nowrap">{user?.name}</p>
                 <p className="whitespace-nowrap text-slate-400 dark:text-white">
                   {user?.email}

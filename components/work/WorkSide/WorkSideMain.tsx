@@ -1,19 +1,12 @@
 import dynamic from "next/dynamic";
-// import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { HiOutlinePlus } from "react-icons/hi";
 import { RxDashboard } from "react-icons/rx";
-// import useClass from "../../../features/class/useClass";
-// import useWork from "../../../features/work/useWork";
-import _useWorkRoutes from "../../../lib/_routes/_useWorkRoutes";
-// import useWindowResize from "../../../lib/utils/_useWindowResize";
+import useContentSetter from "../../../features/app/contents/useContentSetter";
 import AppLogo from "../../elements/AppLogo";
 import BtnPrime from "../../elements/BtnPrime";
-import TextLoader from "../../elements/TextLoader";
 import WorkSideFolders from "./WorkSideFolders";
-// import WorkSideFolders from "./WorkSideFolders";
-// import TopicAdder from "../topic/topicEditor/TopicAdder";
 
 const TopicAdder = dynamic(() => import("../topic/topicEditor/TopicAdder"), {
   ssr: false,
@@ -31,53 +24,44 @@ const FolderAdder = dynamic(
   }
 );
 
-// const WorkSideFolders = dynamic(() => import("./WorkSideFolders"), {
-//   ssr: false,
-//   loading: () => (
-//     <div className="col_">
-//       <TextLoader />
-//       <TextLoader />
-//     </div>
-//   ),
-// });
-
 export default function WorkSide({ post }: any) {
-  const {
-    query: { classId },
-  } = useRouter();
+  const { setContent } = useContentSetter();
+  const router = useRouter();
+  const classId = String(router.query?.classId);
 
-  // const { getNavQueries } = _useWorkRoutes();
+  const onDashBoardClick = () => setContent("dashboard");
 
-  const Content = (
-    <div className={" rounded-xl flex-1 max-w-xs   "}>
-      <header className="flex flex-col gap-2">
-        <AppLogo />
-        {/* <Link
-          prefetch={false}
-          shallow={true}
-          href={getNavQueries({ content: "dashboard" })}
-        > */}
-        <div className="col_ ">
-          <h3 className="text-cyan-500ds dark:text-white cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-cyan-600 px-3 self-start rounded-lg flex_ items-center">
-            <RxDashboard />
-            Dashboard
-          </h3>
-        </div>
-        {/* </Link> */}
-        <hr className="" />
-        <FolderAdder classId={classId} />
-      </header>
-      <WorkSideFolders post={post} classId={String(classId)} />
-
-      <TopicAdder />
-    </div>
-  );
-
-  // const isCol = (a: any, b: any) => (collapsed ? a : b);
   return (
-    <div className="flex-1  max-w-[270px] bg-white dark:bg-slate-700">
-      <div className="sticky shadow-xl border-r border-slate-100 top-0 z-60 p-2 h-screen  ">
-        {Content}
+    <div
+      className={
+        "flex-1 lg:max-w-[290px] sm:hover hover:min-w-[270px] lg:hover:w-full hover:fixed lg:hover:sticky left-0   max-w-[38px] overflow-hidden bg-whited dark:bg-slate-700d group w-[100%] sticky top-0 max-h-screen dark:bg-slate-900 z-[999] min-h-screen  dark:ring-2  bg-white shadow-md "
+      }
+    >
+      <div className={" rounded-xl flex-1 max-w-xs  "}>
+        <div className=" lg:hidden col_ items-center  group-hover:hidden p-3">
+          <AppLogo showTitle={false} />
+          <button className="bg-purple-400 p-[4px] rounded-xl">
+            <RxDashboard className="text-xl text-white" />
+          </button>
+        </div>
+        <header className="hidden lg:flex group-hover:flex  flex-col items-stretch">
+          <div className="p-3 col_">
+            <AppLogo />
+            <h3
+              onClick={onDashBoardClick}
+              className="flex-1 ring-2 text-cyan-500ds dark:text-white cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-cyan-600 px-3 self-start rounded-lg flex_ items-center"
+            >
+              <RxDashboard />
+              Dashboard
+            </h3>
+          </div>
+          <FolderAdder classId={classId} />
+          <hr className="  dark:border-slate-500" />
+        </header>
+
+        <WorkSideFolders post={post} classId={String(classId)} />
+
+        <TopicAdder />
       </div>
     </div>
   );

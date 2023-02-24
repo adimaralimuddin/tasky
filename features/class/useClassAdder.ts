@@ -23,20 +23,36 @@ export default function useClassAdder() {
         alert("you have reach the limit to create class!");
         return null;
       }
-      //   return classPayload if user is allowed to create more class
-      client.setQueryData(["classes", user], (classes: any) => {
-        return [...classes, classPayload];
-      });
+      try {
+        console.log(`classPayload`, classPayload);
+
+        //   return classPayload if user is allowed to create more class
+        client.setQueryData(["classes", user?.sub], (classes: any) => {
+          const newClass = { ...classPayload, preview: true };
+          if (!classes || !classes?.length) return [newClass];
+          return [...classes, newClass];
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
     onSuccess(addedClass) {
-      client.setQueryData(["classes", user], (classes: any) => {
-        return classes.map((c: ClassType) => {
-          if (!c.id && c?.name === addedClass?.name) {
-            return addedClass;
+      try {
+        client.setQueryData(["classes", user?.sub], (classes: any) => {
+          console.log(`pclasses`, classes);
+          if (classes?.length) {
+            return classes.map((c: ClassType) => {
+              if (!c.id && c?.name === addedClass?.name) {
+                return addedClass;
+              }
+              return c;
+            });
           }
-          return c;
+          return [addedClass];
         });
-      });
+      } catch (error) {
+        console.log(`Error: classAdder onSuccess`, error);
+      }
     },
   });
 
@@ -56,19 +72,20 @@ export const classApiCreateClass = async ({
   name,
   description,
 }: ClassCreate) => {
+  // console.log(`to add class --`, { userId, name, description });
+
   const q = gql`
-    mutation CreateClass(
-      $name: String!
-      $userId: String
-      $description: String
-    ) {
+    mutation Mutation($name: String!, $userId: String, $description: String) {
       createClass(name: $name, userId: $userId, description: $description) {
+        description
         id
         name
-        description
+        sample
+        userId
       }
     }
   `;
   const ret = await request(ClassUrl, q, { userId, name, description });
+
   return ret?.createClass;
 };

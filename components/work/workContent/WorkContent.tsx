@@ -1,40 +1,35 @@
 import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
 import React from "react";
+import useContentGetter from "../../../features/app/contents/useContentGetter";
 import DashboardMainContent from "../../dashboard/DashboardMainContent";
-// import PlaymainPage from "../../play/PlaymainPage";
-// import QuizMainContent from "../../quiz/QuizMainContent";
+import PlaymainPage from "../../play/PlaymainPage";
+import QuizMainContent from "../../quiz/QuizMainContent";
+import CardAdder from "../card/cardEditor/CardAdder";
+import TopicMainContent from "../topic/TopicMainContent";
 
-// const CardAdder = dynamic(() => import("../card/cardEditor/CardAdder"), {
-//   ssr: false,
-// });
 const CategoryList = dynamic(() => import("../topic/category/CategoryList"), {
   ssr: false,
 });
-const TopicMainContent = dynamic(() => import("../topic/TopicMainContent"), {
-  ssr: false,
-});
 
-function WorkContent({ post }: any) {
-  const router = useRouter();
+function WorkContent({ serverState }: any) {
+  const { getContent, router } = useContentGetter();
 
-  const content = router.query?.content || "dashboard";
+  const content = getContent();
   const classId = router.query?.classId;
   return (
-    <div>
+    <div className="container flex-col flex  p-2 flex-1 max-w-4xl mx-auto bg-red-400d">
       {content == "dashboard" ? (
-        <DashboardMainContent post={post} />
+        <DashboardMainContent serverState={serverState} />
       ) : content == "topic" ? (
-        <TopicMainContent classId={classId} />
+        <TopicMainContent />
       ) : content == "category" ? (
-        <CategoryList classId={classId} />
+        <CategoryList />
       ) : content == "cardadder" ? (
-        "card adder"
-      ) : // <CardAdder classId={classId} />
-      content == "play" ? (
-        "play" // <PlaymainPage classId={classId} />
+        <CardAdder classId={classId} />
+      ) : content == "play" ? (
+        <PlaymainPage classId={classId} />
       ) : content == "quiz" ? (
-        "quiz" //<QuizMainContent classId={classId} />
+        <QuizMainContent classId={classId} />
       ) : null}
     </div>
   );

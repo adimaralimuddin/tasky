@@ -1,11 +1,7 @@
-import { useUser } from "@auth0/nextjs-auth0";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import React from "react";
 import { AiOutlineFund } from "react-icons/ai";
 import useDashboard from "../../features/card/useDashboard";
-import { classApiGetClass } from "../../features/class/classApi";
-import { DEF_USER } from "../../lib/public";
-import Box from "../elements/Box";
 
 type dashType = {
   level: string;
@@ -13,20 +9,16 @@ type dashType = {
   _count: { id: number };
 };
 
-export default function DashboardMainContent({ post }: any) {
-  const dashboards = post?.dashboard;
-  // const { user } = useUser();
+export default function DashboardMainContent({ serverState }: any) {
+  const serverDashboards = serverState?.dashboard;
+
   const {
     query: { classId },
   } = useRouter();
 
-  const {
-    dashboard: { data },
-  } = useDashboard(classId);
-  // console.log("post dashboard", post?.dashboard);
-  // console.log("dashboard data ", data);
+  const { data: dashboard } = useDashboard(classId, serverDashboards);
 
-  const total = data?.reduce(
+  const total = dashboard?.reduce(
     (total: number, d: dashType) => total + d._count.id,
     0
   );
@@ -40,63 +32,31 @@ export default function DashboardMainContent({ post }: any) {
         <h3 className="text-2xl font-bold flex_ text-pink-400 items-center">
           Total Cards :
           <span className="text-slate-500 font-bold text-2xl px-3">
-            {total + 200}
+            {total}
           </span>
         </h3>
         <h3 className="text-lg font-bold flex_">
           Total Learns :
-          <span className="text-indigo-400d font-bold text-xl px-3">{231}</span>
+          <span className="text-indigo-400d font-bold text-xl px-3">
+            must emplement{}
+          </span>
         </h3>
       </div>
       <h4 className="subtitle_  p-1">Level</h4>
       <div className="flex gap-7 flex-wrap ">
-        <LevelItem data={data || dashboards} value="easy" field="level" />
-        <LevelItem data={data || dashboards} value="normal" field="level" />
-        <LevelItem data={data || dashboards} value="hard" field="level" />
+        <LevelItem data={dashboard} value="easy" field="level" />
+        <LevelItem data={dashboard} value="normal" field="level" />
+        <LevelItem data={dashboard} value="hard" field="level" />
       </div>
 
       <h4 className="subtitle_ p-1">Category</h4>
       <div className="flex gap-7 flex-wrap">
-        <LevelItem data={data || dashboards} value="new" field="category" />
-        <LevelItem data={data || dashboards} value="passed" field="category" />
-        <LevelItem data={data || dashboards} value="left" field="category" />
+        <LevelItem data={dashboard} value="new" field="category" />
+        <LevelItem data={dashboard} value="passed" field="category" />
+        <LevelItem data={dashboard} value="left" field="category" />
       </div>
     </div>
   );
-
-  //   <div className="flex-1 col_ p-3 px-[3%] container_ ">
-  //     <header className="sticky top-[70px] flex items-center justify-between gap-3">
-  //       <h3 className="title_">Dashboard</h3>
-  //     </header>
-  //     <div className="bg-white rounded-2xl p-6 ring-1 ring-slate-200 shadow-lgd shadow-slate-200">
-  //       <h3 className="text-2xl font-bold flex_ text-pink-400 items-center">
-  //         Total Cards :
-  //         <span className="text-slate-500 font-bold text-2xl px-3">
-  //           {total + 200}
-  //         </span>
-  //       </h3>
-  //       <h3 className="text-lg font-bold flex_">
-  //         Total Learns :
-  //         <span className="text-indigo-400d font-bold text-xl px-3">{231}</span>
-  //       </h3>
-  //       <br />
-  //       <hr />
-  //       <h4 className="subtitle_   p-2">Level</h4>
-  //       <div className="flex gap-7 flex-wrap ">
-  //         <LevelItem data={data} value="easy" field="level" />
-  //         <LevelItem data={data} value="normal" field="level" />
-  //         <LevelItem data={data} value="hard" field="level" />
-  //       </div>
-  //       <br />
-  //       <h4 className="subtitle_ p-2">Category</h4>
-  //       <div className="flex gap-7 flex-wrap">
-  //         <LevelItem data={data} value="new" field="category" />
-  //         <LevelItem data={data} value="passed" field="category" />
-  //         <LevelItem data={data} value="left" field="category" />
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 }
 
 function LevelItem({

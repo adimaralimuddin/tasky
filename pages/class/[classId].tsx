@@ -1,16 +1,17 @@
 // import { getSession } from "@auth0/nextjs-auth0";
 // import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import { GetStaticPaths } from "next";
+// import { GetServerSideProps } from "next";
 import WorkPage from "../../components/work/WorkPage";
-// import { initUser } from "../../lib/initUser";
-const prisma = new PrismaClient();
+// import prisma from "../../lib/prisma";
+
 export default WorkPage;
 export const config = {
   unstable_runtimeJS: false,
 };
 
-export async function getStaticPaths() {
+export async function getStaticPaths<getStaticPaths>() {
+  const prisma = await new PrismaClient();
   const classes = await prisma.class.findMany({ select: { id: true } });
 
   const paths = classes?.map((class_) => ({
@@ -24,13 +25,24 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx: any) {
+  const prisma = await new PrismaClient();
   const { params } = ctx;
   const classId = params?.classId;
-  const dashboard = await test();
+  const dashboard = await getDashboard();
   const folders = await getFolders();
-  console.log(`props here = `, params);
+  const class_ = await prisma.class.findFirst({
+    where: { id: classId },
+    select: {
+      id: true,
+      userId: true,
+      name: true,
+      description: true,
+      sample: true,
+    },
+  });
+  console.log(`class_`, class_);
 
-  async function test() {
+  async function getDashboard() {
     const res = await prisma.card.groupBy({
       by: ["level", "category"],
       where: {
@@ -51,7 +63,12 @@ export async function getStaticProps(ctx: any) {
     const res = await prisma.folder.findMany({
       where: { classId },
       include: {
-        Topic: true,
+        Topic: {
+          include: {
+            Template: true,
+            cards: true,
+          },
+        },
       },
     });
     // console.log(`'folders = '`, res);
@@ -59,10 +76,10 @@ export async function getStaticProps(ctx: any) {
     return res;
   }
 
-  const post = { dashboard, folders };
+  const post = { dashboard, folders, class_ };
 
   return {
     props: { post },
-    revalidate: 5,
+    revalidate: 10,
   };
 }

@@ -10,9 +10,15 @@ export default function useClassDeleter() {
 
   const classDeleter = useMutation(classApiDeleteclass, {
     onMutate(deletedId) {
-      client.setQueryData(["classes", user], (classes: any) =>
-        classes.filter((c: ClassType) => c.id !== deletedId)
-      );
+      try {
+        client.setQueryData(["classes", user?.sub], (prevClasses: any) => {
+          if (prevClasses?.length) {
+            return prevClasses.filter((c: ClassType) => c.id !== deletedId);
+          }
+        });
+      } catch (error) {
+        console.log(`Error: class deleterf on mutate`, error);
+      }
     },
     onSuccess(deletedClass) {
       client.setQueryData(["classes", user], (classes: any) =>
@@ -38,5 +44,7 @@ export async function classApiDeleteclass(classId: string) {
     }
   `;
   const ret = await request(ClassUrl, q, { classId });
-  return ret.deleteClass;
+  console.log(`class deleted`, ret?.deleteClass);
+
+  return ret?.deleteClass;
 }

@@ -1,4 +1,5 @@
 import request, { gql } from "graphql-request";
+import { TemplateType } from "./templateType";
 const url = "/api/graphql";
 
 export async function templateApiCreate(data: {
@@ -32,7 +33,7 @@ export async function templateApiCreate(data: {
   return ret.createTemplate;
 }
 
-export async function templateApiSampleTemplate() {
+export async function templateApiSampleTemplate(): Promise<TemplateType[]> {
   const q = gql`
     query SampleTemplates {
       sampleTemplates {
@@ -53,7 +54,7 @@ export async function templateApiTemplates({
   userId,
 }: {
   userId?: string | null;
-}) {
+}): Promise<TemplateType[]> {
   const q = gql`
     query Templates($userId: String!) {
       templates(userId: $userId) {

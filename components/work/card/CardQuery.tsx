@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import useFieldsGetter from "../../../features/app/fields/useFieldsGetter";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
-// import useTemplate from "../../../features/template/useTemplate";
-import useTopicSelect from "../../../features/topic/useTopicSelect";
-import { setFields } from "../../../features/work/workSlice";
-// import useWork from "../../../features/work/useWork";
-import _useWorkRoutes from "../../../lib/_routes/_useWorkRoutes";
 import SearchBox from "../../elements/SearchBox";
 import Select from "../../elements/Select";
 import CardQueryView from "./CardQueryView";
@@ -18,29 +14,35 @@ export default function CardQuery({
   setCards: any;
   classId?: string;
 }) {
-  const { topic: topicCached, query } = _useWorkRoutes();
-  const template = topicCached?.template;
+  const { getFields } = useFieldsGetter();
+  const template = getFields();
+
   const dispatch = useDispatch();
 
   const setFieldsStore = (fields: { fronts: any[]; backs: any[] }) => {
-    dispatch(setFields(fields));
+    // // work?.fronts?.find
+    // const resolveFields = (side: "backs" | "fronts") =>
+    //   fields?.[side]?.map((f) => {
+    //     // this used to const stateField = work?.[side]
+    //     const stateField = template?.[side]?.find(
+    //       (f_) => f_?.text === f?.text && f_?.type === f?.type
+    //     );
+    //     const returnField = { view: true, ...f, ...stateField };
+    //     return returnField;
+    //   });
+    // const fronts = resolveFields("fronts");
+    // const backs = resolveFields("backs");
+    // const returnFields = { fronts, backs };
+    // console.log(`return fields here`, returnFields);
+    // dispatch(setFields(returnFields));
   };
 
-  const [type, setType] = useState("fronts");
-  const [filter, setFilter] = useState("");
-  const [fields, setFieldsViews] = useState<any>(templateFields(template));
-  // const { selectTopic } = useTopicSelect();
+  const [type, setType] = useState<Side>("fronts");
+  const [filter, setFilter] = useState(template?.fronts?.[0]?.text);
 
-  useEffect(() => {
-    console.log("effect");
-    const fields = templateFields(template);
-    setFieldsViews(fields);
-    setFilter(fields?.fronts?.[0]?.text);
-    // selectTopic(topicCached);
-    setFieldsStore(fields);
-  }, [query]);
+  const fields = template;
 
-  const updateFilter = (type_ = type) => {
+  const updateFilter = (type_: Side = type) => {
     const x = fields?.[type_]?.find((p: any) => p?.text == filter);
     if (!x) {
       setFilter(fields?.[type_]?.[0]?.text);
@@ -68,24 +70,26 @@ export default function CardQuery({
     <div className="flex flex-wrap gap-1 items-center">
       <SearchBox
         onInput={onSearchHandler}
-        placeholder={`search ${type} ${filter}`}
+        placeholder={`search type:${type} filter:${filter}`}
       />
 
       <Select
-        onInput={(side: string) => {
-          setType(side);
-          updateFilter(side);
-        }}
         text="filter"
+        value={filter}
+        onInput={(side: string) => {
+          setFilter(side);
+          // setType(side);
+          // updateFilter(side);
+        }}
         options={fields?.[type]
           ?.filter((f: any) =>
             f?.type == "text" || f?.type == "number" ? true : null
           )
-          .map((f: any) => [f?.text, f?.text])}
+          ?.map((f: any) => [f?.text, f?.text])}
       />
 
       <Select
-        onInput={(side: string) => {
+        onInput={(side: Side) => {
           setType(side);
           updateFilter(side);
         }}
@@ -100,19 +104,32 @@ export default function CardQuery({
   );
 }
 
-export const templateFields = (template: any) => {
-  const fronts = JSON?.parse(template?.fronts)?.map((f: FieldType) => ({
-    ...f,
-    view: true,
-  }));
-  const backs = JSON?.parse(template?.backs)?.map((f: FieldType) => ({
-    ...f,
-    view: true,
-  }));
+export const finalizeFields = (template: any) => {
+  console.log(`finalize`, template);
 
+  let fronts = template?.fronts || [];
+  let backs = template?.backs || [];
+
+  const isString = () => (typeof fronts === "string" ? true : false);
+
+  if (isString()) {
+    fronts = JSON?.parse(template?.fronts)?.map((f: FieldType) => ({
+      ...f,
+      view: true,
+    }));
+  }
+
+  if (isString()) {
+    backs = JSON?.parse(template?.backs)?.map((f: FieldType) => ({
+      ...f,
+      view: true,
+    }));
+  }
   const fields = {
     fronts,
     backs,
   };
   return fields;
 };
+
+type Side = "fronts" | "backs";

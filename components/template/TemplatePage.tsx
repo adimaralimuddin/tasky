@@ -6,9 +6,9 @@ import LayoutMainHeader from "../layouts/LayoutMainHeader";
 import TemplateAdder from "./TemplateAdder";
 import TemplateItem from "./TemplateItem";
 
-export default function TemplatePage({ defTempId }: { defTempId: any }) {
+export default function TemplatePage() {
   const { user } = useUser();
-  const { templates, sampleTemplates } = useTemplates(user?.sub);
+  const { myTemplates, sampleTemplates } = useTemplates(user?.sub);
 
   return (
     <div>
@@ -24,7 +24,7 @@ export default function TemplatePage({ defTempId }: { defTempId: any }) {
           />
         ))}
 
-        {templates?.data?.map((template: TemplateType) => (
+        {myTemplates?.data?.map((template: TemplateType) => (
           <TemplateItem template={template} key={template.id} />
         ))}
       </div>

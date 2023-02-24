@@ -70,8 +70,8 @@ export default function TemplateItem({ template, editable = true }: props) {
         name_={template?.name}
         open={openEditor}
         setOpen={setOpenEditor}
-        fronts_={toJson(template?.fronts)}
-        backs_={toJson(template?.backs)}
+        fronts_={toJson(template?.fronts as any)} // adimar
+        backs_={toJson(template?.backs as any)}
         onSave={onSaveHandler}
         onCancel={() => {
           setOpen(true);
@@ -88,9 +88,10 @@ export default function TemplateItem({ template, editable = true }: props) {
           >
             <Icon />
             <h3>{template?.name}</h3>
+            {/* adimar bellow as any */}
             <div className="flex gap-2 flex-wrap overflow-auto flex-1 ">
-              <Fields fields={toJson(template?.fronts)} />
-              <Fields fields={toJson(template?.backs)} text="Backs" />
+              <Fields fields={toJson(template?.fronts as any)} />
+              <Fields fields={toJson(template?.backs as any)} text="Backs" />
             </div>
             <div className="flex items-center justify-between">
               <BtnWarm className="" onClick={() => setIsDeleting(true)}>

@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
-import useField from "../../../features/field/useField";
-import useWork from "../../../features/work/useWork";
+import useCardUpdater from "../../../features/card/useCardUpdater";
 import { ImageIcon, Mp3, RefreshIcon } from "../../../lib/icons";
 import Box from "../../elements/Box";
 import BtnSec from "../../elements/BtnSec";
 import BtnWarm from "../../elements/BtnWarm";
 import ImageItem from "../../elements/ImageItem";
 import Input from "../../elements/Input";
-import Loader from "../../elements/Loader";
 import Modal from "../../elements/Modal";
 
 type props = {
@@ -26,32 +24,13 @@ export default function CardEditor({
   setOpen,
   onUpdated,
 }: props) {
-  const { work } = useWork();
-  const [fronts, setFronts] = useState(card?.fronts);
-  const [backs, setBacks] = useState(card?.backs);
-  const { updateFields } = useField();
-  const [isUpdating, setIsUpdating] = useState(false);
+  const { setFronts, setBacks, onUpdateHandler, isUpdating } = useCardUpdater({
+    card,
+    setOpen,
+    onUpdated,
+  });
 
   if (!open) return null;
-
-  const onUpdateHandler = async () => {
-    if (card?.sample) {
-      return alert(
-        "sample card will not be edited. you can always add, edit and delete your own card instead."
-      );
-    }
-    setIsUpdating(true);
-    const data: any = {
-      fronts,
-      backs,
-      topicId: work?.selectedTopic?.id,
-      cardId: card?.id,
-    };
-    const ret = await updateFields(data);
-    onUpdated?.(ret);
-    setOpen(false);
-    setIsUpdating(false);
-  };
 
   return (
     <div>
@@ -70,7 +49,6 @@ export default function CardEditor({
           </Box>
         )}
       </Modal>
-      <Loader open={isUpdating} message="updating card ... " />
     </div>
   );
 }

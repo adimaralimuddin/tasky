@@ -1,6 +1,8 @@
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
+import { CardTypes } from "../../../../features/card/CardType";
 import { FolderType } from "../../../../features/folder/folderTypes";
+import { TopicType } from "../../../../features/topic/topicType";
 import FolderItemTopics from "./FolderItemTopics";
 
 const FolderDeleter = dynamic(() => import("../folderEditor/FolderDeleter"), {
@@ -17,7 +19,7 @@ const FolderOptions = dynamic(() => import("./FolderOptions"), { ssr: false });
 // });
 
 interface Props {
-  data: FolderType | any;
+  data: FolderType & { Topic?: TopicType[] };
   hovered: boolean;
   classId: string;
   setOpen: any;
@@ -44,11 +46,11 @@ function FolderItemContent({
       {open && (
         <FolderItemTopics
           id={id}
-          topics={data?.Topic}
+          serverTopic={data?.Topic}
           setSelected={setSelected}
         />
       )}
-      <div className="absolute right-0 top-0">
+      <div className="absolute right-2 top-0 bg-red-400 dark:bg-slate-600 rounded-xl ">
         <FolderOptions
           data={data}
           hovered={hovered}

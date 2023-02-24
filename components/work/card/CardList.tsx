@@ -2,9 +2,7 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { CardTypes } from "../../../features/card/CardType";
 import NoCards from "../../elements/NoCards";
-// import ActionButtons from "../../elements/ActionButtons";
 import CardItem from "./CardItem";
-// import CardQuery from "./CardQuery";
 
 const CardQuery = dynamic(() => import("./CardQuery"), {
   ssr: false,
@@ -16,10 +14,9 @@ const ActionButtons = dynamic(() => import("../../elements/ActionButtons"), {
 });
 
 type props = {
-  classId: string;
   cards: CardTypes[];
 };
-export default function CardList({ classId, cards: cards_ }: props) {
+export default function CardList({ cards: cards_ }: props) {
   const [cards, setCards] = useState(cards_);
 
   useEffect(() => {
@@ -29,7 +26,7 @@ export default function CardList({ classId, cards: cards_ }: props) {
   return (
     <div className="flex-1 mt-2">
       <div className="flex gap-2 items-end flex-wrap ">
-        <CardQuery classId={classId} cards={cards_} setCards={setCards} />
+        <CardQuery cards={cards_} setCards={setCards} />
         <ActionButtons />
       </div>
       {!cards?.length ? (

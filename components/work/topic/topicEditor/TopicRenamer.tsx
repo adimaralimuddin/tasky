@@ -15,8 +15,9 @@ type props = {
 };
 
 function TopicRenamer({ open, setOpen, data }: props) {
-  const { user } = useUser();
   const { renameTopic } = useTopicRenamer(data?.folderId);
+  const { user } = useUser();
+
   const onSaveHandler = (e: any) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -26,7 +27,12 @@ function TopicRenamer({ open, setOpen, data }: props) {
       );
       return setOpen(false);
     }
-    renameTopic({ userId: user?.sub || DEF_USER, name, topicId: data?.id });
+
+    renameTopic({
+      ...data,
+      userId: user?.sub || DEF_USER,
+      name,
+    });
     setOpen(false);
   };
 

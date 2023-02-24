@@ -85,6 +85,7 @@ export const TopicMutation = extendType({
     t.field("createTopic", {
       type: Topic,
       args: {
+        id: nonNull(stringArg()),
         userId: nonNull(stringArg()),
         name: nonNull(stringArg()),
         description: stringArg(),

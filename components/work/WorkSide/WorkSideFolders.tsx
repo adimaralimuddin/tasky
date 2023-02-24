@@ -1,37 +1,44 @@
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import React from "react";
+import { CardTypes } from "../../../features/card/CardType";
 import { FolderType } from "../../../features/folder/folderTypes";
 import useFolder from "../../../features/folder/useFolder";
-import TextLoader from "../../elements/TextLoader";
+import { TopicType } from "../../../features/topic/topicType";
 import FolderItem from "../folder/folderItem/FolderItem";
 
 function WorkSideFolders({ classId, post }: { classId: string; post: any }) {
-  const { data: folderData, isLoading } = useFolder(classId);
+  const { data: clientFolders } = useFolder(classId);
+  const folders = clientFolders;
+  // const serverFolders = post?.folders;
 
-  const data = post?.folders;
+  // let folders = clientFolders || post.folders;
+  // folders = folders.map((folder: any) => {
+  //   // filter topics
+  //   if (!folder?.Topic) {
+  //     const gotTopic = serverFolders.find((p: any) => p.id == folder.id);
+  //     if (gotTopic && gotTopic?.Topic) {
+  //       folder.Topic = [...gotTopic.Topic];
+  //     }
+  //   }
 
-  // if (isLoading) return <Loader />;
+  //   return folder;
+  // }); // folders = folder.map // choose between server and client folder data
+
+  // console.log(`final folders`, folders);
 
   return (
-    <div>
-      {!data?.length ? (
+    <div className=" hidden lg:block group-hover:block p-3">
+      {!folders?.length ? (
         <div>
           <p>no folders!</p>
         </div>
       ) : (
-        data?.map((folder: FolderType) => (
+        folders?.map((folder: FolderType) => (
           <FolderItem key={folder?.id} data={folder} classId={classId} />
         ))
       )}
     </div>
   );
 }
-
-const Loader = () => (
-  <div className="col_">
-    <TextLoader />
-    <TextLoader />
-    <TextLoader />
-  </div>
-);
 
 export default WorkSideFolders;

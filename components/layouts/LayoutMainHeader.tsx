@@ -1,18 +1,15 @@
-// import { useUser } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { TbLayout } from "react-icons/tb";
-import { VscSymbolClass } from "react-icons/vsc";
-import useWindowResize from "../../lib/utils/_useWindowResize";
-// import {  MenuIcon, TemplateIcon, XIcon } from "../../lib/icons";
 import { defUser } from "../../lib/public";
+import useWindowResize from "../../lib/utils/_useWindowResize";
 import AppLogo from "../elements/AppLogo";
-import Box from "../elements/Box";
 import DarkMode from "../elements/DarkMode";
-// import UserHeaderPop from "../elements/UserHeaderPop";
 
 import dynamic from "next/dynamic";
-// import { MdOutlineAddAlert } from "react-icons/md";
+import { FaBars, FaTimes } from "react-icons/fa";
+import Menu from "./menus/Menu";
+import MenuClasses from "./menus/MenuClasses";
 
 const DynamicUserMenu = dynamic(() => import("../elements/UserHeaderPop"), {
   ssr: false,
@@ -23,91 +20,71 @@ interface LayoutMainProps {
   className?: string;
 }
 function LayoutMainHeader({ showTitle = true, className }: LayoutMainProps) {
-  const { collapsed } = useWindowResize(470);
+  const { collapsed } = useWindowResize(740);
+  const [openMenu, setOpenMenu] = useState(false);
 
   useEffect(() => {
     defUser();
   }, []);
 
+  useEffect(() => {
+    setOpenMenu(collapsed);
+  }, []);
+
   return (
-    <div className={" bg-white dark:bg-slate-800 " + className}>
-      <div className="flex items-center justify-between px-5 max-w-4xl mx-auto flex-wrap">
+    <div className={" bg-white dark:bg-slate-800 relative " + className}>
+      <div className="flex p-2 items-center justify-between px-5 max-w-4xl mx-auto flex-wrap">
         <div className="flex items-center cursor-pointer">
           {showTitle ? (
-            <Link href="/">
+            <Link prefetch={false} href="/">
               <div className="flex items-center justif-center gap-1">
-                <AppLogo />
-                {!collapsed ? (
-                  <h2 className=" text-xl font-bold">Tasky</h2>
-                ) : null}
+                <AppLogo showTitle={!collapsed} />
               </div>
             </Link>
           ) : null}
-          {collapsed ? <ColMenu /> : null}
+          {collapsed ? (
+            <MenuBurger open={openMenu} setOpen={setOpenMenu} />
+          ) : null}
         </div>
-        {!collapsed ? <MainMenus /> : null}
+        {!collapsed ? <MainMenus col={collapsed} /> : null}
         <span className="flex items-center gap-2">
           <DarkMode />
           <DynamicUserMenu />
         </span>
       </div>
+      {openMenu && collapsed ? (
+        <div className=" relative container max-w-4xl mx-auto ">
+          <MainMenus css=" flex-wrap absolute top-0 bg-white flex-1 w-full gap-3 p-3 items-center justify-center " />
+        </div>
+      ) : null}
     </div>
   );
 }
 
-const Menu = ({
-  href,
-  children,
-  Icon,
-  col,
-}: {
-  href: string;
-  children: any;
-  Icon?: any;
-  col?: boolean;
-}) => {
-  return (
-    <Link href={href}>
-      <div className="dark:text-slate-100 flex items-center gap-1 cursor-pointer hover:text-indigo-400 dark:hover:text-white text-md ">
-        {Icon && <Icon className="text-xl" />}
-        {!col && children}
-      </div>
-    </Link>
-  );
-};
-
 export default LayoutMainHeader;
 
-function MainMenus({ css, style = "flex items-center gap-5 " }: any) {
+function MainMenus({ css, style = "flex items-center gap-5 ", col }: any) {
   return (
-    <nav className={style + css}>
-      <Menu Icon={VscSymbolClass} href="/class">
-        classes
-      </Menu>
-      <Menu Icon={TbLayout} href="/templates">
-        templates
-      </Menu>
-    </nav>
+    <div className={style + " " + css}>
+      <MenuClasses col={col} />
+      <Link href="/templates">
+        <div>
+          <Menu col={col} Icon={TbLayout}>
+            templates
+          </Menu>
+        </div>
+      </Link>
+    </div>
   );
 }
 
-function ColMenu() {
-  const [open, setOpen] = useState(false);
+function MenuBurger({ open, setOpen }: any) {
   return (
-    <div>
-      <div
-        onClick={() => setOpen((p) => !p)}
-        className=" p-1 mx-1 text-2xl hover:ring-2 rounded-md ring-indigo-400"
-      >
-        {/* {open ? <XIcon /> : <MenuIcon />} */}
-      </div>
-      {open && (
-        <span className="relative z-20">
-          <Box css="absolute top-2 -left-5 ring-1 shadow-xl ring-slate-300 p-3 dark:bg-slate-600 dark:ring-slate-600 dark:shadow-2xl">
-            <MainMenus style="flex-col gap-2" />
-          </Box>
-        </span>
-      )}
+    <div
+      onClick={() => setOpen((p: boolean) => !p)}
+      className=" p-1 mx-1 text-2xl hover:ring-2 rounded-md ring-indigo-400"
+    >
+      {open ? <FaTimes /> : <FaBars />}
     </div>
   );
 }

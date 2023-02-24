@@ -2,11 +2,14 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
 import { ClassUrl } from "./classApi";
+import { ClassType } from "./classTypes";
 
-export default function useClasses() {
+export default function useClasses(initialData: ClassType[] = []) {
   const { user } = useUser();
-  const classes = useQuery(["classes", user?.sub], () =>
-    classApiUserClass(user?.sub)
+  const classes = useQuery(
+    ["classes", user?.sub],
+    () => classApiUserClass(user?.sub),
+    { initialData }
   );
   return { ...classes };
 }

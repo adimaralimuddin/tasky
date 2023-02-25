@@ -15,7 +15,7 @@ export default function TopicAdder() {
   const { user } = useUser();
   const { createTopic, setOpenTopicAdder, topicAdderOpenState } = useTopic();
 
-  const { myTemplates, sampleTemplates } = useTemplates(user?.sub || DEF_USER);
+  const { myTemplates, sampleTemplates } = useTemplates();
 
   const templates = sampleTemplates?.data?.concat(myTemplates?.data || []);
   const options = templates?.map((temp: TemplateType) => [

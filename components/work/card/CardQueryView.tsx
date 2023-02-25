@@ -36,8 +36,8 @@ export default function CardQueryView() {
   return (
     <div>
       <div
-        className="flex hover:text-indigo-400 cursor-pointer items-center px-2 gap-1  rounded-lg transition  dark:bg-slate-600 "
-        title="view"
+        className="flex hover:text-indigo-400 cursor-pointer items-center px-2 py-[.2rem] gap-1  rounded-lg transition  dark:bg-slate-600 "
+        title="card's field viewer"
         onClick={(_) => setOpen((p) => !p)}
       >
         <ViewIcon className="text-xl" />

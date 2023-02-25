@@ -23,13 +23,13 @@ export default function CategoryItem({
   return (
     <div
       onClick={() => onSelect(field)}
-      className=" card min-h-[100px]  cursor-pointer ring_ hover:pop_ transition_ hover:shadow-lg "
+      className=" card min-h-[100px]  cursor-pointer ring_ hover:pop_ transition_ hover:shadow-lg dark:ring-2 dark:hover:ring-indigo-300"
     >
       <p className="text-indigo-400 dark:text-indigo-300">{field}</p>
-      <div className="flex_ justify-between flex-wrap">
-        <div className="flex_">
-          <p className="text-xl font-bold">{cards?.length} </p>
-          <p className="text-lg">items</p>
+      <div className="flex_ justify-between flex-wrap ">
+        <div className="flex_ ">
+          <p className="text-xl font-bold ">{cards?.length} </p>
+          <p className="text-lg ">items</p>
         </div>
         <LevelField cards={cards} filter="hard" />
         <LevelField cards={cards} filter="normal" />
@@ -47,10 +47,10 @@ const LevelField = ({
   filter: "hard" | "normal" | "easy";
 }) => (
   <div className="flex_">
-    <p className="text-lg font-bold">
+    <p className="text-lg font-bold ">
       {cards?.filter((c: any) => c?.level === filter)?.length}{" "}
     </p>
-    <p className="text-">{filter}</p>
+    <p className=" ">{filter}</p>
   </div>
 );
 

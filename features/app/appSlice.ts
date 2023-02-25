@@ -23,6 +23,7 @@ const appSlice = createSlice({
       const { topic, content = "topic", category = "all" } = action.payload;
 
       const fields = templateFields(topic?.template);
+
       state.selectedTopic = topic;
       state.content = content;
       state.selectedCategory = category;

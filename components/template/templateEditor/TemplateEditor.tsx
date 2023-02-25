@@ -1,13 +1,13 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
-import { FieldType } from "../../features/card/CardType";
-import Box from "../elements/Box";
-import BtnPrime from "../elements/BtnPrime";
-import BtnSec from "../elements/BtnSec";
-import Input from "../elements/Input";
-import Modal from "../elements/Modal";
-import FieldAdder from "./FieldAdder";
-import FieldItem from "./FieldItem";
+import { FieldType } from "../../../features/card/CardType";
+import Box from "../../elements/Box";
+import BtnPrime from "../../elements/BtnPrime";
+import BtnSec from "../../elements/BtnSec";
+import Input from "../../elements/Input";
+import Modal from "../../elements/Modal";
+import FieldAdder from "../templateFields/FieldAdder";
+import FieldItem from "../templateFields/FieldItem";
 
 type props = {
   onSave: Function;

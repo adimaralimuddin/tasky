@@ -1,83 +1,55 @@
-import { useUser } from "@auth0/nextjs-auth0";
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
+import { FieldType } from "../../features/card/CardType";
 import { TemplateType } from "../../features/template/templateType";
-import useTemplateMutation from "../../features/template/useTemplateMutation";
 import { Trash } from "../../lib/icons";
 import Box from "../elements/Box";
 import BtnSec from "../elements/BtnSec";
 import BtnWarm from "../elements/BtnWarm";
-import Loader from "../elements/Loader";
 import Modal from "../elements/Modal";
-import Verifier from "../elements/Verifier";
-import TemplateEditor from "./TemplateEditor";
+
+const TemplateUpdater = dynamic(
+  () => import("./templateEditor/TemplateUpdater")
+);
+const TemplateDeleter = dynamic(
+  () => import("./templateEditor/TemplateDeleter")
+);
 
 type props = {
   template: TemplateType;
   editable?: boolean;
 };
 
-type FieldType = {
-  text: string;
-  type: string;
-  ind?: number;
-};
-
 export default function TemplateItem({ template, editable = true }: props) {
-  const { user } = useUser();
   const [open, setOpen] = useState(false);
   const [openEditor, setOpenEditor] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const toJson = (fields: string) =>
-    JSON.parse(fields)?.map((p: FieldType, ind: number) => ({ ...p }));
-
-  const { deleteTemplate, templateDeleter, updateTemplate, templateUpdater } =
-    useTemplateMutation(user?.sub);
-
-  if (!template) return null;
-
-  const onSaveHandler = (data: any) => {
-    if (!editable) {
-      return alert(
-        "sample template will not be edited. you can always login and create or edit your own template."
-      );
-    }
-    updateTemplate({ ...data, id: template?.id });
-    setOpen(true);
-  };
-
-  const onDeleteHandler = () => {
-    if (!editable) {
-      return alert(
-        "sample template will not be deleted. you can always login and create or delete your own template."
-      );
-    }
-    deleteTemplate(template?.id);
-  };
-
-  const onEdithandler = () => {
-    setOpen(false);
-    setOpenEditor(true);
-  };
+    typeof fields === "string"
+      ? JSON.parse(fields)?.map((p: FieldType, ind: number) => ({ ...p }))
+      : fields;
 
   return (
     <Box
       onClick={() => setOpen(true)}
-      css="flex flex-col items-center justify-center cursor-pointer min-w-[100px] flex-1 max-w-sm min-h-[80px]"
+      css={
+        "flex flex-col items-center justify-center cursor-pointer min-w-[100px] flex-1 max-w-sm min-h-[80px] " +
+        (template?.sample && " ring-2 dark:ring-indigo-400 ")
+      }
     >
       <p className="text-center">{template?.name}</p>
-      <TemplateEditor
-        name_={template?.name}
-        open={openEditor}
-        setOpen={setOpenEditor}
-        fronts_={toJson(template?.fronts as any)} // adimar
-        backs_={toJson(template?.backs as any)}
-        onSave={onSaveHandler}
-        onCancel={() => {
-          setOpen(true);
-          setOpenEditor(false);
-        }}
-      />
+
+      {openEditor && (
+        <TemplateUpdater
+          editable={editable}
+          openEditor={openEditor}
+          setOpen={setOpen}
+          setOpenEditor={setOpenEditor}
+          template={template}
+        />
+      )}
+
       <Modal open={open} setOpen={setOpen}>
         {(Icon: any) => (
           <Box
@@ -88,7 +60,6 @@ export default function TemplateItem({ template, editable = true }: props) {
           >
             <Icon />
             <h3>{template?.name}</h3>
-            {/* adimar bellow as any */}
             <div className="flex gap-2 flex-wrap overflow-auto flex-1 ">
               <Fields fields={toJson(template?.fronts as any)} />
               <Fields fields={toJson(template?.backs as any)} text="Backs" />
@@ -97,25 +68,27 @@ export default function TemplateItem({ template, editable = true }: props) {
               <BtnWarm className="" onClick={() => setIsDeleting(true)}>
                 <Trash /> delete
               </BtnWarm>
-              <BtnSec onClick={onEdithandler}>edit</BtnSec>
+              <BtnSec
+                onClick={() => {
+                  setOpen(false);
+                  setOpenEditor(true);
+                }}
+              >
+                edit
+              </BtnSec>
             </div>
           </Box>
         )}
       </Modal>
-      <Verifier
-        message="are you sure to delete this template?"
-        open={isDeleting}
-        setOpen={setIsDeleting}
-        onOkay={onDeleteHandler}
-      />
-      <Loader
-        message="deleting template ... "
-        open={templateDeleter?.isLoading}
-      />
-      <Loader
-        message="updating template ... "
-        open={templateUpdater?.isLoading}
-      />
+
+      {isDeleting && (
+        <TemplateDeleter
+          templateId={template?.id}
+          editable={editable}
+          isDeleting={isDeleting}
+          setIsDeleting={setIsDeleting}
+        />
+      )}
     </Box>
   );
 }

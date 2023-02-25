@@ -49,7 +49,7 @@ export default function Option({
                       setOpen?.(false);
                     }}
                     key={option.text}
-                    className="cursor-pointer flex items-center hover:bg-slate-100 dark:hover:bg-slate-500 dark:text-slate-200 p-2 rounded-md"
+                    className="cursor-pointer flex items-center hover:bg-slate-100 dark:hover:bg-slate-500 dark:text-slate-200 p-2 rounded-md "
                   >
                     {option?.icon}
                     <small className="ml-2 whitespace-nowrap">

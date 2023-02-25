@@ -8,7 +8,7 @@ function useContentSetter() {
 
   const setContent_ = (content: ContentType) => {
     patch(setContent(content));
-    setUrlState({ content: "cardadder" });
+    setUrlState({ content });
   };
   return { setContent: setContent_ };
 }

@@ -7,4 +7,5 @@ export type TemplateType = {
   fronts: FieldType[] | string;
   backs: FieldType[] | string;
   noVal?: boolean;
+  sample?: boolean;
 };

@@ -13,7 +13,7 @@ export default function BtnBack({ content = "topic", onClick }: propTypes) {
 
   return (
     <button
-      className="m-0 py-0 mx-5 px-2 dark:text-slate-300 dark:hover:text-violet-300 ring-slate-200"
+      className="m-0 py-0 mx-5 px-1 pr-2  dark:text-slate-300 dark:hover:text-violet-300 ring-slate-200"
       onClick={(_) => {
         // setCategory(category);
         setContent(content);

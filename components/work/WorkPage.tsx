@@ -1,15 +1,9 @@
-import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import useClientState from "../../features/dateState/useClientState";
 import useServerState from "../../features/dateState/useServerState";
-import LayoutHeaderLoader from "../layouts/LayoutHeaderLoader";
 import WorkContent from "./workContent/WorkContent";
+import WorkHeader from "./workHeader/WorkHeader";
 import WorkSide from "./WorkSide/WorkSideMain";
-
-const WorkHeader = dynamic(() => import("./workHeader/WorkHeader"), {
-  ssr: false,
-  loading: LayoutHeaderLoader,
-});
 
 export default function WorkPage({ post }: any) {
   const { initClientState } = useClientState();

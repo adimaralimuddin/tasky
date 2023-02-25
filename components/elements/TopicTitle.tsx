@@ -16,7 +16,8 @@ export default function TopicTitle({ css }: any) {
   return (
     <div
       className={
-        "flex-1 flex items-center gap-x-2 flex-wrap py-2 text-sm  " + css
+        "flex-1 flex items-center gap-x-2 whitespace-nowrap overflow-x-hidden py-2 text-sm  " +
+        css
       }
     >
       <p className="text-cyan-600   ">{topic?.name}</p>

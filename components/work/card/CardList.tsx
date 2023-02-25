@@ -24,8 +24,8 @@ export default function CardList({ cards: cards_ }: props) {
   }, [cards_]);
 
   return (
-    <div className="flex-1 mt-2">
-      <div className="flex gap-2 items-end flex-wrap ">
+    <div className="flex-1 mt-2 ">
+      <div className="flex gap-2 items-end flex-wrap justify-between ">
         <CardQuery cards={cards_} setCards={setCards} />
         <ActionButtons />
       </div>

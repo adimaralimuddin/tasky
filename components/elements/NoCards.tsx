@@ -1,5 +1,3 @@
-import BtnCardAdder from "./BtnCardAdder";
-
 type props = {
   text?: string;
   children?: any;
@@ -7,12 +5,7 @@ type props = {
   button?: boolean;
 };
 
-export default function NoCards({
-  text = "No Cards",
-  children,
-  css,
-  button = true,
-}: props) {
+export default function NoCards({ text = "No Cards", children, css }: props) {
   return (
     <div className="flex flex-1 flex-col justify-center items-center ring-1d p-3">
       <div
@@ -22,7 +15,6 @@ export default function NoCards({
         }
       >
         <h1 className="text-slate-400 dark:text-slate-300 pb-1">{text}</h1>
-        {button && <BtnCardAdder />}
         {children}
       </div>
     </div>

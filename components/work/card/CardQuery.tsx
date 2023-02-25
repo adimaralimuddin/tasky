@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import useFieldsGetter from "../../../features/app/fields/useFieldsGetter";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
 import SearchBox from "../../elements/SearchBox";
@@ -16,26 +15,6 @@ export default function CardQuery({
 }) {
   const { getFields } = useFieldsGetter();
   const template = getFields();
-
-  const dispatch = useDispatch();
-
-  const setFieldsStore = (fields: { fronts: any[]; backs: any[] }) => {
-    // // work?.fronts?.find
-    // const resolveFields = (side: "backs" | "fronts") =>
-    //   fields?.[side]?.map((f) => {
-    //     // this used to const stateField = work?.[side]
-    //     const stateField = template?.[side]?.find(
-    //       (f_) => f_?.text === f?.text && f_?.type === f?.type
-    //     );
-    //     const returnField = { view: true, ...f, ...stateField };
-    //     return returnField;
-    //   });
-    // const fronts = resolveFields("fronts");
-    // const backs = resolveFields("backs");
-    // const returnFields = { fronts, backs };
-    // console.log(`return fields here`, returnFields);
-    // dispatch(setFields(returnFields));
-  };
 
   const [type, setType] = useState<Side>("fronts");
   const [filter, setFilter] = useState(template?.fronts?.[0]?.text);
@@ -67,11 +46,8 @@ export default function CardQuery({
   };
 
   return (
-    <div className="flex flex-wrap gap-1 items-center">
-      <SearchBox
-        onInput={onSearchHandler}
-        placeholder={`search type:${type} filter:${filter}`}
-      />
+    <div className="flex flex-wrap gap-2 items-center">
+      <SearchBox onInput={onSearchHandler} placeholder={`search . . . `} />
 
       <Select
         text="filter"

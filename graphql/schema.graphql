@@ -89,7 +89,7 @@ type Mutation {
   setCardLevel(cardId: String!, level: String): Card
   updateClass(classId: String!, description: String, name: String): Class
   updateField(id: String!, newValue: String!, val: String!): Field
-  updateTemplate(backs: [FieldListInputType], fronts: [FieldListInputType], id: String!, name: String!): Template
+  updateTemplate(backs: [FieldListInputType], fronts: [FieldListInputType], id: String!, name: String!, userId: String!): Template
   updateUser(id: String!, name: String!): User!
 }
 

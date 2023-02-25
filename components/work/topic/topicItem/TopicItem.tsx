@@ -67,7 +67,17 @@ export default function TopicItem({ data, selectFolder, serverData }: props) {
         }
       >
         <BiBookAlt className="mr-1 text-indigo-600 dark:text-violet-400" />
-        <small title={data?.name} className="flex-1 py-1 whitespace-nowrap">
+        <small
+          title={data?.name}
+          className={
+            "flex-1 py-1 whitespace-nowrap  " +
+            isTopicSelected(
+              data?.id,
+              " dark:text-slate-50",
+              "dark:text-slate-300"
+            )
+          }
+        >
           {_charLimits(data?.name, 20)}
         </small>
         <TopicOptions

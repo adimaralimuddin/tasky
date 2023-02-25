@@ -43,6 +43,8 @@ export async function templateApiSampleTemplate(): Promise<TemplateType[]> {
         deleted
         fronts
         backs
+        sample
+        userId
       }
     }
   `;
@@ -62,6 +64,8 @@ export async function templateApiTemplates({
         id
         fronts
         backs
+        sample
+        userId
       }
     }
   `;
@@ -83,52 +87,4 @@ export async function templateApiTemplate(templateId?: string) {
   `;
   const ret = await request(url, q, { templateId });
   return ret.template;
-}
-
-export async function templateApiDeleteTemplate(templateId?: string) {
-  const q = gql`
-    mutation DeleteTemplate($templateId: String!) {
-      deleteTemplate(templateId: $templateId) {
-        id
-        name
-        userId
-        fronts
-        backs
-      }
-    }
-  `;
-  const ret = await request(url, q, { templateId });
-  return ret?.deleteTemplate;
-}
-
-export async function templateApiUpdateTemplate({
-  id,
-  name,
-  fronts,
-  backs,
-}: {
-  id: string;
-  name: string;
-  fronts: any[];
-  backs: any[];
-}) {
-  const q = gql`
-    mutation UpdateTemplate(
-      $id: String!
-      $name: String!
-      $fronts: [FieldListInputType]
-      $backs: [FieldListInputType]
-    ) {
-      updateTemplate(id: $id, name: $name, fronts: $fronts, backs: $backs) {
-        id
-        name
-        userId
-        fronts
-        backs
-      }
-    }
-  `;
-
-  const ret = await request(url, q, { id, name, fronts, backs });
-  return ret.updateTemplate;
 }

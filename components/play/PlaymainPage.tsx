@@ -57,11 +57,9 @@ export default function PlaymainPage({}: any) {
   }
 
   const QuizContent = (
-    <div className=" pb-5 flex-1 col_  ">
+    <div className=" pb-5 flex-1 col_   ">
       <PlayHeader startSide={startSide} setStartSide={setStartSide} />
-      <div
-        className={"flex flex-col items-center flex-1  justify-center ring-1d"}
-      >
+      <div className={"flex flex-col items-center flex-1  justify-center "}>
         <PlayNav cards={cards} setPlayInd={setPlayInd} playInd={playInd} />
         <div
           className={
@@ -76,8 +74,8 @@ export default function PlaymainPage({}: any) {
   );
 
   return (
-    <div className=" container_ flex-col ">
-      <ContentHeader Action={<BtnBack content="category" />} />
+    <div className=" container_ flex-col">
+      <ContentHeader Action={<BtnBack  content="category" />} />
       {cards?.length && cards?.length > 0 ? (
         QuizContent
       ) : (

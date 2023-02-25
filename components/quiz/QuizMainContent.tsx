@@ -71,9 +71,8 @@ export default function QuizMainContent({ classId }: any) {
   }
 
   const Content = (
-    <div className="px-3 py-2">
+    <div className=" py-2 flex-1 col_">
       <div className="flex items-center gap-2 flex-wrap ">
-        <CardQueryView />
         <QuizOptions
           optionCount={optionCount}
           setOptionCount={(val: any) => {
@@ -81,33 +80,36 @@ export default function QuizMainContent({ classId }: any) {
             reloadOptions(val);
           }}
         />
+        <CardQueryView />
       </div>
       <div className="text-center mt-5">
         <p>
           {playInd} / {cards?.length}
         </p>
       </div>
-      <TrivItem current={current()} />
-      <div className="flex flex-wrap gap-1 p-5 ">
-        {options?.map((opt) => (
-          <QuizPlayOptionItem
-            key={Math.random()}
-            next={next}
-            card={cards?.[opt]}
-            current={current()}
-            playInd={playInd}
-            setResult={setResult}
-          />
-        ))}
+      <div className="mt-[5%]">
+        <TrivItem current={current()} />
+        <div className="flex flex-wrap gap-1 p-5 ">
+          {options?.map((opt) => (
+            <QuizPlayOptionItem
+              key={Math.random()}
+              next={next}
+              card={cards?.[opt]}
+              current={current()}
+              playInd={playInd}
+              setResult={setResult}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
 
   return (
-    <Box css="flex-1 flex flex-col  ">
+    <div className="flex-1 flex flex-col  ">
       <ContentHeader Action={<BtnBack content="category" />} />
       {cards?.length > 0 ? Content : <NoCards text="No Cards For Quiz" />}
-    </Box>
+    </div>
   );
 }
 

@@ -1,25 +1,22 @@
 import { SideIcon } from "../../lib/icons";
+import Select from "../elements/Select";
 import CardQueryView from "../work/card/CardQueryView";
 
-export default function PlayHeader({ startSide, setStartSide }: any) {
+export default function PlayHeader({ setStartSide }: any) {
+  const onSelectSideHandler = (side: "fronts" | "backs") => {
+    setStartSide(side);
+  };
   return (
-    <div className="flex_ ">
-      <div
-        title="start side"
-        className="p-0 px-2 m-0 flex items-center gap-2 ring-1 rounded-lg ring-slate-300 mx-1 cursor-pointer hover:shadow-lg"
-      >
-        <SideIcon className="text-xl" />
-        <select
-          className="ring-1d ring-slate-200 bg-slate-100d m-0 p-0 "
-          onInput={(e: any) => setStartSide(e.target.value)}
-          name=""
-          id=""
-          defaultValue={startSide}
-        >
-          <option value="fronts">fronts</option>
-          <option value="backs">backs</option>
-        </select>
-      </div>
+    <div className="flex_  " title="starting side">
+      <Select
+        className=" ring-1 ring-slate-300   dark:ring-slate-500 "
+        icon={<SideIcon className="text-xl ml-1" />}
+        options={[
+          ["fronts", "fronts"],
+          ["backs", "backs"],
+        ]}
+        onInput={onSelectSideHandler}
+      />
       <CardQueryView />
     </div>
   );

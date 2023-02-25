@@ -1,7 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { CategoryType, ContentType, selectTopic } from "../app/appSlice";
+import {
+  CategoryType,
+  ContentType,
+  selectTopic,
+  templateFields,
+} from "../app/appSlice";
 import useUrlState from "../app/useUrlState";
 import { TopicType } from "./topicType";
 
@@ -26,10 +31,13 @@ function useTopicSelecter() {
     category: CategoryType = "all"
   ) => {
     patch(selectTopic({ topic: topicData, content, category }));
-    const fronts = topicData?.template?.fronts as string;
-    const backs = topicData?.template?.backs as string;
+    // const fronts = topicData?.template?.fronts as string;
 
-    // console.log(`f`, { fronts, backs });
+    const fields = templateFields(topicData?.template);
+
+    const fronts = JSON.stringify(fields.fronts);
+    const backs = JSON.stringify(fields.backs);
+
     setUrlState({
       topic: topicData,
       template: topicData?.Template,

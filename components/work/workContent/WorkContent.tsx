@@ -17,7 +17,7 @@ function WorkContent({ serverState }: any) {
   const content = getContent();
   const classId = router.query?.classId;
   return (
-    <div className="container flex-col flex  p-2 flex-1 max-w-4xl mx-auto bg-red-400d">
+    <div className="container flex-col flex  p-2 px-[3%] flex-1 max-w-4xl mx-auto bg-red-400d">
       {content == "dashboard" ? (
         <DashboardMainContent serverState={serverState} />
       ) : content == "topic" ? (

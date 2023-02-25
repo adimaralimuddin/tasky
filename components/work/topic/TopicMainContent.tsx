@@ -1,5 +1,6 @@
 import React from "react";
 import useCategorySelecter from "../../../features/app/category/useCategorySelecter";
+import useContentSetter from "../../../features/app/contents/useContentSetter";
 import useCards from "../../../features/card/useCards";
 import useTopicGetter from "../../../features/topic/useTopicGetter";
 import BtnCardAdder from "../../elements/BtnCardAdder";
@@ -9,6 +10,7 @@ import ContentHeader from "../../elements/ContentHeader";
 import CategoryItem from "./category/CategoryItem";
 
 export default function TopicMainContent() {
+  const { setContent } = useContentSetter();
   const { selectCategory } = useCategorySelecter();
   const topicId = useTopicGetter().getSelectedTopicId();
   const { data: cards } = useCards(topicId);
@@ -18,7 +20,7 @@ export default function TopicMainContent() {
   };
 
   return (
-    <div className="flex-1 flex flex-col container_ py-2">
+    <div className="flex-1 flex flex-col container_ py-2 ">
       <ContentHeader Action={<BtnCardAdder />} />
       <div className="ring-1d flex-1 flex flex-col justify-center bg-green-400d  ">
         <main className="grid grid-cols-1 px-6 gap-5 flex-wrap  items-center justify-evenly md:grid-cols-2 ">
@@ -48,8 +50,8 @@ export default function TopicMainContent() {
           />
         </main>
         <div className="py-5 flex items-center justify-center ">
-          {/* <BtnPrime onClick={selectPlay}>play</BtnPrime> */}
-          {/* <BtnSec onClick={() => setContent("quiz")}>quiz</BtnSec> */}
+          <BtnPrime onClick={() => setContent("play")}>play</BtnPrime>
+          <BtnSec onClick={() => setContent("quiz")}>quiz</BtnSec>
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ export default function ContentHeader({
   Action?: React.ReactElement;
 }) {
   return (
-    <div className="flex justify-between items-center flex-wrap-reverse  px-6 ">
+    <div className="flex justify-between items-center flex-wrap-reverse ">
       <TopicTitle css="" />
       {Action}
     </div>

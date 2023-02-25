@@ -13,12 +13,10 @@ const DynamicClassAdder = dynamic(() => import("./classEditor/ClassAdder"), {
 });
 
 function PageMainClass({ myClasses, sampleClasses }: any) {
-  console.log(`classes`, myClasses, sampleClasses);
-
   return (
     <div className="min-h-screen dark:bg-slate-800 flex flex-col ">
       <LayoutMainHeader />
-      <div className="container py-[1rem]  mx-auto flex-col px-[5%] dring-1 flex-1 ">
+      <div className="container max-w-5xl py-[1rem]  mx-auto flex-col px-[5%] dring-1 flex-1 ">
         <DynamicClassAdder myClasses={myClasses} />
         <br />
         <Classes serverClasses={myClasses} />

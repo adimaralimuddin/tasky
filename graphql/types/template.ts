@@ -70,7 +70,7 @@ export const TemplateQuery = extendType({
       args: { userId: nonNull(stringArg()) },
       resolve(par, { userId }, ctx) {
         return ctx.prisma.template.findMany({
-          where: { userId, deleted: false, sample: false },
+          where: { userId, deleted: false },
         });
       },
     });
@@ -114,17 +114,24 @@ export const TemplateMutation = extendType({
       type: Template,
       args: {
         id: nonNull(stringArg()),
+        userId: nonNull(stringArg()),
         name: nonNull(stringArg()),
         fronts: list(FieldsListInputType),
         backs: list(FieldsListInputType),
       },
-      async resolve(par, { id, name, fronts, backs }, ctx) {
-        const data: any = { name, fronts, backs };
-        const res: any = await ctx.prisma.template.updateMany({
-          where: { id, sample: false },
-          data,
-        });
-        return res?.count != 0 ? { id, name, fronts, backs } : null;
+      async resolve(par, { id, userId, name, fronts, backs }, ctx) {
+        try {
+          const data: any = { name, fronts, backs };
+          const res: any = await ctx.prisma.template.updateMany({
+            where: { id, userId },
+            data,
+          });
+
+          return res?.count != 0 ? { id, name, fronts, backs } : null;
+        } catch (error) {
+          console.log(`Error: template/grapql updateTemplate: `, error);
+          return null;
+        }
       },
     });
   },

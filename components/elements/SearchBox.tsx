@@ -5,7 +5,7 @@ export default function SearchBox({ css, children, ...props }: any) {
   return (
     <div
       className={
-        "bg-white dark:bg-slate-600 items-center px-2 rounded-xl overflow-hidden flex " +
+        "bg-white dark:bg-slate-600 items-center px-2 rounded-xl overflow-hidden flex ring-1 ring-slate-200 " +
         css
       }
     >
@@ -14,7 +14,7 @@ export default function SearchBox({ css, children, ...props }: any) {
         {...props}
         type="text"
         className={
-          "bg-transparent placeholder-gray-400 text-gray-600 text-sm cursor-text  m-0 flex-1 outline-none " +
+          "bg-transparent  placeholder-gray-400 text-slate-600 dark:text-slate-300 text-[.85rem] cursor-text  m-0 flex-1 outline-none py-[.35rem] " +
           props?.inputCss
         }
         placeholder={props?.placeholder || "search..."}

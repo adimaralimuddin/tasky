@@ -8,6 +8,6 @@ export default function _charLimits(char: string, max: number = 50) {
       return char;
     }
   } catch (error) {
-    console.log(error);
+    console.log(`Error: _charlimit :`, { error, char });
   }
 }

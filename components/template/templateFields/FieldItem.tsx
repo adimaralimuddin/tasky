@@ -1,6 +1,6 @@
 import React from "react";
-import { FieldType } from "../../features/card/CardType";
-import { Trash } from "../../lib/icons";
+import { FieldType } from "../../../features/card/CardType";
+import { Trash } from "../../../lib/icons";
 
 type FieldItemProps = { field: FieldType; set: any };
 export default function FieldItem({ field, set }: FieldItemProps) {

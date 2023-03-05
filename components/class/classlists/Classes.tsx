@@ -1,6 +1,6 @@
 import React from "react";
+import { ClassType } from "../../../features/class/classTypes";
 import useClasses from "../../../features/class/useClasses";
-import { ClassType } from "../classTypes";
 import ClassLists from "./ClassLists";
 
 function Classes({ serverClasses }: { serverClasses: ClassType[] }) {

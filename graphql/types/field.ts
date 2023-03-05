@@ -4,6 +4,7 @@ export const Field = objectType({
   name: "Field",
   definition(t) {
     t.string("id");
+    t.string("viewId");
     t.string("text");
     t.string("type");
     t.int("ind");
@@ -20,6 +21,7 @@ export const FieldMutation = extendType({
     t.field("createFieldFront", {
       type: Field,
       args: {
+        viewId: nonNull(stringArg()),
         frontId: nonNull(stringArg()),
         name: nonNull(stringArg()),
         type: nonNull(stringArg()),
@@ -27,6 +29,8 @@ export const FieldMutation = extendType({
         ind: nonNull(intArg()),
       },
       resolve(par, data: any, ctx) {
+        console.log(`helo---------`, data);
+
         return ctx.prisma.field.create({
           data,
         });
@@ -47,6 +51,32 @@ export const FieldMutation = extendType({
           where: { id },
           data: { value: newValue },
         });
+      },
+    }); // updatefield
+
+    t.field("addField", {
+      type: Field,
+      args: {
+        id: nonNull(stringArg()),
+        ind: nonNull(intArg()),
+        viewId: nonNull(stringArg()),
+        value: nonNull(stringArg()),
+        type: nonNull(stringArg()),
+        text: nonNull(stringArg()),
+        frontId: stringArg(),
+        backId: stringArg(),
+      },
+      async resolve(par, args, ctx) {
+        try {
+          const res = await ctx.prisma.field.create({
+            data: args,
+          });
+          console.log(`res over here`, res);
+          return res;
+        } catch (error) {
+          console.log(`Error: field/grapql addfield/resolve `, error);
+          return error;
+        }
       },
     });
   },

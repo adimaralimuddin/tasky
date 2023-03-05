@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { ClassType } from "../../features/class/classTypes";
 import { Pencil, Trash } from "../../lib/icons";
 import Option from "../elements/Option";
 import ClassDeleter from "./classEditor/ClassDeleter";
-import ClassRenamer from "./ClassRenamer";
-import { ClassType } from "./classTypes";
+import ClassRenamer from "./classEditor/ClassRenamer";
 
 export default function ClassMenu({ data }: { data: ClassType }) {
   const [isRenameing, setIsRenaming] = useState(false);

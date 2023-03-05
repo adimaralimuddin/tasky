@@ -36,6 +36,16 @@ const appSlice = createSlice({
       state.content = action.payload;
     },
 
+    //  set content with category, can call on play, or any
+    setContCat(
+      state,
+      action: PayloadAction<{ content: ContentType; category: CategoryType }>
+    ) {
+      console.log(`here`, action);
+      state.content = action.payload.content;
+      state.selectedCategory = action.payload.category;
+    },
+
     // select category, when click on category item
     selectCategory(state, action: PayloadAction<CategoryType>) {
       state.content = "category";
@@ -73,6 +83,7 @@ export const {
   setBacks,
   toAddTopic,
   setTopicOpenState,
+  setContCat,
 } = appSlice.actions;
 export default appSlice.reducer;
 
@@ -80,8 +91,8 @@ export type AppStateType = {
   content?: ContentType;
   selectedTopic?: TopicType;
   selectedCategory?: CategoryType;
-  fronts?: fieldVal[];
-  backs?: fieldVal[];
+  fronts?: FieldType[];
+  backs?: FieldType[];
   selectedFolderId?: string;
   topicAdderOpenState: boolean;
 };
@@ -95,13 +106,8 @@ export type ContentType =
   | "quiz";
 
 export type CategoryType = "all" | "new" | "passed" | "left" | undefined;
-
-export type fieldVal = {
-  text: string;
-  value?: string;
-  type: string;
-  view?: boolean;
-};
+export type LevelType = "all" | "easy" | "normal" | "hard";
+export type SideType = "both" | "fronts" | "backs";
 
 export type DashboardType = {
   category: "new" | "passed" | "left";

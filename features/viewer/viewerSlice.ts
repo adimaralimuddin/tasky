@@ -1,8 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CategoryType, LevelType, SideType } from "../app/appSlice";
 
 const initialState: ViewerType = {
   openTopicAdder: false,
-  textSize: "",
+  textSize: 2,
   imageSize: 100,
   viewLebel: true,
   viewLevel: false,
@@ -10,6 +11,10 @@ const initialState: ViewerType = {
   quizType: "choice",
   quizOptionNumber: 4,
   size: 0,
+  side: "both",
+  category: "all",
+  status: "all",
+  editorMode: false,
 };
 
 const viewerSlice = createSlice({
@@ -40,20 +45,38 @@ const viewerSlice = createSlice({
     setSize: (state, action) => {
       state.size = action.payload;
     },
+    setSide: (state, action: PayloadAction<SideType>) => {
+      state.side = action.payload;
+    },
+    setCategory: (state, action: PayloadAction<CategoryType>) => {
+      state.category = action.payload;
+    },
+    setStatus: (state, action: PayloadAction<LevelType>) => {
+      state.status = action.payload;
+    },
+    setEditorMod: (state, action: PayloadAction<boolean>) => {
+      state.editorMode = action.payload;
+    },
   },
 });
 
 export const viewerActions = viewerSlice.actions;
+export const setEditorMod = viewerSlice.actions.setEditorMod;
+
 export default viewerSlice.reducer;
 
 export interface ViewerType {
   openTopicAdder: boolean;
-  textSize?: string;
-  imageSize?: number | string;
-  viewLebel?: boolean;
-  viewLevel?: boolean;
-  viewCategory?: boolean;
-  quizType?: string;
-  quizOptionNumber?: number;
+  textSize: number;
+  imageSize: number | string;
+  viewLebel: boolean;
+  viewLevel: boolean;
+  viewCategory: boolean;
+  quizType: string;
+  quizOptionNumber: number;
   size: number;
+  side: SideType;
+  status: LevelType;
+  category: CategoryType;
+  editorMode: boolean;
 }

@@ -7,9 +7,10 @@ import { templateApiSampleTemplate, templateApiTemplates } from "./templateApi";
 export default function useTemplates() {
   const { user } = useUser();
   const userId = user?.sub;
-  const myTemplates = useQuery(["templates", userId], () =>
-    templateApiTemplates({ userId })
-  );
+  const myTemplates = useQuery(["templates", userId], async () => {
+    const res = await templateApiTemplates({ userId });
+    return res;
+  });
 
   const sampleTemplates = useQuery(
     ["sampleTemplates"],

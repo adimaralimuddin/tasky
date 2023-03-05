@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { IoClose } from "react-icons/io5";
 
 export default function Modal({
@@ -6,7 +7,7 @@ export default function Modal({
   setOpen,
   css,
 }: {
-  children: any;
+  children: (Icon: any) => any;
   open: boolean;
   setOpen?: any;
   css?: string;
@@ -17,7 +18,7 @@ export default function Modal({
 
   const closeIcon = ({ css, iconCss, ...props }: any) => (
     <div
-      className="relative flex justify-end"
+      className="relative flex justify-end z-[999] "
       onClick={stopPropa}
       onMouseEnter={stopPropa}
       onMouseDown={stopPropa}
@@ -26,7 +27,7 @@ export default function Modal({
         onClick={(_) => setOpen(false)}
         {...props}
         className={
-          "bg-slate-200 dark:bg-slate-500 p-1 rounded-full text-3xl absolute -top-6 -right-5 shadow-md ring-1 ring-slate-300 dark:ring-slate-400 hover:scale-105 cursor-pointer " +
+          "bg-slate-200 dark:bg-slate-500 p-1 absolute rounded-full text-3xl -top-3 -right-3 shadow-md ring-1 ring-slate-300 dark:ring-slate-400 hover:scale-105 cursor-pointer z-[999]   " +
           css
         }
       >
@@ -38,7 +39,7 @@ export default function Modal({
   return (
     <div
       className={
-        "top-0 left-0 w-full h-full backdrop-blur-sm bg-opacity-60 fixed flex items-center justify-center bg-slate-900 flex-col z-50 p-2 " +
+        "top-0 left-0 w-full h-full min-h-screen backdrop-blur-sm bg-opacity-60 fixed  overflow-hidden flex items-center justify-center bg-slate-900 flex-col z-[999] p-2  " +
         css
       }
       onClick={stopPropa}

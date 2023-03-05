@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import useClass from "../../features/class/useClass";
-import Box from "../elements/Box";
-import BtnPrime from "../elements/BtnPrime";
-import Input from "../elements/Input";
-import Loader from "../elements/Loader";
-import Modal from "../elements/Modal";
-import { ClassType } from "./classTypes";
+import { ClassType } from "../../../features/class/classTypes";
+import useClass from "../../../features/class/useClass";
+import Box from "../../elements/Box";
+import BtnPrime from "../../elements/BtnPrime";
+import Input from "../../elements/Input";
+import Loader from "../../elements/Loader";
+import Modal from "../../elements/Modal";
 
 export default function ClassRenamer({
   open,

@@ -28,14 +28,17 @@ function WorkSideFolders({ classId, post }: { classId: string; post: any }) {
 
   return (
     <div className=" hidden lg:block group-hover:block p-3">
+      <h4 className="text-sec font-semibold">Folders</h4>
       {!folders?.length ? (
         <div>
           <p>no folders!</p>
         </div>
       ) : (
-        folders?.map((folder: FolderType) => (
-          <FolderItem key={folder?.id} data={folder} classId={classId} />
-        ))
+        <div className="col_d">
+          {folders?.map((folder: FolderType) => (
+            <FolderItem key={folder?.id} data={folder} classId={classId} />
+          ))}
+        </div>
       )}
     </div>
   );

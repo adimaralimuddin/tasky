@@ -1,6 +1,6 @@
 import React from "react";
+import { ClassType } from "../../../features/class/classTypes";
 import ClassItem from "../ClassItem";
-import { ClassType } from "../classTypes";
 
 export default function ClassLists({
   title = "Classes",
@@ -13,8 +13,8 @@ export default function ClassLists({
 }) {
   return (
     <div>
-      <small className="text-sm px-3">{title}</small>
-      <div className="flex flex-wrap gap-3 py-2">
+      <h4 className=" px-3 text-sec pb-2">{title}</h4>
+      <div className="flex flex-wrap gap-6 ">
         {data?.map((data: ClassType) => (
           <ClassItem data={data} editable={editable} key={data?.id} />
         ))}

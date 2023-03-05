@@ -1,27 +1,28 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import useFieldsGetter from "../../../features/app/fields/useFieldsGetter";
-import { CardTypes, FieldType } from "../../../features/card/CardType";
-import useTopicGetter from "../../../features/topic/useTopicGetter";
-import useViewer from "../../../features/viewer/useViewer";
-import { DEF_USER } from "../../../lib/public";
-import AudioElement from "../../elements/AudioEl";
-import Box from "../../elements/Box";
-import ImageItem from "../../elements/ImageItem";
+import useFieldsGetter from "../../../../features/app/fields/useFieldsGetter";
+import { CardTypes, FieldType } from "../../../../features/card/CardType";
+import useTopicGetter from "../../../../features/topic/useTopicGetter";
+import useViewer from "../../../../features/viewer/useViewer";
+import { DEF_USER } from "../../../../lib/public";
+import AudioElement from "../../../elements/AudioEl";
+import Box from "../../../elements/Box";
+import ImageItem from "../../../elements/ImageItem";
 
-const CardItemOptions = dynamic(
-  () => import("./cardEditor/cardItem/CardItemOptions"),
-  { ssr: false }
-);
-const CardEditor = dynamic(() => import("./CardEditor"), { ssr: false });
-const CardDeleter = dynamic(() => import("./cardEditor/CardDeleter"), {
+const CardItemOptions = dynamic(() => import("./CardItemOptions"), {
+  ssr: false,
+});
+const CardEditor = dynamic(() => import("../cardEditor/CardEditor"), {
+  ssr: false,
+});
+const CardDeleter = dynamic(() => import("../cardEditor/CardDeleter"), {
   ssr: false,
 });
 
 type props = {
   card: CardTypes;
-  side?: string;
+  side?: "fronts" | "backs" | "both";
   key?: any;
   index?: boolean;
   css?: string;
@@ -29,15 +30,15 @@ type props = {
   imageViewer?: boolean;
 };
 export default function CardItem({
-  card: card_,
-  side = "both",
+  card,
   index,
   css,
   allowOption = true,
   imageViewer = true,
+  side = "both",
 }: props) {
   const { user } = useUser();
-  const [card, setCard] = useState(card_);
+  // const [card, setCard] = useState(card_);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -49,27 +50,30 @@ export default function CardItem({
   const { fronts, backs } = getFields();
 
   const viewer = useViewer();
-  const textSize = viewer.textSize;
-  const size: any = viewer?.imageSize;
-  const imageSize = parseInt(size);
-  const lebel = viewer.viewLebel;
+  const { textSize, imageSize, viewLebel, status, category } = viewer;
 
-  useEffect(() => {
-    setCard(card_);
-  }, [card_]);
+  if (status !== card?.level && status !== "all") {
+    return null;
+  }
+
+  if (category !== card?.category && category !== "all") {
+    return null;
+  }
+
+  // console.log(`cards`,card);
 
   return (
-    <Box
+    <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      css={
-        "flexd ring-1d dark:ring-2 ring-slate-200 items-center my-3 min-w-[100px] shadow-none bg-white  dark:ring-1 dark:ring-slate-600 dark:bg-slate-600 ring-1 p-0 " +
+      className={
+        "card block items-center ring-slate-200 my-3 min-w-[100px] shadow-none   ring-1 p-0 card-ring dark:ring-layer-sec " +
         css
       }
     >
       {index && card?.ind != undefined && (
         <span className="relative">
-          <small className="absolute top-2 left-0 px-2 text-slate-500">
+          <small className="absolute top-1 -left-4 z-10 text-phar">
             {card?.ind + 1}
           </small>
         </span>
@@ -85,27 +89,29 @@ export default function CardItem({
       />
 
       {!isEditing && (
-        <div className=" overflow-hidden flex flex-wrap justify-evenly ">
+        <div className=" overflow-hidden flex flex-col sm:flex-row px-2 gap-2 sm:px-4">
           {(side == "fronts" || side == "both") && (
-            <CardFronts
+            <CardSides
               card={card}
               type="fronts"
               textSize={textSize}
               imageSize={imageSize}
-              lebel={lebel}
+              lebel={viewLebel}
               view={fronts}
               side={side}
               imageViewer={imageViewer}
             />
           )}
-          {side == "both" && <div className="ring-2 ring-slate-200 my-3"></div>}
+          {side == "both" && (
+            <div className="ring-2 ring-slate-200 dark:ring-slate-600  my-3"></div>
+          )}
           {(side == "backs" || side == "both") && (
-            <CardFronts
+            <CardSides
               card={card}
               type="backs"
               textSize={textSize}
               imageSize={imageSize}
-              lebel={lebel}
+              lebel={viewLebel}
               view={backs}
               side={side}
               imageViewer={imageViewer}
@@ -119,7 +125,7 @@ export default function CardItem({
             style={{ fontSize: fontSize(textSize) }}
             className="flex flex-cold px-3  p-2 dark:text-slate-400   "
           >
-            level: <span className="text-red-400 px-2"> {card?.level}</span>
+            status: <span className="text-red-400 px-2"> {card?.level}</span>
           </p>
         )}
         {viewer?.viewCategory && (
@@ -131,27 +137,27 @@ export default function CardItem({
           </p>
         )}
       </div>
-
-      <CardEditor
-        open={isEditing}
-        setOpen={setIsEditing}
-        card={card}
-        onCancel={() => {
-          setIsEditing(false);
-          setHovered(false);
-        }}
-        onUpdated={(data: CardTypes) => {
-          setCard({ ...card, ...data });
-        }}
-      />
-      <CardDeleter
-        cardId={card.id}
-        isDeleting={isDeleting}
-        setIsDeleting={setIsDeleting}
-        topicId={topicId}
-        userId={user?.sub || DEF_USER}
-      />
-    </Box>
+      <div className="p-2 flex_">
+        <CardEditor
+          open={isEditing}
+          setOpen={setIsEditing}
+          editorMode={viewer.editorMode}
+          card={card}
+          onCancel={() => {
+            setIsEditing(false);
+            setHovered(false);
+          }}
+        />
+        <CardDeleter
+          cardId={card.id}
+          isDeleting={isDeleting}
+          setIsDeleting={setIsDeleting}
+          topicId={topicId}
+          editorMode={viewer.editorMode}
+          userId={user?.sub || DEF_USER}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -166,7 +172,7 @@ type CardFrontsProps = {
   imageViewer?: boolean;
 };
 
-export function CardFronts({
+export function CardSides({
   card,
   type,
   textSize,
@@ -181,11 +187,11 @@ export function CardFronts({
   return (
     <div
       className={
-        "m-1 flex  gap-1 justify-center  flex-1 px-3  " +
-        (lebel ? " items-center " : " items-center  ")
+        "flex-1 p-1 " + ""
+        // (lebel ? " items-center " : " items-center  ")
       }
     >
-      <div className="ring-1d ring-red-300 flex flex-wrap gap-3">
+      <div className=" col_ gap-2 flex-1 ">
         {card?.[type]
           ?.sort((a: FieldType, b: FieldType) => a?.ind - b?.ind)
           ?.map((field: FieldType) => (
@@ -219,48 +225,45 @@ function FieldItem({
   view: any;
   imageViewer?: boolean;
 }) {
-  // console.log(`view`, view);
-  // console.log(`field`, field);
+  const myView = view?.find((f: FieldType) => f?.viewId === field?.viewId);
 
-  const isView = () => view?.find((f: FieldType) => f?.text === field?.text);
-
-  if (!isView()?.view) {
-    // console.log(`no view`, isView());
-
+  if (!myView?.view) {
+    // hide field if the view turned off or false
     return null;
   }
 
   if (!field?.value && !lebel) {
+    // if somehow the template changed then, return only the matched view
     return null;
   }
 
   return (
-    <div>
-      <div className="flex  gap-2 items-start  flex-col  ">
+    <div className="ring-1d">
+      <div className="flex leading-none sm:leading-normal gap-1 items-start  flex-col-reverse sm:flex-row sm:gap-2 ">
         {lebel && (
           <p
             style={{
               fontSize: fontSize(textSize),
             }}
-            className={`text-slate-400 dark:text-slate-400  `}
+            className={`text-slate-400 dark:text-slate-500 font-normal pl-1 sm:pl-0  `}
           >
-            {field?.text} :
+            {myView?.text}
           </p>
         )}
-        {field?.type !== "image" && field?.type !== "audio" && (
+        {myView?.type !== "image" && myView?.type !== "audio" && (
           <p
             style={{
               fontSize: fontSize(textSize),
             }}
             className={
-              "flex-1 dark:text-slate-200 max-h-[150px] overflow-y-auto " +
+              "flex-1  text-phar max-h-[150px] leading-normal font-normal overflow-y-auto min-h-[10px] " +
               textSize
             }
           >
             {field?.value}
           </p>
         )}
-        {field?.type == "image" && field?.value && (
+        {myView?.type == "image" && field?.value && (
           <ImageItem
             src={field?.value}
             width={imageSize}
@@ -268,7 +271,7 @@ function FieldItem({
             imageViewer={imageViewer}
           />
         )}
-        {field?.type == "audio" && field?.value && (
+        {myView?.type == "audio" && field?.value && (
           <AudioElement src={field?.value} controls />
         )}
       </div>

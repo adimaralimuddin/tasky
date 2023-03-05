@@ -10,22 +10,22 @@ type props = {
 
 export default function QuizOptions({ optionCount, setOptionCount }: props) {
   const [open, setOpen] = useState(false);
-  const { quiz, setSide, setSingleWrong, setSpeed } = useQuiz();
-  const { side, singleWrong, speed } = quiz;
+  const { quiz, setSide, setSingleWrong, setSpeed, setSound } = useQuiz();
+  const { side, singleWrong, speed, sound } = quiz;
   return (
     <div>
       <p
         onClick={() => setOpen((p) => !p)}
-        className="ring-1 rounded-lg text-sm dark:bg-slate-600 p-1 ring-slate-300 dark:ring-slate-500 px-2 hover:shadow-lg cursor-pointer"
+        className="text-sm cursor-pointer font-medium text-prime "
       >
         Quiz Options
       </p>
       {open && (
         <span className="relative z-10">
-          <div className="absolute">
-            <Box css="shadow-xl ring-1 ring-slate-300 dark:ring-slate-600  col_ gap-2">
+          <div className="absolute top-3 animate-pop">
+            <div className="card-all  col_">
               <Select
-                defaultValue={[optionCount]}
+                defaultValue={optionCount}
                 options={[[2], [3], [4], [5], [6]]}
                 onInput={(optCount: number) => setOptionCount(optCount)}
                 text="option counts"
@@ -47,12 +47,32 @@ export default function QuizOptions({ optionCount, setOptionCount }: props) {
               />
               <Select
                 text="pause duration"
-                options={[[0.1], [0.2], [0.5], [0.7], [1], [1.5], [2], [2.5]]}
+                options={[
+                  [0, 0],
+                  [0.1],
+                  [0.2],
+                  [0.5],
+                  [0.7],
+                  [1],
+                  [1.5],
+                  [2],
+                  [2.5],
+                ]}
                 defaultValue={[speed]}
                 onInput={(val: number) => setSpeed(val)}
                 css="flex items-center justify-between"
               />
-            </Box>
+              <Select
+                text="sound"
+                options={[
+                  ["on", 1],
+                  ["off", 0],
+                ]}
+                defaultValue={[speed]}
+                onInput={(val: 0 | 1) => setSound(val)}
+                css="flex items-center justify-between"
+              />
+            </div>
           </div>
         </span>
       )}

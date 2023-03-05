@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,6 +10,8 @@ import { ImageIcon, Mp3, XIcon } from "../../../../lib/icons";
 import BtnBack from "../../../elements/BtnBack";
 import BtnPrime from "../../../elements/BtnPrime";
 import ContentHeader from "../../../elements/ContentHeader";
+import CardQueryView from "../../viewer/CardQueryView";
+import CardEditormodeToggler from "./CardEditormodeToggler";
 
 const CardLists = dynamic(() => import("../cardLists/CardLists"), {
   loading: () => <p>cards lists..</p>,
@@ -17,7 +20,7 @@ const CardLists = dynamic(() => import("../cardLists/CardLists"), {
 export default function CardAdder({ classId }: { classId: string | any }) {
   return (
     <div className="container_ flex-col">
-      <ContentHeader Action={<BtnBack content="category" />} />
+      <ContentHeader extraPath="add cards" removeMiddlePaths={true} />
       <AdderItem classId={classId} />
       <CardLists />
     </div>
@@ -25,6 +28,7 @@ export default function CardAdder({ classId }: { classId: string | any }) {
 }
 
 export function AdderItem({ index, classId }: any) {
+  const firstInputref = useRef(null);
   const { fronts: fronts_, backs: backs_ } = useFieldsGetter().getFieldsRaw();
   const topic = useTopicGetter().getSelectedTopic();
   const { addCard } = useCardAdder();
@@ -44,6 +48,8 @@ export function AdderItem({ index, classId }: any) {
       backs,
     };
 
+    // console.log(`card data to add`, data);
+
     addCard(data, () => {
       // clear fields from local storage
       fronts_?.forEach((f) => localStorage.removeItem(f.text + "front"));
@@ -52,22 +58,25 @@ export function AdderItem({ index, classId }: any) {
   };
 
   return (
-    <div className="col_ px-4 ">
-      <h3 className=" font-bold text-indigo-400 text-center">
+    <div className="col_ py-2">
+      <h3 className="  text-primary-light pt-2 text-center text-sm sm:text-lg">
         Add Cards for {topic?.name}{" "}
       </h3>
       <form className="" onSubmit={onAddCardHandler}>
-        <div className="flex gap-6  flex-wrap ">
+        <div className="flex_ justify-between pb-2 flex-wrap">
+          <span className="flex_">
+            <CardQueryView />
+            <CardEditormodeToggler />
+          </span>
+          <button type="submit" className="btn-prime">
+            Add New Card
+          </button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 card card-shadow py-2 ">
           <Fields side="front" fields={fronts_} />
           <Fields side="back" fields={backs_} />
         </div>
-        <div className="flex p-1 gap-2 pt-4">
-          <span className="flex flex-col">
-            <BtnPrime type="submit" css="m-0">
-              save
-            </BtnPrime>
-          </span>
-        </div>
+        <small className="px-2">press "enter" to save.</small>
       </form>
     </div>
   );
@@ -82,6 +91,7 @@ const filterFields = (type: "front" | "back", formElem: any, lists: any) => {
     if (inputElem) {
       return {
         ...fields,
+        id: nanoid(),
         ind,
         value:
           inputElem.type === "text" || inputElem.type === "number"
@@ -102,16 +112,16 @@ const filterFields = (type: "front" | "back", formElem: any, lists: any) => {
 
 function Fields({ fields, side }: any) {
   return (
-    <div className="ring-1 ring-slate-200 rounded-xl p-2  flex-1 bg-white dark:bg-slate-700 dark:ring-2 dark:ring-slate-600">
-      <h4 className="text-indigo-400 text-center">{side}</h4>
+    <div className="dp-2  dflex-1 ">
+      <h4 className="text-accent  text-center font-bold">{side}</h4>
       {fields?.map((field: any, ind: number) => (
-        <Field data={field} side={side} key={field?.text + ind} />
+        <Field data={field} side={side} key={field?.text + ind} ind={ind} />
       ))}
     </div>
   );
 }
 
-export function Field({ data, side = "" }: any) {
+export function Field({ data, side = "", ind }: any) {
   const localVal = localStorage.getItem(data?.text + side);
 
   const onInputHandler = (e: any) => {
@@ -120,11 +130,14 @@ export function Field({ data, side = "" }: any) {
   };
 
   const InputC = (props: any) => (
-    <div className="flex items-center gap-d">
-      <label className=" whitespace-nowrap" htmlFor={data.text + "%*" + side}>
-        {data?.text} :
+    <div className="flex col_ gap-0 ditems-center gap-d leading-none">
+      <label htmlFor={data.text + "%*" + side}>
+        <p className=" whitespace-nowrap px-3 text-phar font-normal">
+          {data?.text}
+        </p>
       </label>
       <input
+        autoFocus={ind === 0 && side === "front" ? true : false}
         {...props}
         text={data.text}
         name={data.text + "%*" + side}
@@ -134,7 +147,7 @@ export function Field({ data, side = "" }: any) {
         onInput={onInputHandler}
         type={data?.type || "text"}
         className={
-          "bg-slate-100 dark:ring-1 dark:ring-slate-500 w-full p-1 px-2 text-[.9rem]"
+          " bg-layer-1 bg-slate-200 ring-2d ring-slate-200 dark:ring-1d dark:ring-slate-500 w-full p-[5px] px-2 text-[1rem] rounded-lg"
         }
       />
     </div>
@@ -168,7 +181,7 @@ export function Field({ data, side = "" }: any) {
   return (
     <div
       className={
-        "flex  gap-2 ring-1d p-2 " +
+        "flex  gap-2 " +
         (data.type == "text" || data.type == "number" ? "flex-col" : "")
       }
     >
@@ -196,10 +209,11 @@ function FileInput({ text, side, Icon, type }: any) {
   };
 
   return (
-    <div className="flex items-center gap-2  hover:bg-slate-200 dark:hover:bg-slate-500 p-1 rounded-md ">
-      <div className="flex flex-col">
-        <div className="flex gap-2 items-center">
-          <p className=" flex items-center gap-2 whitespace-nowrap ring-1 px-2 rounded-md">
+    <div className="flex items-center gap-2   py-1 rounded-md ">
+      <p>{text}</p>
+      <div className="flex flex-col ">
+        <div className="flex gap-2 items-center ">
+          <p className=" flex items-center gap-2 whitespace-nowrap ring-1 px-2 rounded-md hover:bg-slate-200  dark:hover:bg-slate-500">
             <Icon className="text-xl" />
             <label className="cursor-pointer" htmlFor={text + "%*" + side}>
               {" "}

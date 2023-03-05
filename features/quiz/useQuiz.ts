@@ -4,6 +4,7 @@ import {
   setHasChosen,
   setSide,
   setSingleWrong,
+  setSound,
   setSpeed,
   togSide,
   togSingleWrong,
@@ -26,5 +27,6 @@ export default function useQuiz() {
     setSingleWrong: (val: boolean) => patch(setSingleWrong(val)),
     togSingleWrong: () => patch(togSingleWrong),
     setSpeed: (speed: number) => patch(setSpeed(speed)),
+    setSound: (sound: 1 | 0) => patch(setSound(!!Number(sound))),
   };
 }

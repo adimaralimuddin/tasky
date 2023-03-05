@@ -25,12 +25,9 @@ export default function BtnCardAdder() {
   }
 
   return (
-    <p
-      onClick={onClickHandler}
-      className="flex items-center gap-1 px-3 mx-3 rounded-full ring-1 ring-slate-300 cursor-pointer hover:shadow-md text-purple-500 dark:text-violet-300 dark:ring-violet-300 text-slate-500d"
-    >
+    <button onClick={onClickHandler} className="text-primary-light font-bold">
       <Plus />
-      Card
-    </p>
+      Add Card
+    </button>
   );
 }

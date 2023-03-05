@@ -15,7 +15,7 @@ type props = {
 };
 
 export default function Option({
-  Icon = <OptionIcon />,
+  Icon = <OptionIcon className="text-lg" />,
   options,
   left = false,
 }: props) {
@@ -27,16 +27,16 @@ export default function Option({
           setOpen((p) => !p);
           e.stopPropagation();
         }}
-        className="hover:bg-slate-200 dark:hover:bg-slate-500  p-1 rounded-full hover:shadow-mdd cursor-pointer hover:scale-[1.2] transition-all duration-300 dark:text-slate-100 "
+        className="text-prime  p-1 rounded-full hover:shadow-mdd cursor-pointer hover:scale-[1.2] transition-all duration-300 dark:text-slate-100d "
       >
         {Icon}
       </div>
       {open && (
         <div className="relative z-20   ">
-          <Box
+          <div
             onClick={(e: React.FormEvent) => e.stopPropagation()}
-            css={
-              "dark:ring-slate-600 dark:bg-slate-600 absolute -top-1 ring-1 ring-slate-200 p-2 overflow-hidden shadow-lg  " +
+            className={
+              "card-all animate-pop absolute top-1 ring-1 ring-slate-200d p-2 overflow-hidden shadow-lg  " +
               (left && "right-0")
             }
           >
@@ -59,7 +59,7 @@ export default function Option({
                 );
               })}
             </div>
-          </Box>
+          </div>
         </div>
       )}
     </div>

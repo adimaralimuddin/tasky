@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { CardTypes } from "../../features/card/CardType";
 import useQuiz from "../../features/quiz/useQuiz";
-import CardItem from "../work/card/CardItem";
+import CardItem from "../work/card/cardItem/CardItem";
 type props = {
   card: CardTypes;
   next: any;
@@ -21,8 +21,7 @@ export default function QuizPlayOptionItem({
   const [wasWrong, setWasWrong] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
   const { quiz, setHasChosen } = useQuiz();
-  const { hasChosen, side, singleWrong, speed } = quiz;
-
+  const { hasChosen, side, singleWrong, speed, sound } = quiz;
   useEffect(() => {
     setCorrect(false);
     setIsWrong(false);
@@ -55,7 +54,8 @@ export default function QuizPlayOptionItem({
   const onSelectHandler = () => {
     if (hasChosen) return;
     if (card?.id == current?.id) {
-      new Audio("/correct.mp3")?.play();
+      if (sound) new Audio("/correct.mp3")?.play();
+
       setHasChosen(true);
       setCorrect(true);
       updateResult();
@@ -64,7 +64,8 @@ export default function QuizPlayOptionItem({
         pass();
       });
     } else {
-      new Audio("/wrong.mp3")?.play();
+      if (sound) new Audio("/wrong.mp3")?.play();
+
       setCorrect(false);
       setWasWrong(true);
       updateResult(false);
@@ -88,12 +89,12 @@ export default function QuizPlayOptionItem({
     <div
       onClick={onSelectHandler}
       className={
-        "flex-1  ring-2 ring-slate-200 rounded-xl cursor-pointer m-1 animate-wiggle max-w-[400px]  " +
+        "flex-1   ring-2 ring-prime rounded-xl cursor-pointer m-1  max-w-[400px]  " +
         isCorrect(
-          "ring-green-400 hover:ring-green-500",
+          "ring-lime-400 hover:ring-lime-500 animate-pop",
           isWasWrong(
-            "ring-red-400 dark:ring-red-400",
-            !hasChosen && "hover:ring-indigo-400 hover:shadow-lg"
+            "ring-pink-300 dark:ring-pink-400 animate-wiggle ",
+            !hasChosen && " hover:ring-text-accent hover:shadow-lg"
           )
         )
       }

@@ -8,8 +8,8 @@ import Box from "../elements/Box";
 import BtnBack from "../elements/BtnBack";
 import ContentHeader from "../elements/ContentHeader";
 import NoCards from "../elements/NoCards";
-import CardItem from "../work/card/CardItem";
-import CardQueryView from "../work/card/CardQueryView";
+import CardItem from "../work/card/cardItem/CardItem";
+import CardQueryView from "../work/viewer/CardQueryView";
 import QuizFinnished from "./QuizFinnished";
 import QuizOptions from "./QuizOptions";
 import QuizPlayOptionItem from "./QuizPlayOptionItem";
@@ -76,6 +76,8 @@ export default function QuizMainContent({ classId }: any) {
         <QuizOptions
           optionCount={optionCount}
           setOptionCount={(val: any) => {
+            console.log(`val`, val);
+
             setOptionCount(val);
             reloadOptions(val);
           }}
@@ -107,7 +109,7 @@ export default function QuizMainContent({ classId }: any) {
 
   return (
     <div className="flex-1 flex flex-col  ">
-      <ContentHeader Action={<BtnBack content="category" />} />
+      <ContentHeader Action={<BtnBack content="topic" />} extraPath="quiz" />
       {cards?.length > 0 ? Content : <NoCards text="No Cards For Quiz" />}
     </div>
   );

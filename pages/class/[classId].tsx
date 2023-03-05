@@ -40,7 +40,6 @@ export async function getStaticProps(ctx: any) {
       sample: true,
     },
   });
-  console.log(`class_`, class_);
 
   async function getDashboard() {
     const res = await prisma.card.groupBy({

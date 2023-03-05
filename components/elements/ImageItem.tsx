@@ -11,6 +11,8 @@ export default function ImageItem({
   imageViewer,
 }: any) {
   const [open, setOpen] = useState(false);
+  const checkSrcType = () =>
+    src && typeof src === "string" && src.includes("/") ? src : undefined;
   return (
     <div
       className={
@@ -21,7 +23,7 @@ export default function ImageItem({
       <Image
         onClick={(_) => imageViewer && setOpen((p) => !p)}
         className={" " + css}
-        src={src ? src : "/img/image.png"}
+        src={checkSrcType() || "/img/image.png"}
         width={width}
         height={height}
         alt=""
@@ -31,15 +33,28 @@ export default function ImageItem({
         {(Icon: any) => (
           <div className=" shadow-xl relative w-4/5 p-10d h-4/5">
             <Icon />
-            <Image
-              className="w-full rounded-xl"
-              onClick={(_) => setOpen(false)}
-              src={src}
-              layout="fill"
-              width={200}
-              height={200}
-              alt=""
-            />
+            {checkSrcType() ? (
+              <Image
+                className="w-full rounded-xl"
+                onClick={(_) => setOpen(false)}
+                src={src}
+                layout="fill"
+                width={200}
+                height={200}
+                alt=""
+              />
+            ) : (
+              <div>
+                <p>image source is not a valid image url.</p>
+                <small>
+                  you might have changed the field type of this field's
+                  template.
+                </small>
+                <div title={src} className="py-3">
+                  <p>image source: {src}</p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </Modal>

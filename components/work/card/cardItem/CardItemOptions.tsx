@@ -1,8 +1,8 @@
 import React from "react";
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
-import { CardTypes } from "../../../../../features/card/CardType";
-import { DEF_USER } from "../../../../../lib/public";
-import Option from "../../../../elements/Option";
+import { CardTypes } from "../../../../features/card/CardType";
+import { DEF_USER } from "../../../../lib/public";
+import Option from "../../../elements/Option";
 
 interface Props {
   setIsEditing: any;

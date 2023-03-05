@@ -31,14 +31,17 @@ export default function TemplateItem({ template, editable = true }: props) {
       : fields;
 
   return (
-    <Box
+    <div
       onClick={() => setOpen(true)}
-      css={
-        "flex flex-col items-center justify-center cursor-pointer min-w-[100px] flex-1 max-w-sm min-h-[80px] " +
+      className={
+        "card-all col_ gap-0 flex-1 justify-center cursor-pointer min-w-[100px] max-w-[280px] min-h-[130px] " +
         (template?.sample && " ring-2 dark:ring-indigo-400 ")
       }
     >
-      <p className="text-center">{template?.name}</p>
+      <h3 className="text-prime text-center">{template?.name}</h3>
+      <div className="text-phar">
+        <p className="text-center">this is just a sample description</p>
+      </div>
 
       {openEditor && (
         <TemplateUpdater
@@ -52,11 +55,11 @@ export default function TemplateItem({ template, editable = true }: props) {
 
       <Modal open={open} setOpen={setOpen}>
         {(Icon: any) => (
-          <Box
+          <div
             onClick={(e: any) => {
               e.stopPropagation();
             }}
-            css="flex flex-col max-h-[90vh] overflow-autod"
+            className=" card col_ max-h-[90vh] overflow-autod"
           >
             <Icon />
             <h3>{template?.name}</h3>
@@ -77,7 +80,7 @@ export default function TemplateItem({ template, editable = true }: props) {
                 edit
               </BtnSec>
             </div>
-          </Box>
+          </div>
         )}
       </Modal>
 
@@ -89,7 +92,7 @@ export default function TemplateItem({ template, editable = true }: props) {
           setIsDeleting={setIsDeleting}
         />
       )}
-    </Box>
+    </div>
   );
 }
 

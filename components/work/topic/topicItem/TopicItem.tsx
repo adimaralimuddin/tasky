@@ -54,28 +54,26 @@ export default function TopicItem({ data, selectFolder, serverData }: props) {
             setChangedName(false);
           }
         }}
-        onMouseEnter={(_) => setHovered(true)}
+        onMouseEnter={(e) => {
+          setHovered(true);
+        }}
         onMouseLeave={(_) => setHovered(false)}
         className={
-          "cursor-pointer flex items-center  dark:hover:bg-slate-600 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
+          "cursor-pointer flex items-center   dark:hover:bg-layer-100 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d " +
           isTopicSelected(
             data?.id,
-            " bg-indigo-50 hover:bg-indigo-100 dark:bg-violet-400 dark:hover:bg-violet-500 ",
+            " bg-indigo-50 hover:bg-indigo-100 dark:bg-primary-dark dark:hover:bg-violet-500 ",
             "hover:bg-slate-50"
           ) +
           (changedName && " popy")
         }
       >
-        <BiBookAlt className="mr-1 text-indigo-600 dark:text-violet-400" />
+        <BiBookAlt className="mr-1 text-indigo-600 dark:text-violet-300" />
         <small
           title={data?.name}
           className={
             "flex-1 py-1 whitespace-nowrap  " +
-            isTopicSelected(
-              data?.id,
-              " dark:text-slate-50",
-              "dark:text-slate-300"
-            )
+            isTopicSelected(data?.id, " dark:text-slate-200", "text-phar")
           }
         >
           {_charLimits(data?.name, 20)}

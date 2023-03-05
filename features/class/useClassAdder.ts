@@ -1,10 +1,9 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
-import { ClassType } from "../../components/class/classTypes";
 import { ClassLimit, DEF_USER } from "../../lib/public";
 import { ClassUrl } from "./classApi";
-import { ClassCreate } from "./classTypes";
+import { ClassCreateType, ClassType } from "./classTypes";
 
 export default function useClassAdder() {
   const { user } = useUser();
@@ -71,9 +70,7 @@ export const classApiCreateClass = async ({
   userId,
   name,
   description,
-}: ClassCreate) => {
-  // console.log(`to add class --`, { userId, name, description });
-
+}: ClassCreateType) => {
   const q = gql`
     mutation Mutation($name: String!, $userId: String, $description: String) {
       createClass(name: $name, userId: $userId, description: $description) {

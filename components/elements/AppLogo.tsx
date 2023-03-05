@@ -7,9 +7,9 @@ interface AppLogotype {
 export default function AppLogo({ showTitle = true }: AppLogotype) {
   return (
     <div className=" flex_ items-center min-w-[32px] min-h-[32px]   ">
-      <Image src={`/my_logo.png`} width={35} height={35} alt="tasky logo" />
+      <Image src={`/icon/logo.svg`} width={20} height={20} alt="tasky logo" />
       {showTitle ? (
-        <h2 className="text-cyan-700 font-bold  ">TaskCard</h2>
+        <h2 className=" text-prime font-extrabold ">QuizPizt</h2>
       ) : null}
     </div>
   );

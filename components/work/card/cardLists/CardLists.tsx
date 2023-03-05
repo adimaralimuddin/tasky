@@ -2,7 +2,7 @@ import React from "react";
 import { CardTypes } from "../../../../features/card/CardType";
 import useCards from "../../../../features/card/useCards";
 import useTopicGetter from "../../../../features/topic/useTopicGetter";
-import CardItem from "../CardItem";
+import CardItem from "../cardItem/CardItem";
 
 function CardLists() {
   const topicId = useTopicGetter().getSelectedTopicId();

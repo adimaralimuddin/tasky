@@ -58,14 +58,14 @@ export async function templateApiTemplates({
   userId?: string | null;
 }): Promise<TemplateType[]> {
   const q = gql`
-    query Templates($userId: String!) {
+    query Query($userId: String!) {
       templates(userId: $userId) {
+        userId
         name
         id
         fronts
+        deleted
         backs
-        sample
-        userId
       }
     }
   `;

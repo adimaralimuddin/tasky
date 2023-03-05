@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { HiOutlinePlus } from "react-icons/hi";
@@ -34,29 +35,30 @@ export default function WorkSide({ post }: any) {
   return (
     <div
       className={
-        "flex-1 lg:max-w-[290px] sm:hover hover:min-w-[270px] lg:hover:w-full hover:fixed lg:hover:sticky left-0   max-w-[38px] overflow-hidden bg-whited dark:bg-slate-700d group w-[100%] sticky top-0 max-h-screen dark:bg-slate-900 z-[999] min-h-screen  dark:ring-2  bg-white shadow-md "
+        "flex-1 lg:max-w-[260px] sm:hover hover:min-w-[270px] lg:hover:w-full hover:fixed lg:hover:sticky left-0   max-w-[38px] overflow-hidden bg-whited dark:bg-slate-700d group w-[100%] sticky top-0 max-h-screen  dark:bg-layer-50 z-[999] min-h-screen  dark:ring-2d  bg-white shadow-md "
       }
     >
       <div className={" rounded-xl flex-1 max-w-xs  "}>
         <div className=" lg:hidden col_ items-center  group-hover:hidden p-3">
           <AppLogo showTitle={false} />
-          <button className="bg-purple-400 p-[4px] rounded-xl">
-            <RxDashboard className="text-xl text-white" />
-          </button>
+          {/* <button className="bg-purple-400 p-[4px] rounded-xl"> */}
+          {/* <RxDashboard className="text-xl text-white" /> */}
+          <Image src="/icon/dashboard_icon.svg" width={20} height={20} />
+          {/* </button> */}
         </div>
         <header className="hidden lg:flex group-hover:flex  flex-col items-stretch">
           <div className="p-3 col_">
             <AppLogo />
-            <h3
+            <h4
               onClick={onDashBoardClick}
-              className="flex-1 ring-2 text-cyan-500ds dark:text-white cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-cyan-600 px-3 self-start rounded-lg flex_ items-center"
+              className="flex-1 flex_ cursor-pointer text-prime font-semibold"
             >
-              <RxDashboard />
+              <Image src="/icon/dashboard_icon.svg" width={20} height={20} />
               Dashboard
-            </h3>
+            </h4>
           </div>
           <FolderAdder classId={classId} />
-          <hr className="  dark:border-slate-500" />
+          <hr className="  dark:border-slate-600 mt-3" />
         </header>
 
         <WorkSideFolders post={post} classId={String(classId)} />

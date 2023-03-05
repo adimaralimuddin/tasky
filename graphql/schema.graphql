@@ -28,10 +28,12 @@ type Class {
 }
 
 input CommentInputType {
+  id: String!
   ind: Int!
   text: String!
   type: String!
   value: String!
+  viewId: String!
 }
 
 type Count {
@@ -52,11 +54,14 @@ type Field {
   text: String
   type: String
   value: String
+  viewId: String
 }
 
 input FieldListInputType {
   text: String
   type: String
+  view: Boolean
+  viewId: String
 }
 
 type Folder {
@@ -70,9 +75,10 @@ type Folder {
 }
 
 type Mutation {
-  createCard(backs: [CommentInputType], category: String = "new", description: String, fronts: [CommentInputType], level: String = "hard", name: String!, topicId: String!, userId: String!): Card
+  addField(backId: String, frontId: String, id: String!, ind: Int!, text: String!, type: String!, value: String!, viewId: String!): Field
+  createCard(backs: [CommentInputType], category: String = "new", description: String, fronts: [CommentInputType], id: String!, level: String = "hard", name: String!, topicId: String!, userId: String!): Card
   createClass(description: String, name: String!, userId: String): Class!
-  createFieldFront(frontId: String!, ind: Int!, name: String!, type: String!, value: String!): Field
+  createFieldFront(frontId: String!, ind: Int!, name: String!, type: String!, value: String!, viewId: String!): Field
   createFolder(classId: String!, name: String!, userId: String!): Folder
   createTemplate(backs: [FieldListInputType], fronts: [FieldListInputType], name: String!, userId: String!): Template
   createTopic(description: String, folderId: String!, id: String!, name: String!, templateId: String!, userId: String!): Topic

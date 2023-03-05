@@ -69,9 +69,14 @@ export const TemplateQuery = extendType({
       type: Template,
       args: { userId: nonNull(stringArg()) },
       resolve(par, { userId }, ctx) {
-        return ctx.prisma.template.findMany({
-          where: { userId, deleted: false },
-        });
+        try {
+          return ctx.prisma.template.findMany({
+            where: { userId, deleted: false },
+          });
+        } catch (error) {
+          console.log(`Error: templateGraphql query templates: `, error);
+          return null;
+        }
       },
     });
   },
@@ -140,7 +145,9 @@ export const TemplateMutation = extendType({
 const FieldsListInputType = inputObjectType({
   name: "FieldListInputType",
   definition(t) {
+    t.string("viewId");
     t.string("text");
     t.string("type");
+    t.boolean("view");
   },
 });

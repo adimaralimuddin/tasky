@@ -52,6 +52,7 @@ export async function cardApiGetCardsByTopic(
           frontId
           backId
           ind
+          viewId
         }
         backs {
           id
@@ -61,6 +62,7 @@ export async function cardApiGetCardsByTopic(
           frontId
           backId
           ind
+          viewId
         }
       }
     }

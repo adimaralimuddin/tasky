@@ -1,4 +1,6 @@
+import { nanoid } from "nanoid";
 import React, { useState } from "react";
+import { FieldType } from "../../../features/card/CardType";
 
 export default function FieldAdder({ set }: any) {
   const [clicked, setClicked] = useState(false);
@@ -6,13 +8,20 @@ export default function FieldAdder({ set }: any) {
   const [type, setType] = useState<any>("text");
 
   const onSave = () => {
-    const data = { text, type };
     if (text.trim() === "") {
       return alert("must have a text");
     }
     if (type.trim() === "") {
       return alert("must have a type");
     }
+
+    const data: Omit<FieldType, "ind"> = {
+      viewId: nanoid(),
+      text,
+      type,
+      view: true,
+    };
+
     set((p = []) => [...p, data]);
     setClicked(false);
     setText("");

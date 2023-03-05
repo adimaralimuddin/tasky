@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { fileUploader } from "../../lib/db";
+import { fieldApiAddField } from "../app/fields/useFieldAdder";
 import { CardTypes, FieldType } from "../card/CardType";
 import { fieldApiUpdateField } from "./fieldApi";
 
@@ -11,23 +12,46 @@ export default function useField() {
     const client = fileUploader();
     return await Promise.all(
       fields?.map(async (f) => {
+        if (f?.isNew) {
+          // console.log(`new field is here `, f);
+
+          delete f.isNew;
+          if ((f.type === "text" || f.type === "number") && f?.value) {
+            return await fieldApiAddField(f);
+          } else if ((f.type === "image" || f.type === "audio") && f?.value) {
+            const { url } = await client.upload(f.value);
+            // console.log(`url here`, url);
+            f.value = url;
+            // console.log(`file updated `, f);
+
+            return await fieldApiAddField(f);
+          }
+          return f;
+        }
+
         if (f.newValue && f?.id) {
-          const args = {
+          const toUpdateField = {
             newValue: f?.newValue,
             val: f?.value,
             id: f.id,
           };
 
-          if (f?.type == "text" || f?.type == "number") {
-            const res = await fieldApiUpdateField(args);
-            return res;
-          } else if (f?.type == "image" || f?.type == "audio") {
+          if ((f?.type == "text" || f?.type == "number") && f?.newValue) {
+            return await fieldApiUpdateField(toUpdateField);
+          } else if (
+            (f?.type == "image" || f?.type == "audio") &&
+            f?.newValue
+          ) {
             const { url } = await client.upload(f.newValue);
-            args.newValue = url;
-            const res = await fieldApiUpdateField(args);
-            return res;
+            toUpdateField.newValue = url;
+            // console.log(`done file url `, toUpdateField);
+
+            const ret = await fieldApiUpdateField(toUpdateField);
+            // console.log(`ret of file url `, ret);
           }
         }
+        // console.log(`just return f`, f);
+
         return f;
       })
     );
@@ -44,20 +68,15 @@ export default function useField() {
     cardId: string;
     topicId: string;
   }) => {
-    const fronts = await updateSide(f);
-    const backs = await updateSide(b);
-    await client.setQueryData(["cards", topicId], (cards: any) => {
-      const n = cards?.map((card: CardTypes) => {
-        if (card?.id == cardId) {
-          card.fronts = fronts;
-          card.backs = backs;
-        }
-        return card;
-      });
-      return n;
-    });
+    if (f?.length && b?.length) {
+      const fronts = await updateSide(f);
+      const backs = await updateSide(b);
+      client.invalidateQueries(["cards", topicId]);
 
-    return { fronts, backs };
+      return { fronts, backs };
+    } else {
+      console.log(`no fronts and backs `, { f, b });
+    }
   };
 
   return {

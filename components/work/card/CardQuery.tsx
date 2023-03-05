@@ -3,37 +3,50 @@ import useFieldsGetter from "../../../features/app/fields/useFieldsGetter";
 import { CardTypes, FieldType } from "../../../features/card/CardType";
 import SearchBox from "../../elements/SearchBox";
 import Select from "../../elements/Select";
-import CardQueryView from "./CardQueryView";
+import CardQueryView from "../viewer/CardQueryView";
 
 export default function CardQuery({
   cards,
   setCards,
+  children,
 }: {
   cards: CardTypes[];
   setCards: any;
   classId?: string;
+  children?: React.ReactNode;
 }) {
   const { getFields } = useFieldsGetter();
   const template = getFields();
 
   const [type, setType] = useState<Side>("fronts");
-  const [filter, setFilter] = useState(template?.fronts?.[0]?.text);
+  const [filter, setFilter] = useState(template?.fronts?.[0]?.viewId);
+  // console.log(`filterssssss`, filter);
 
   const fields = template;
+  // console.log(`fields`,fields);
 
   const updateFilter = (type_: Side = type) => {
     const x = fields?.[type_]?.find((p: any) => p?.text == filter);
     if (!x) {
-      setFilter(fields?.[type_]?.[0]?.text);
+      setFilter(fields?.[type_]?.[0]?.viewId);
     }
   };
 
   const onSearchHandler = (e: any) => {
+    // console.log(`all cards`, cards);
+
     const val = e.target.value?.toLowerCase();
+
+    if (val?.trim() === "") {
+      setCards(cards);
+      return;
+    }
+    // console.log(`val`, val);
+    console.log(`filter`, filter);
     const newCards = cards?.filter((card: any) => {
       var ret = false;
       card?.[type]?.map((field: FieldType) => {
-        if (field?.text == filter) {
+        if (field?.viewId == filter) {
           if (field?.value?.toLowerCase()?.includes(val)) {
             ret = true;
             return true;
@@ -42,6 +55,9 @@ export default function CardQuery({
       });
       return ret;
     });
+
+    console.log(`bew cards`, newCards);
+
     setCards(newCards);
   };
 
@@ -59,9 +75,9 @@ export default function CardQuery({
         }}
         options={fields?.[type]
           ?.filter((f: any) =>
-            f?.type == "text" || f?.type == "number" ? true : null
+            f?.type === "text" || f?.type == "number" ? true : null
           )
-          ?.map((f: any) => [f?.text, f?.text])}
+          ?.map((f: any) => [f?.text, f?.viewId])}
       />
 
       <Select
@@ -75,14 +91,13 @@ export default function CardQuery({
           ["backs", "backs"],
         ]}
       />
-      <CardQueryView />
+      <CardQueryView right={true} />
+      {children}
     </div>
   );
 }
 
 export const finalizeFields = (template: any) => {
-  console.log(`finalize`, template);
-
   let fronts = template?.fronts || [];
   let backs = template?.backs || [];
 

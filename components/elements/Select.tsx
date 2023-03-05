@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { clearTimeout } from "timers";
 import { DownIcon, UpIcon } from "../../lib/icons";
 import _charLimits from "../../lib/utils/_charLimits";
-import Box from "./Box";
+import Popy from "./Popy";
 
 type props = {
   options: any[][];
@@ -30,6 +31,7 @@ export default function Select({
   const [open, setOpen] = useState(false);
   const [val, setVal] = useState<Option>(options?.[0]);
   const maxVarChar = 20;
+  let timer: any = null;
 
   useEffect(() => {
     setVal(options?.find((p) => p[1] == value) || options?.[0]);
@@ -42,26 +44,73 @@ export default function Select({
   };
 
   return (
-    <div className={"flex  items-center " + css}>
-      <small className={" flex-1 whitespace-nowrap " + (text && " pr-2 ")}>
+    <div className={"flex  items-center select-none  " + css}>
+      <p
+        className={
+          " flex-1  whitespace-nowrap text-[.9rem]  text-phar  " +
+          (text && " pr-2 ")
+        }
+      >
         {text}{" "}
-      </small>
+      </p>
       <div>
         <p
           {...props}
-          onClick={(_) => setOpen((p) => !p)}
+          onClick={(_) => {
+            setOpen((p) => !p);
+          }}
           className={
-            "	text-sm cursor-pointer hover:shadow-smd ring-1 ring-slate-200 hover:ring-slate-300 dark:ring-slate-600 dark:hover:ring-slate-500 rounded-lg p-1 bg-white dark:bg-slate-600 min-w-[70px] flex items-center justify-between gap-2  " +
+            " bg-layer-1  text-prime select-none	text-sm cursor-pointer hover:shadow-smd ring-1d ring-slate-200 hover:ring-slate-300 rounded-lg p-1 px-2  min-w-[70px] flex items-center justify-between gap-2 text-[.9rem] shadow-sm " +
+            (open && " ring-2 dark:ring-[#606f9a] ") +
             className
           }
         >
           {icon ? icon : null}
-          <span className="text-center  flex-1">{val?.[0]?.toString()}</span>
+          <span className="text-center  flex-1">{val?.[0]?.toString()} </span>
           {open ? <UpIcon /> : <DownIcon />}
         </p>
+        {/* <Popy
+          header={
+            <p
+              className={
+                " bg-layer-1  text-prime select-none	text-sm cursor-pointer hover:shadow-smd ring-1d ring-slate-200 hover:ring-slate-300 rounded-lg p-1 px-2  min-w-[70px] flex items-center justify-between gap-2 text-[.9rem] shadow-sm " +
+                (open && " ring-2 dark:ring-[#606f9a] ") +
+                className
+              }
+            >
+              {icon ? icon : null}
+              <span className="text-center  flex-1">
+                {val?.[0]?.toString()}{" "}
+              </span>
+              {open ? <UpIcon /> : <DownIcon />}
+            </p>
+          }
+          open={open}
+          setOpen={setOpen}
+        > */}
         {open && (
           <div className="relative z-20">
-            <Box css=" shadow-xl ring-1 ring-slate-200 absolute top-0 left-0 overflow-hidden min-w-[80px] dark:ring-2 dark:ring-slate-500 ">
+            <input
+              className="absolute max-h-0 p-0 top-0 left-0"
+              // onBlurCapture={}
+              onBlur={() => {
+                if (timer !== null && timer !== undefined) {
+                  clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                  setOpen(false);
+                }, 150);
+              }}
+              type="text"
+              autoFocus
+            />
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              // className="card-all col_ gap-1"
+              className="card card-ring card-shadow dark:bg-layer-100 absolute top-2 -left-1 col_ gap-0 select-none animate-pop overflow-hidden p-2"
+            >
               {options?.map((option) => (
                 <div
                   title={
@@ -71,14 +120,15 @@ export default function Select({
                   }
                   key={option?.[0]?.toString()}
                   onClick={(_) => onInputHandler(option)}
-                  className="hover:bg-slate-100 dark:hover:bg-slate-600 cursor-pointer px-4 p-1 text-sm rounded-md whitespace-nowrap "
+                  className=" dark:hover:bg-layer-sec cursor-pointer px-4 p-2 text-sm rounded-lg hover:bg-slate-50 whitespace-nowrap min-w-[90px] text-center text-sec"
                 >
                   {_charLimits(option[0]?.toString(), maxVarChar)}
                 </div>
               ))}
-            </Box>
+            </div>
           </div>
         )}
+        {/* </Popy> */}
       </div>
     </div>
   );

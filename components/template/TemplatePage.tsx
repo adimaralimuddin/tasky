@@ -1,6 +1,7 @@
 import { UserProfile, useUser } from "@auth0/nextjs-auth0";
 import { useQueryClient } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import React, { useEffect } from "react";
 import { TemplateType } from "../../features/template/templateType";
 import useTemplates from "../../features/template/useTemplates";
@@ -21,12 +22,12 @@ export default function TemplatePage(props: TemplatesProps) {
   const userId = props?.user?.id || user?.sub;
 
   useEffect(() => {
-    client.setQueryData(["templates", userId], () => {
-      return props.myServerTemplates;
-    });
-    client.setQueryData(["sampleTemplates"], () => {
-      return props.sampleServerTemplates;
-    });
+    // client.setQueryData(["templates", userId], () => {
+    //   return props.myServerTemplates;
+    // });
+    // client.setQueryData(["sampleTemplates"], () => {
+    //   return props.sampleServerTemplates;
+    // });
   }, [props]);
 
   const queryTemplates = useTemplates();
@@ -35,22 +36,23 @@ export default function TemplatePage(props: TemplatesProps) {
   const sampleTemplates =
     queryTemplates?.sampleTemplatesData || props.sampleServerTemplates;
 
-  console.log(`props`, props);
-
-  console.log(`sampleTemplates`, sampleTemplates);
-
   return (
     <div>
+      <Head>
+        <title>templates</title>
+      </Head>
       <LayoutMainHeader />
-      <div className="col_ container max-w-4xl mx-auto flex-1 py-[3%]">
-        <TemplateAdder />
-        <p>leng: {myTemplates?.length}</p>
-        <TemplatesGroup title="My Templates">
+      <div className="col_ gap-0 container max-w-4xl mx-auto flex-1 py-[3%]">
+        <div className="flex_ justify-end">
+          <TemplateAdder />
+        </div>
+        <br />
+        <TemplatesGroup title="my templates">
           {myTemplates?.map((template: TemplateType) => (
             <TemplateItem template={template} key={template.id} />
           ))}
         </TemplatesGroup>
-
+        <br />
         <TemplatesGroup title="Sample Templates">
           {sampleTemplates?.map((template: TemplateType) => (
             <TemplateItem
@@ -73,9 +75,9 @@ function TemplatesGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div className="py-3">
-      <h3 className="my-2 text-sm">{title}</h3>
-      <div className="flex_ flex-wrap">{children}</div>
+    <div className="">
+      <h4 className=" text-sec pb-2 px-3">{title}</h4>
+      <div className="flex_ flex-wrap gap-6">{children}</div>
     </div>
   );
 }

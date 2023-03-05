@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { FieldType } from "../../card/CardType";
-import { fieldVal } from "../appSlice";
 
 function useFieldsGetter() {
   const router = useRouter();

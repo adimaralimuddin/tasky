@@ -20,17 +20,17 @@ export default function ActionButtons() {
 
   return (
     <div className=" flex flex-col">
-      <div className="ring-1 flex  rounded-lg overflow-hidden ring-indigo-400 dark:ring-0 my-1 bg-indigo-400 text-white">
+      <div className="ring-d flex btn-prime  rounded-lg overflow-hidden my-1 dark:ring-0 dark:hover:ring-2 dark:hover:ring-[#7f95d2]">
         <p
           onClick={(_) => setContent("play")}
-          className="px-3 hover:bg-indigo-300 cursor-pointer first-letter:"
+          className="px-3 p-1 cursor-pointer first-letter:"
         >
           Play
         </p>
         <div
           onClick={(_) => setOpen((p) => !p)}
           className="flex items-center px-2 cursor-pointer 
-          bg-white dark:bg-slate-200 text-indigo-400"
+          bg-white dark:bg-layer-100 text-indigo-400"
         >
           {open ? <UpIcon /> : <DownIcon />}
         </div>

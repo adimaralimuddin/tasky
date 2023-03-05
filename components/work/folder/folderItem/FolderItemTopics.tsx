@@ -12,24 +12,8 @@ function FolderItemTopics({ setSelected, id, serverTopic }: Props) {
   const { data: nextTopic } = useTopics(id);
   const topics = nextTopic;
 
-  // console.log(`topics`, topics);
-
-  // function finalizeTopic() {
-  //   let ret;
-  //   if (nextTopic) {
-  //     if (!nextTopic?.[0]?.cards) {
-  //       ret = serverTopic || nextTopic;
-  //     } else {
-  //       ret = nextTopic;
-  //     }
-  //   } else {
-  //     ret = serverTopic;
-  //   }
-  //   return ret;
-  // }
-
   return (
-    <div className="ml-3 border-l-2  px-2 ">
+    <div className="ml-3 border-l-2 dark:border-layer-100 px-2 flex-1">
       {topics?.map((topic: TopicType) => (
         <TopicItem
           data={topic}

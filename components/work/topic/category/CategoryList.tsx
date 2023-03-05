@@ -6,7 +6,7 @@ import useTopicGetter from "../../../../features/topic/useTopicGetter";
 import BtnBack from "../../../elements/BtnBack";
 import ContentHeader from "../../../elements/ContentHeader";
 import TopicTitle from "../../../elements/TopicTitle";
-import CardList from "../../card/CardList";
+import CardListWithQuery from "../../card/cardLists/CardListWithQuery";
 
 export default function CategoryList() {
   const { getSelectedCategory } = useCategoryGetter();
@@ -22,7 +22,7 @@ export default function CategoryList() {
   return (
     <div className=" flex-1  flex flex-col container_   ">
       <ContentHeader />
-      <CardList cards={cards} />
+      <CardListWithQuery cards={cards} />
     </div>
   );
 }

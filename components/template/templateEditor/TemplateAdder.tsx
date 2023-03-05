@@ -14,6 +14,8 @@ export default function TemplateAdder() {
 
   // adimar
   const onSaveTemplate = (data: any) => {
+    console.log(`data`, data);
+
     createTemplate(data);
     setOpen(false);
   };
@@ -22,12 +24,10 @@ export default function TemplateAdder() {
     <div>
       <div
         onClick={() => setOpen(true)}
-        className=" flex_ items-center px-6 cursor-pointer "
+        className=" flex_ items-center px-2 cursor-pointer text-value "
       >
-        <FaPlus className="text-xl text-indigo-400 dark:text-white  " />
-        <p className="text-slate-500 dark:text-slate-200 font-bold">
-          New Template
-        </p>
+        <FaPlus className="" />
+        <p className=" font-bold">New Template</p>
       </div>
       <TemplateEditor
         open={open}

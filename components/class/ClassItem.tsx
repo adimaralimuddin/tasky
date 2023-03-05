@@ -1,11 +1,11 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useState } from "react";
+import { ClassType } from "../../features/class/classTypes";
 import Box from "../elements/Box";
 import Option from "../elements/Option";
-import { ClassType } from "./classTypes";
 
-const ClassEditor = dynamic(() => import("./ClassEditor"), {
+const ClassEditor = dynamic(() => import("./classEditor/ClassEditor"), {
   ssr: false,
 });
 const ClassDeleter = dynamic(() => import("./classEditor/ClassDeleter"), {
@@ -36,9 +36,9 @@ function ClassItem({
   ];
 
   return (
-    <Box
-      css={
-        "flex-1  min-w-[160px] max-w-[280px]     transition flex flex-col min-h-[130px] flex-1 shadow-none ring-1 ring-slate-200 "
+    <div
+      className={
+        "card-all col_ gap-0 flex-1 min-w-[160px] max-w-[280px] transition min-h-[130px]  "
       }
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -59,8 +59,8 @@ ${data?.description}
           `}
           className="flex-1 flex flex-col cursor-pointer hover:font-boldd text-center justify-center"
         >
-          <p className="text-violet-400 font-800 ">{data?.name}</p>
-          <p className="text-slate-400 text-sm overflow-hidden">
+          <h4 className="text-prime font-bold ">{data?.name}</h4>
+          <p className="text-sm text-sec overflow-hidden">
             {data?.description}
           </p>
         </div>
@@ -85,7 +85,7 @@ ${data?.description}
           setIsEditing={setIsEditing}
         />
       ) : null}
-    </Box>
+    </div>
   );
 }
 

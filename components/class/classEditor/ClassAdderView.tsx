@@ -3,11 +3,10 @@ import { FaPlus } from "react-icons/fa";
 
 function ClassAdderView() {
   return (
-    <div className="px-6">
-      <small>0 class left!</small>
-      <div className="flex_ items-center cursor-pointer text-indigo-500 ">
+    <div className="px-2 ">
+      <div className="flex_ items-center cursor-pointer text-indigo-500d text-value ">
         <FaPlus />
-        <p className="font-bold text-smd">New Class</p>
+        <p className="font-bold ">New Template</p>
       </div>
     </div>
   );

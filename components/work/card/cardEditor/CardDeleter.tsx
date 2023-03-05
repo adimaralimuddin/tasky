@@ -1,4 +1,5 @@
 import React from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useCardMutation } from "../../../../features/card/useCardMutation";
 import Verifier from "../../../elements/Verifier";
 
@@ -8,6 +9,7 @@ interface Props {
   topicId: string | undefined;
   userId: string;
   cardId: string;
+  editorMode: boolean;
 }
 function CardDeleter({
   isDeleting,
@@ -15,10 +17,20 @@ function CardDeleter({
   topicId,
   userId,
   cardId,
+  editorMode,
 }: Props) {
   const { deleteCard, cardDeleter } = useCardMutation(topicId);
 
   if (!topicId) return null;
+
+  if (editorMode) {
+    return (
+      <AiOutlineDelete
+        className="text-3xl cursor-pointer bg-slate-200 dark:bg-slate-500 p-1 rounded-lg hover:scale-[1.05] transition duratio hover:shadow-lg"
+        onClick={() => deleteCard({ userId, cardId })}
+      />
+    );
+  }
 
   return (
     <Verifier

@@ -12,10 +12,8 @@ export function defUser() {
     def = x;
   }
   return def;
-  // let def: any = (document.cookie = "defuser=" + val);
-  // if (!def) {
-  //   def = document.cookie = "defuser=" + val;
-  // }
-  // console.log("def ", def?.replace("defuser=", ""));
-  // return def;
 }
+
+export const LEVEL_EASY = "remember";
+export const LEVEL_NORMAL = "repeat";
+export const LEVEL_HARD = "forgot";

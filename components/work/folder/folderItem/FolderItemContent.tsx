@@ -42,7 +42,7 @@ function FolderItemContent({
   // console.log(`folderData `, data);
 
   return (
-    <div className="  ">
+    <div className=" flex items-center flex-1 ">
       {open && (
         <FolderItemTopics
           id={id}
@@ -50,7 +50,7 @@ function FolderItemContent({
           setSelected={setSelected}
         />
       )}
-      <div className="absolute right-2 top-0 bg-red-400 dark:bg-slate-600 rounded-xl ">
+      <div className="absolute right-7 top-1 bg-slate-100d dark:bg-slated-600 rounded-xld ">
         <FolderOptions
           data={data}
           hovered={hovered}

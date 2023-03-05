@@ -17,7 +17,10 @@ export default function TopicAdder() {
 
   const { myTemplates, sampleTemplates } = useTemplates();
 
-  const templates = sampleTemplates?.data?.concat(myTemplates?.data || []);
+  const templates = Array.from(
+    new Set([...(sampleTemplates.data || []), ...(myTemplates.data || [])])
+  );
+
   const options = templates?.map((temp: TemplateType) => [
     temp?.name,
     temp?.id,
@@ -62,22 +65,26 @@ export default function TopicAdder() {
       css={`overflow-auto px-2`}
     >
       {(Icon: any) => (
-        <Box css="p-2">
+        <Box css="p-[3%] w-full max-w-lg animate-pop">
           <Icon />
           <header>
-            <h2>create new topic</h2>
+            <h2>Adding New Topic</h2>
           </header>
           <form onSubmit={onCreateHandler}>
-            topic adder -
             <Input autoFocus={true} text="name" />
             <Input text="description" />
             <Select
               onInput={(val: any) => setTemplateId(val)}
               defaultValue={options?.[0]}
               options={options || []}
-              text="templateId"
+              text="template"
             />
-            <BtnPrime type="submit">create</BtnPrime>
+            <small className="font-medium text-slate-400">
+              remember to select the right template!
+            </small>
+            <button className="btn-prime" type="submit">
+              Create Topic
+            </button>
           </form>
         </Box>
       )}

@@ -67,6 +67,9 @@ model Topic {
 
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
+
+  // createdAt DateTime   @default(now()) @map(name: "created_at")
+  // updatedAt DateTime   @updatedAt @map(name: "updated_at")
 }
 
 model Template {
@@ -81,6 +84,9 @@ model Template {
 
   fronts Json[]
   backs  Json[]
+
+  // createdAt DateTime   @default(now()) @map(name: "created_at")
+  // updatedAt DateTime   @updatedAt @map(name: "updated_at")
 }
 
 model Card {
@@ -104,17 +110,25 @@ model Card {
 
   fronts Field[] @relation("front")
   backs  Field[] @relation("back")
+
+  // createdAt DateTime   @default(now()) @map(name: "created_at")
+  // updatedAt DateTime   @updatedAt @map(name: "updated_at")
 }
 
 model Field {
   id    String @id @default(cuid())
+  viewId String
   text  String
   type  String
   value String
   ind   Int
+  // view Boolean @default(true)
 
   front   Card?   @relation("front", fields: [frontId], references: [id], onDelete: Cascade)
   back    Card?   @relation("back", fields: [backId], references: [id], onDelete: Cascade)
   frontId String?
   backId  String?
+ 
+  // createdAt DateTime   @default(now()) @map(name: "created_at")
+  // updatedAt DateTime   @updatedAt @map(name: "updated_at")
 }

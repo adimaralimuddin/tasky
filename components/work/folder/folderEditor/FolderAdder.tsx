@@ -1,4 +1,5 @@
 // import dynamic from "next/dynamic";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi";
 import useFolderAdder from "../../../../features/folder/useFolderAdder";
@@ -30,14 +31,18 @@ export default function FolderAdder({ classId }: props) {
   };
 
   return (
-    <div className="flex flex-col">
-      <BtnPrime css="flex items-center mx-3" onClick={() => setOpen(true)}>
+    <div className="flex flex-col text-prime font-semibold">
+      <h4 onClick={() => setOpen(true)} className="px-3 flex_ cursor-pointer ">
+        <Image src="/icon/create_icon.svg" width={20} height={20} /> Create
+        Folder
+      </h4>
+      {/* <BtnPrime css="flex items-center mx-3" onClick={() => setOpen(true)}>
         <HiOutlinePlus className="text-md " />
         <small className="whitespace-nowrap text-center">New Folder</small>
-      </BtnPrime>
+      </BtnPrime> */}
       <Modal open={open} setOpen={setOpen}>
         {(Icon: any) => (
-          <Box css="w-full max-w-lg p-[3%]">
+          <Box css="w-full max-w-lg p-[3%] animate-pop">
             <Icon />
             <form
               onSubmit={(e) => {
@@ -45,13 +50,17 @@ export default function FolderAdder({ classId }: props) {
                 onAddFolderHandler();
               }}
             >
+              <h3>Adding New Folder</h3>
               <Input
+                col={true}
                 autoFocus={true}
                 onInput={(e: any) => setFolderName(e.target.value)}
               >
                 name
               </Input>
-              <button type="submit">Create Folder</button>
+              <button className="btn-prime" type="submit">
+                Create Folder
+              </button>
             </form>
           </Box>
         )}

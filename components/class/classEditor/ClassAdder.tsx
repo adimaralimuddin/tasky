@@ -41,7 +41,7 @@ function ClassAdder_({ myClasses }: { myClasses: ClassType[] }) {
       ) : (
         <div>
           <p>you have reach the limit</p>
-          <small>0 class left!</small>
+          <h3 className="text-accent">0 class left!</h3>
         </div>
       )}
 

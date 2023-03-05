@@ -1,21 +1,17 @@
 import Image from "next/image";
 import React from "react";
 
-export default function Icon({
-  size = 20,
-  divProps,
-  ...props
-}: {
-  divProps?: any;
-  size?: number;
-  src: string;
-}) {
+export default function Icon({ size = 20, divProps, ...props }: any) {
   return (
     <div
       {...divProps}
-      className="ring-1 ring-slate-200 bg-slate-50  rounded-full p-2 flex items-center hover:bg-slate-200 cursor-pointer hover:shadow-md"
+      className={
+        "  rounded-full p-2d flex items-center hover:bg-slate-200 cursor-pointer hover:shadow-md " +
+        props?.className
+      }
     >
       <Image
+        className={"" + props?.className}
         {...props}
         width={size}
         height={size}

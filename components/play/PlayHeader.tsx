@@ -1,22 +1,11 @@
-import { SideIcon } from "../../lib/icons";
 import Select from "../elements/Select";
-import CardQueryView from "../work/card/CardQueryView";
+import CardQueryView from "../work/viewer/CardQueryView";
+import PlayOptions from "./playOptions/PlayOptions";
 
-export default function PlayHeader({ setStartSide }: any) {
-  const onSelectSideHandler = (side: "fronts" | "backs") => {
-    setStartSide(side);
-  };
+export default function PlayHeader() {
   return (
-    <div className="flex_  " title="starting side">
-      <Select
-        className=" ring-1 ring-slate-300   dark:ring-slate-500 "
-        icon={<SideIcon className="text-xl ml-1" />}
-        options={[
-          ["fronts", "fronts"],
-          ["backs", "backs"],
-        ]}
-        onInput={onSelectSideHandler}
-      />
+    <div className="flex_ pt-4  ">
+      <PlayOptions />
       <CardQueryView />
     </div>
   );

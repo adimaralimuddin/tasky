@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import ActionButtons from "../../components/elements/ActionButtons";
 
 export interface quizState {
-  side: string;
+  side: "fronts" | "backs" | "both";
   options: number[];
   hasChosen: boolean;
   singleWrong: boolean;
   speed: number;
+  sound: 1 | 0;
 }
 
 const initialState: quizState = {
@@ -15,6 +16,7 @@ const initialState: quizState = {
   hasChosen: false,
   singleWrong: false,
   speed: 0.5,
+  sound: 1,
 };
 
 export const quizSlice = createSlice({
@@ -42,6 +44,9 @@ export const quizSlice = createSlice({
     setSpeed: (state, action) => {
       state.speed = action.payload;
     },
+    setSound: (state, action) => {
+      state.sound = action.payload;
+    },
   },
 });
 
@@ -53,5 +58,6 @@ export const {
   setSingleWrong,
   togSingleWrong,
   setSpeed,
+  setSound,
 } = quizSlice.actions;
 export default quizSlice.reducer;

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import useClassUpdater from "../../features/class/useClassUpdater";
-import Box from "../elements/Box";
-import BtnPrime from "../elements/BtnPrime";
-import BtnWarm from "../elements/BtnWarm";
-import Input from "../elements/Input";
-import Modal from "../elements/Modal";
-import { ClassType } from "./classTypes";
+import { ClassType } from "../../../features/class/classTypes";
+import useClassUpdater from "../../../features/class/useClassUpdater";
+import Box from "../../elements/Box";
+import BtnPrime from "../../elements/BtnPrime";
+import BtnWarm from "../../elements/BtnWarm";
+import Input from "../../elements/Input";
+import Modal from "../../elements/Modal";
 
 type props = {
   open: boolean;

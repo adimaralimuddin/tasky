@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { CategoryType, LevelType, SideType } from "../app/appSlice";
 import { viewerActions } from "./viewerSlice";
 
 function useViewer() {
@@ -18,6 +19,10 @@ function useViewer() {
     setQuizOptionNumber: (number: number) =>
       patch(viewerActions?.setQuizOptionNumber(number)),
     setSize: (size: number) => patch(viewerActions?.setSize(size)),
+    setSide: (side: SideType) => patch(viewerActions.setSide(side)),
+    setViewCategory: (category: CategoryType) =>
+      patch(viewerActions.setCategory(category)),
+    setStatus: (status: LevelType) => patch(viewerActions.setStatus(status)),
   };
 }
 

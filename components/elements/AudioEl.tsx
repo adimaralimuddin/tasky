@@ -5,7 +5,10 @@ export default function AudioElement({ src, ...props }: any) {
   const ref = useRef<any>();
   const [isPlay, setIsPlay] = useState(false);
 
-  return (
+  const checkSrc = () =>
+    src && typeof src === "string" && src.includes("/") ? src : undefined;
+
+  return checkSrc() ? (
     <div
       onClick={(e) => {
         const au: any = ref.current;
@@ -30,6 +33,13 @@ export default function AudioElement({ src, ...props }: any) {
         onEnded={(_) => setIsPlay(false)}
         onPause={(_) => setIsPlay(false)}
       ></audio>
+    </div>
+  ) : (
+    <div
+      title={String(src)}
+      className="ring-1 ring-pink-500 dark:ring-orange-500 px-2 rounded-xl max-w-[50px] max-h-[27px] overflow-hidden"
+    >
+      <small>{String(src)}</small>
     </div>
   );
 }

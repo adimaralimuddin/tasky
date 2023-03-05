@@ -71,10 +71,12 @@ export const Card = objectType({
 export const FieldInputType = inputObjectType({
   name: "CommentInputType",
   definition(t) {
+    t.nonNull.string("id");
+    t.nonNull.int("ind");
+    t.nonNull.string("viewId");
     t.nonNull.string("text");
     t.nonNull.string("value");
     t.nonNull.string("type");
-    t.nonNull.int("ind");
   },
 });
 
@@ -112,22 +114,6 @@ export const CardQueries = extendType({
         });
       },
     });
-    // t.list.field("dashboard", {
-    //   type: Class,
-    //   args: { classId: nonNull(stringArg()) },
-    //   resolve(par, { classId }, ctx) {
-    //     return ctx.prisma.class.findUnique({
-    //       where: { id: classId },
-    //     });
-    //     // return ctx.prisma.card.groupBy({
-    //     //   by: ["level", "category"],
-    //     //   where: { id, NOT: [{ topicId: null }] },
-    //     //   _count: {
-    //     //     id: true,
-    //     //   },
-    //     // });
-    //   },
-    // });
   },
 });
 
@@ -138,6 +124,7 @@ export const CardMutaion = extendType({
     t.field("createCard", {
       type: Card,
       args: {
+        id: nonNull(stringArg()),
         userId: nonNull(stringArg()),
         topicId: nonNull(stringArg()),
         name: nonNull(stringArg()),
@@ -147,9 +134,10 @@ export const CardMutaion = extendType({
         fronts: list(arg({ type: FieldInputType })),
         backs: list(arg({ type: FieldInputType })),
       },
-      resolve(par, arg: any, ctx) {
-        return ctx.prisma.card.create({
+      async resolve(par, arg, ctx) {
+        const ret: any = await ctx.prisma.card.create({
           data: {
+            id: arg.id,
             userId: arg.userId,
             topicId: arg.topicId,
             name: arg.name,
@@ -161,6 +149,9 @@ export const CardMutaion = extendType({
             backs: { create: arg.backs },
           },
         });
+        console.log(`card added to the database :`, ret);
+
+        return ret;
       },
     });
 

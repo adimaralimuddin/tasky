@@ -19,13 +19,12 @@ function TopicRenamer({ open, setOpen, data }: props) {
   const { user } = useUser();
 
   const onSaveHandler = (e: any) => {
-    e.preventDefault();
     const name = e.target.name.value;
     if (data?.sample) {
       alert(
         "sample topic will not be renamed. you can always create, edit and delete your own topic"
       );
-      return setOpen(false);
+      return;
     }
 
     renameTopic({
@@ -33,29 +32,32 @@ function TopicRenamer({ open, setOpen, data }: props) {
       userId: user?.sub || DEF_USER,
       name,
     });
-    setOpen(false);
   };
 
   return (
-    <div>
-      <Modal open={open} setOpen={setOpen}>
-        {(Icon: any) => (
-          <Box>
-            <Icon />
-            <form onSubmit={onSaveHandler}>
-              <Input
-                onLoad={(e: any) => e.target?.select()}
-                autoFocus
-                autoSelect
-                defaultValue={data?.name}
-                text="name"
-              />
-              <BtnPrime type="submit">save</BtnPrime>
-            </form>
-          </Box>
-        )}
-      </Modal>
-    </div>
+    <Modal className="max-w-md " open={open} setOpen={setOpen}>
+      {(closePop) => (
+        <form
+          className="py-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            closePop(() => {
+              onSaveHandler(e);
+            });
+          }}
+        >
+          <Input
+            onLoad={(e: any) => e.target?.select()}
+            autoFocus
+            autoSelect
+            defaultValue={data?.name}
+            text="name"
+            onReset_={() => data?.name}
+          />
+          <BtnPrime type="submit">save</BtnPrime>
+        </form>
+      )}
+    </Modal>
   );
 }
 

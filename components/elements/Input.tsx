@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 function Input({
   text,
@@ -15,6 +15,7 @@ function Input({
 }: any) {
   const [val, setVal] = useState(props?.defaultValue);
   const [hasChanged, setHasChanged] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   return (
     <div
       style={{
@@ -28,7 +29,10 @@ function Input({
       {hasChanged && onReset_ && (
         <p
           onClick={() => {
+            console.log(`onReset_`, onReset_());
+
             setVal(onReset_?.());
+            inputRef.current?.focus();
             setHasChanged(false);
           }}
           title={props?.defaultValue && "" + props?.defaultValue}
@@ -42,6 +46,7 @@ function Input({
       </label>
       {/* <input type="checkbox" className="flex- ml-auto m-0 -mr-2  ring-2" /> */}
       <input
+        ref={inputRef}
         name={text || name}
         {...props}
         value={props?.value || val}

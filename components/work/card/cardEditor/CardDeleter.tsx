@@ -19,7 +19,7 @@ function CardDeleter({
   cardId,
   editorMode,
 }: Props) {
-  const { deleteCard, cardDeleter } = useCardMutation(topicId);
+  const { deleteCard } = useCardMutation(topicId);
 
   if (!topicId) return null;
 

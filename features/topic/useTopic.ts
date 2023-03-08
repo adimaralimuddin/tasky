@@ -7,7 +7,7 @@ import { TopicIcon } from "../../lib/icons";
 import { DEF_USER } from "../../lib/public";
 import { RootState } from "../../store";
 import { setTopicOpenState } from "../app/appSlice";
-import useFolderGetter from "../folder/useFolderGetter";
+import useFolderGetter from "../app/folders/useFolderGetter";
 import { TopicUrl } from "./topicApi";
 import { TopicType } from "./topicType";
 import useTopicSelecter from "./useTopicSelecter";
@@ -17,7 +17,7 @@ export default function useTopic() {
   const patch = useDispatch();
   const { user } = useUser();
 
-  const { selectedFolderId } = useFolderGetter();
+  const { getSelectedFolder } = useFolderGetter();
 
   const topicAdderOpenState = useSelector(
     (s: RootState) => s.app.topicAdderOpenState
@@ -30,7 +30,7 @@ export default function useTopic() {
   const topicAdder = useMutation(topicApiCreateTopic, {
     onMutate: (topicPayload) => {
       try {
-        client.setQueryData(["topics", selectedFolderId], (topics: any) => {
+        client.setQueryData(["topics", getSelectedFolder()], (topics: any) => {
           return [...topics, topicPayload];
         });
       } catch (error) {
@@ -38,7 +38,7 @@ export default function useTopic() {
       }
     },
     onSuccess: (createdTopic) => {
-      client.setQueryData(["topics", selectedFolderId], (topics: any) => {
+      client.setQueryData(["topics", getSelectedFolder()], (topics: any) => {
         return topics?.map((t: TopicType) => {
           if (t.name === createdTopic.name && !t?.id) {
             return createdTopic;
@@ -53,7 +53,7 @@ export default function useTopic() {
 
   const createTopic = (topicPayload: TopicType) => {
     const id = nanoid();
-    const folderId = selectedFolderId;
+    const folderId = getSelectedFolder();
     const userId = user?.sub || DEF_USER;
     const topicFinalData = { ...topicPayload, id, folderId, userId };
 
@@ -64,7 +64,6 @@ export default function useTopic() {
       );
 
     selectTopic(topicFinalData as TopicType, "cardadder");
-    setOpenTopicAdder(false);
 
     topicAdder.mutate(topicFinalData as TopicType, {
       onSuccess(x) {

@@ -45,8 +45,8 @@ function GraphBar() {
   return (
     <div className=" flex-1 pt-3 bg-slate-200d flex flex-col max-h-[200pxd]">
       <header className="flex pb-2 pl-[15%]">
-        <p className="text-[#7756AC] px-2">remembered</p>
-        <p className="text-[#F37C7C] px-2">forgotten</p>
+        <p className="text-[#7756AC] dark:text-[#ae8be7]  px-2">remembered</p>
+        <p className="text-[#F37C7C] dark:text-[#eaa1a1] px-2">forgotten</p>
       </header>
       <div className="flex flex-1 gap-6 max-h-[200px] dark:opacity-70">
         <div className="bg-red-200d hidden sm:flex flex-col text-sm justify-around">
@@ -100,11 +100,11 @@ const Bar = ({ val, side }: { val: number; side: "a" | "b" }) => {
         }}
         ref={sRef}
         className={
-          "pop bg-white shadow-xl w-[100px] h-[65px] hidden group-hover:block rounded-xl absolute -top-5 ring-2d font-thin  p-2 text-sm leading-none "
+          "pop bg-white dark:bg-layer-sec shadow-xl w-[100px] h-[65px] hidden group-hover:block rounded-xl absolute -top-5 ring-2d font-thin  p-2 text-sm leading-none "
         }
       >
-        <p className="font-thin pb-[2px]">{val}%</p>
-        <p className="font-thin pb-[2px]">monday</p>
+        <p className="font-normal pb-[2px] ">{val}%</p>
+        <p className="font-thin pb-[2px] ">monday</p>
         <p className="font-thin pb-[2px]">12 cards</p>
       </div>
       {/* </div> */}

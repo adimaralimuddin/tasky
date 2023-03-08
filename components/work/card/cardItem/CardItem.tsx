@@ -1,13 +1,12 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useFieldsGetter from "../../../../features/app/fields/useFieldsGetter";
 import { CardTypes, FieldType } from "../../../../features/card/CardType";
 import useTopicGetter from "../../../../features/topic/useTopicGetter";
 import useViewer from "../../../../features/viewer/useViewer";
 import { DEF_USER } from "../../../../lib/public";
 import AudioElement from "../../../elements/AudioEl";
-import Box from "../../../elements/Box";
 import ImageItem from "../../../elements/ImageItem";
 
 const CardItemOptions = dynamic(() => import("./CardItemOptions"), {
@@ -38,7 +37,6 @@ export default function CardItem({
   side = "both",
 }: props) {
   const { user } = useUser();
-  // const [card, setCard] = useState(card_);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -60,14 +58,12 @@ export default function CardItem({
     return null;
   }
 
-  // console.log(`cards`,card);
-
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={
-        "card block items-center ring-slate-200 my-3 min-w-[100px] shadow-none   ring-1 p-0 card-ring dark:ring-layer-sec " +
+        "card card-ring animate-pop2 block items-center ring-slate-200d my-3 min-w-[100px] shadow-none   ring-1 p-0 card-ring dark:ring-layer-sec " +
         css
       }
     >
@@ -144,12 +140,11 @@ export default function CardItem({
           editorMode={viewer.editorMode}
           card={card}
           onCancel={() => {
-            setIsEditing(false);
             setHovered(false);
           }}
         />
         <CardDeleter
-          cardId={card.id}
+          cardId={card?.id}
           isDeleting={isDeleting}
           setIsDeleting={setIsDeleting}
           topicId={topicId}

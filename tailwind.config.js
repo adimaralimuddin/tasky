@@ -28,14 +28,24 @@ module.exports = {
       animation: {
         wiggle: "wiggle 0.4s ease-in-out normal ",
         pop: "pop 0.2s ease-in-out 0s 1 normal",
+        pop2: "pop2  0.2s ease-in-out 0s 1 normal",
+        fadein: "fadein  0.2s ease-in-out 0s 1 normal",
       },
 
       keyframes: {
+        fadein: {
+          "0%": { opacity: "0%" },
+          "100%": { opacity: "100%" },
+        },
         pop: {
-          "0%": { scale: "0.9", opacity: "50%" },
-          "70%": { scale: "1.02", opacity: "100%" },
-          "100%": { scale: "1" },
-          // "100%":{}
+          "0%": { transform: "scale(0.7,0.7)", opacity: "0%" },
+          "70%": { transform: "scale(1.2,1.1)", opacity: "100%" },
+          "100%": { transform: "scale(1,1)" },
+        },
+        pop2: {
+          "0%": { transform: "scale(0.98,0.98)", opacity: "0%" },
+          "70%": { transform: "scale(1.1,1.05)", opacity: "100%" },
+          "100%": { transform: "scale(1,1)" },
         },
         wiggle: {
           "0%": { transform: "translate(0)" },

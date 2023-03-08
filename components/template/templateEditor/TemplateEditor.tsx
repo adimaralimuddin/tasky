@@ -1,8 +1,6 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
 import { FieldType } from "../../../features/card/CardType";
-import Box from "../../elements/Box";
-import BtnPrime from "../../elements/BtnPrime";
 import BtnSec from "../../elements/BtnSec";
 import Input from "../../elements/Input";
 import Modal from "../../elements/Modal";
@@ -17,6 +15,7 @@ type props = {
   open: boolean;
   setOpen: any;
   onCancel?: any;
+  title?: string;
 };
 export default function TemplateEditor({
   onSave,
@@ -25,16 +24,13 @@ export default function TemplateEditor({
   backs_ = [],
   open,
   setOpen,
+  title = "Editing Template",
   onCancel,
 }: props) {
   const { user } = useUser();
   const [name, setName] = useState(name_);
   const [fronts, setFronts] = useState(fronts_);
   const [backs, setBacks] = useState(backs_);
-
-  // useEffect(() => {
-  //   resetData();
-  // }, [open]);
 
   const onSaveTemplate = () => {
     if (name.trim() == "") {
@@ -52,32 +48,42 @@ export default function TemplateEditor({
   };
 
   return (
-    <div>
-      <Modal open={open} setOpen={setOpen}>
-        {(Icon: any) => (
-          <Box css="w-full max-w-xl max-h-[93vh]">
-            <Icon onClick={onCancel} />
-            <div>
-              <Input
-                text="name"
-                placeholder="ie. spanish template"
-                value={name}
-                onInput={(e: any) => setName(e.target.value)}
-                autoFocus
-              />
-            </div>
-            <div className="flex flex-wrap gap-2 ">
-              <Fields fields={fronts} set={setFronts} text="Fronts" />
-              <Fields fields={backs} set={setBacks} text="Backs" />
-            </div>
-            <footer className="flex items-center justify-between py-2">
-              <BtnPrime onClick={onSaveTemplate}>save</BtnPrime>
-              <BtnSec onClick={resetData}>reset</BtnSec>
-            </footer>
-          </Box>
-        )}
-      </Modal>
-    </div>
+    <Modal className="max-w-4xl" open={open} setOpen={setOpen}>
+      {(closePop) => (
+        <>
+          <div className="">
+            <h2 className="text-prime">{title}</h2>
+            <Input
+              text="name"
+              placeholder="ie. spanish template"
+              defaultValue={name}
+              onInput={(e: any) => setName(e.target.value)}
+              autoFocus
+              onReset_={() => name_}
+            />
+          </div>
+          <div className="flex flex-wrap gap-2 ">
+            <Fields fields={fronts} set={setFronts} text="Fronts" />
+            <Fields fields={backs} set={setBacks} text="Backs" />
+          </div>
+          <footer className="flex items-center justify-between py-2">
+            <button
+              className="btn-prime"
+              onClick={() => {
+                closePop(() => {
+                  onSaveTemplate();
+                });
+              }}
+            >
+              save
+            </button>
+            <button className="btn-sec" onClick={resetData}>
+              reset
+            </button>
+          </footer>
+        </>
+      )}
+    </Modal>
   );
 }
 
@@ -91,7 +97,7 @@ function Fields({
   text: string;
 }) {
   return (
-    <div className="flex-1 ring-1 ring-slate-200 rounded-md dark:ring-slate-600 overflow-autod ">
+    <div className="flex-1 rounded-md  card-ring dark:ring-layer-sec ">
       <p className="p-1 px-2">{text}</p>
       <div className="flex flex-col max-h-[60vh] overflow-auto p-3">
         {fields?.map((field: FieldType) => (

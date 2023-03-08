@@ -25,7 +25,7 @@ export default function BtnCardAdder() {
   }
 
   return (
-    <button onClick={onClickHandler} className="text-primary-light font-bold">
+    <button onClick={onClickHandler} className="text-value font-bold">
       <Plus />
       Add Card
     </button>

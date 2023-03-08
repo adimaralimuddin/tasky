@@ -20,34 +20,34 @@ export default function Verifier({
   actions?: boolean;
 }) {
   return (
-    <Modal open={open} setOpen={setOpen}>
-      {(Icon: any) => (
-        <Box css="min-h-[130px]d flex flex-col p-6">
-          {actions && <Icon css="-top-12 -right-8" />}
-          <h3 className="flex-1 flex flex-col items-center justify-center p-3">
-            {message}
-          </h3>
+    <Modal className="max-w-md" open={open} setOpen={setOpen}>
+      {(closePop) => (
+        <>
+          <h3 className="text-sec">{message}</h3>
           {actions && (
             <div className="flex items-center justify-between">
               <BtnWarm
                 onClick={() => {
-                  setOpen?.(false);
-                  onCancel?.();
+                  closePop(() => {
+                    onCancel?.();
+                  });
                 }}
               >
                 cancel
               </BtnWarm>
-              <BtnPrime
+              <button
+                className="btn-prime"
                 onClick={() => {
-                  onOkay?.();
-                  setOpen?.(false);
+                  closePop(() => {
+                    onOkay?.();
+                  });
                 }}
               >
                 ok
-              </BtnPrime>
+              </button>
             </div>
           )}
-        </Box>
+        </>
       )}
     </Modal>
   );

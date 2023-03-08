@@ -1,16 +1,17 @@
-import Image from "next/image";
-import Script from "next/script";
 import React, { useState } from "react";
+import { LevelType } from "../../../features/app/appSlice";
 import { CardTypes } from "../../../features/card/CardType";
 import { LEVEL_EASY, LEVEL_HARD, LEVEL_NORMAL } from "../../../lib/public";
-import Box from "../../elements/Box";
+import {
+  _useScoreColors,
+  _useScoremessage,
+} from "../../../lib/utils/_utilsClasses";
 import BtnBack from "../../elements/BtnBack";
-import BtnPrime from "../../elements/BtnPrime";
-import Modal from "../../elements/Modal";
+
 import Pie from "../../elements/Pie";
 import TopicTitle from "../../elements/TopicTitle";
 import CardItem from "../../work/card/cardItem/CardItem";
-import CardListWithQuery from "../../work/card/cardLists/CardListWithQuery";
+
 import PlayFinishResultItem from "./PlayFinishResultItem";
 import PlayResultPop from "./PlayResultPop";
 
@@ -21,15 +22,20 @@ type props = {
   playInd: number;
   setPlayInd: any;
 };
-
+type Selected = {
+  text: string;
+  level: LevelType;
+  value: number;
+};
 export default function PlayFinish({
   setFinish,
   cards = [],
   setPlayInd,
 }: props) {
-  const [selected, setSelected] = useState<{ text: string; value: number }>({
+  const [selected, setSelected] = useState<Selected>({
     text: "",
     value: 0,
+    level: "all",
   });
   const [open, setOpen] = useState<boolean>(false);
 
@@ -44,26 +50,20 @@ export default function PlayFinish({
     ((easyCards?.length + normalCards?.length / 2) / cards?.length) * 100
   );
 
-  const scoreMessage = (
-    good = "great job! you've got a good score!",
-    average = "well done! you've scored average",
-    bad = "to gain knowledge, you need to spend time."
-  ) => (score > 70 ? good : score > 50 ? average : bad);
+  console.log(`cards`, cards);
 
   const onRepeatHandler = () => {
     setPlayInd(0);
     setFinish(false);
   };
 
-  const onItemSelect = (text: string, value: number) => {
+  const onItemSelect = (selected_: Selected) => {
     setOpen(true);
-    setSelected({ text, value });
+    setSelected(selected_);
   };
 
-  // console.log(`level `, filter(selected));
-
   return (
-    <div className="flex-1 ">
+    <div className="flex-1 animate-fadein">
       <div className="flex flex-col flex-1 ">
         <div className="flex_">
           <TopicTitle extraPath="play finish" />
@@ -72,7 +72,9 @@ export default function PlayFinish({
         <div className="flex justify-between py-[3%] items-start max-w-3xl">
           <div>
             <h1 className="font-bold  text-3xl text-value ">Play Completed!</h1>
-            <h2 className="font-bold text-accent">{scoreMessage()}</h2>
+            <h2 className={" font-bold text-accent " + _useScoreColors(score)}>
+              {_useScoremessage(score)}
+            </h2>
           </div>
           <button className="btn-prime" onClick={onRepeatHandler}>
             Replay
@@ -115,8 +117,17 @@ export default function PlayFinish({
           </div>
         </div>
       </div>
+      <div>
+        <h3 className="text-accent font-semibold my-2 mt-4">Result Cards</h3>
+
+        {cards?.map((c) => (
+          <div key={c.id}>
+            <CardItem card={c} />
+          </div>
+        ))}
+      </div>
       <PlayResultPop
-        cards={filter(selected.text)}
+        cards={filter(selected.level)}
         selected={selected}
         open={open}
         setOpen={setOpen}

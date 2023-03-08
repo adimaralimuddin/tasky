@@ -16,7 +16,6 @@ function useUrlState() {
 
     ...otherQueries
   }: StateUrlType) => {
-
     const returnQueries: { query: StateUrlType; pathname: string } = {
       pathname: pathname || `/class/${query?.classId}`,
       query: { ...query, ...otherQueries },
@@ -46,7 +45,8 @@ type StateUrlType = {
   template?: TemplateType | string | undefined;
   pathname?: string;
   topicId?: string;
+  folderId?: string;
   topicName?: string;
-  content: ContentType;
+  content?: ContentType;
   category?: CategoryType;
 };

@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useContentGetter from "../../../features/app/contents/useContentGetter";
 import DashboardMainContent from "../../dashboard/DashboardMainContent";
 import PlaymainPage from "../../play/PlaymainPage";
@@ -13,11 +13,18 @@ const CategoryList = dynamic(() => import("../topic/category/CategoryList"), {
 
 function WorkContent({ serverState }: any) {
   const { getContent, router } = useContentGetter();
-
+  const [s, ss] = useState(getContent());
   const content = getContent();
   const classId = router.query?.classId;
+
+  useEffect(() => {
+    console.log(`content`, content);
+  }, []);
+
+  // console.log(`work content here`);
+
   return (
-    <div className="container flex-col flex  p-1 px-[3%] flex-1 max-w-5xl mx-auto bg-red-400d">
+    <div className="container flex-col flex  p-1 px-[3%] flex-1 max-w-5xl mx-auto ">
       {content == "dashboard" ? (
         <DashboardMainContent serverState={serverState} />
       ) : content == "topic" ? (

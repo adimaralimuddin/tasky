@@ -45,5 +45,5 @@ export default function FolderOptions({
       return userId !== DEF_USER ? notUserOptions : ret;
     }
   };
-  return <div>{hovered && <Option left={true} options={options()} />}</div>;
+  return <Option show={hovered} left={true} options={options()} />;
 }

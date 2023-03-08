@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
-import { CardTypes } from "../../../../features/card/CardType";
 import { FolderType } from "../../../../features/folder/folderTypes";
 import { TopicType } from "../../../../features/topic/topicType";
 import FolderItemTopics from "./FolderItemTopics";
@@ -12,11 +11,6 @@ const FolderRenamer = dynamic(() => import("../folderEditor/FolderRenamer"), {
   ssr: false,
 });
 const FolderOptions = dynamic(() => import("./FolderOptions"), { ssr: false });
-
-// const FolderItemTopics = dynamic(() => import("./FolderItemTopics"), {
-//   ssr: false,
-//   // loading: () => "topics...",
-// });
 
 interface Props {
   data: FolderType & { Topic?: TopicType[] };
@@ -39,18 +33,11 @@ function FolderItemContent({
 }: Props) {
   const [renaming, setRenaming] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  // console.log(`folderData `, data);
 
   return (
     <div className=" flex items-center flex-1 ">
-      {open && (
-        <FolderItemTopics
-          id={id}
-          serverTopic={data?.Topic}
-          setSelected={setSelected}
-        />
-      )}
-      <div className="absolute right-7 top-1 bg-slate-100d dark:bg-slated-600 rounded-xld ">
+      <FolderItemTopics open={open} id={id} setSelected={setSelected} />
+      <div className="absolute right-7 top-1 bg-slate-100d dark:bg-slated-600 ">
         <FolderOptions
           data={data}
           hovered={hovered}

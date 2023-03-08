@@ -12,7 +12,7 @@ export default function TopicMainContent() {
   const topicId = useTopicGetter().getSelectedTopicId();
 
   return (
-    <div className="flex-1 flex flex-col container_ py-2 ">
+    <div className="flex-1 flex flex-col container_ py-2 animate-fadein ">
       <ContentHeader
         removeMiddlePaths={true}
         Action={""}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface Props {
   text: string;
@@ -10,17 +10,13 @@ interface Props {
 }
 function Toggle({
   text,
-  defaultValue = true,
   value,
   onToggle,
   className = "",
   wide = false,
 }: Props) {
-  const [val, setVal] = useState(defaultValue);
-
   const onToggleHandler = () => {
-    setVal((p) => !p);
-    onToggle?.(!val);
+    onToggle?.(!value);
   };
   return (
     <div
@@ -33,14 +29,14 @@ function Toggle({
       <p className="text-[.9rem]">{text}</p>
       <div
         style={{
-          justifyContent: value || val ? "end" : "start",
+          justifyContent: value ? "end" : "start",
         }}
         className="bg-slate-200 dark:bg-layer-50 rounded-xl w-[35px] max-h-[10px]d flex p-[3px] "
       >
         <span
           className={
             "p-[7px] bg-primary-lightd rounded-full " +
-            (value || val
+            (value
               ? "bg-primary-light dark:bg-accent-dark "
               : " bg-slate-300 dark:bg-layer-sec ")
           }

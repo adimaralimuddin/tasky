@@ -47,7 +47,7 @@ export default function CategoryItem({
   return (
     <div
       onClick={onSelect}
-      className="card-all col_ gap-0 animate-pop flex-1 rounded-3xl py-4 shadow-md   px-[8%]  min-h-[100px]  cursor-pointer hover:pop_ transition_   relative overflow-hidden "
+      className="card-all col_ gap-0 animate-pop2 danimate-fadein flex-1 rounded-3xl py-4 shadow-md   px-[8%]  min-h-[100px]  cursor-pointer hover:pop_ transition_   relative overflow-hidden animation-pop2 "
     >
       <div
         className={

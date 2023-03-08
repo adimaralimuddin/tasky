@@ -16,7 +16,11 @@ export default function PlayFinishResultItem({
   cards: CardTypes[] | undefined;
 }) {
   const onSelectHandler = () =>
-    onSelect(level, _usePercentage(filter?.length, cards?.length || 0));
+    onSelect({
+      text,
+      level,
+      value: _usePercentage(filter?.length, cards?.length || 0),
+    });
 
   const color = () =>
     level == "easy"
@@ -33,7 +37,6 @@ export default function PlayFinishResultItem({
         <p className={"text-accent"}>{text || level}</p>
         <p className={"font-bold text-pink-400d pt-1  " + color()}>
           {_usePercentage(filter?.length, cards?.length || 0)} %
-          {/* {Math.floor((filter?.length / (cards?.length || 0)) * 100)} % */}
         </p>
         <p className={"text-[.95rem] text-phar "}>{filter?.length} cards</p>
       </span>

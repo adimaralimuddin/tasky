@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import app from "./features/app/appSlice";
 import server from "./features/dateState/serverDataSlice";
 import player from "./features/play/PlaySlice";
-import quiz from "./features/quiz/quizSlice";
+import quizOption from "./features/quiz/quizOptionSlice";
 import topic from "./features/topic/topicSlice";
 import viewer from "./features/viewer/viewerSlice";
 
@@ -10,7 +10,7 @@ export const store = configureStore({
   reducer: {
     app,
     topic,
-    quiz,
+    quizOption,
     server,
     viewer,
     player,

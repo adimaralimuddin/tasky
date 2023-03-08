@@ -33,7 +33,7 @@ export default function FieldAdder({ set }: any) {
       {!clicked && (
         <p
           onClick={() => setClicked(true)}
-          className="ring-1 dark:ring-indigo-500 dark:bg-indigo-400 px-2 rounded-md cursor-pointer dark:text-white"
+          className="ring-1 bg-indigo-100 dark:ring-indigo-500 dark:bg-indigo-400 px-2 rounded-md cursor-pointer dark:text-white"
         >
           + field
         </p>
@@ -41,7 +41,7 @@ export default function FieldAdder({ set }: any) {
       {clicked && (
         <div className="gap-2 flex-1 flex flex-col  ring-1 ring-slate-200 dark:ring-slate-600  rounded-md p-2 shadow-md ">
           <span className=" flex flex-col flex-1">
-            <small>text:</small>
+            <p>text:</p>
             <input
               type="text flex-1"
               className=" p-1 px-3 outline-none min-w-[150px] ring-1d flex-1 w-full"
@@ -64,7 +64,7 @@ export default function FieldAdder({ set }: any) {
               onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setType(e.target.value)
               }
-              className="min-w-[50px]"
+              className="min-w-[50px] text-lg"
             >
               <option value="text">text</option>
               <option value="number">number</option>

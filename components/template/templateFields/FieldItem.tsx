@@ -19,17 +19,17 @@ export default function FieldItem({ field, set }: FieldItemProps) {
   };
 
   return (
-    <div className="ring-1 ring-slate-300 dark:ring-slate-500 shadow-sm p-1 flex items-center justify-between rounded-md my-2">
+    <div className="ring-1 ring-slate-300 dark:ring-layer-sec shadow-sm p-1 flex items-center justify-between rounded-md my-2">
       <small className="flex-1 flex items-center gap-1 ">
         <input
-          className="w-[95%] m-0 py-1 px-1 ring-1 ring-slate-200 dark:ring-slate-500 dark:bg-slate-600 "
+          className="w-[95%] m-0 py-1 px-2 ring-1 ring-slate-200 dark:ring-slate-500 dark:bg-layer-50 text-sec "
           type="text"
           defaultValue={field?.text}
           onBlur={onUpdateText}
         />
         :
         <select
-          className="dark:bg-slate-600 flex-1 ring-1 ring-slate-200 dark:ring-slate-500 m-0 py-1 px-1"
+          className="dark:bg-layer-50 flex-1 ring-1 ring-slate-200 dark:ring-slate-500 m-0 py-1 px-1 text-sec"
           defaultValue={field?.type}
           onChange={onUpdateType}
         >
@@ -41,7 +41,7 @@ export default function FieldItem({ field, set }: FieldItemProps) {
       </small>
       <button
         onClick={onRemove}
-        className="ring-1d hover:shadow-lg hover:ring-1 ring-slate-200 p-1 m-0"
+        className="hover:scale-110 hover:text-text-light p-1 m-0"
       >
         <Trash className="text-xl" />
       </button>

@@ -25,14 +25,13 @@ export default function DashboardCategoryItem({
     { count: 0 }
   );
 
-  const percentage = (x.count / total) * 100;
   const card = cards?.[0];
 
   const valueColo = () =>
     value === "normal" ? "lime" : value === "easy" ? "orange" : "pink";
   return (
     <div
-      className={`card animate-pop flex-col flex-1 px-6 py-4 rounded-3xl md:max-w-[220px] shadow-lgd  shadow-[1px_22px_51px_0px_rgba(132,132,132,0.15)] 
+      className={`card card-ring  animate-pop flex-col flex-1 px-6 py-4 rounded-3xl md:max-w-[220px] shadow-[1px_22px_51px_0px_rgba(132,132,132,0.15)] cursor-pointer hover:scale-105 transition hover:shadow-2xl hover:shadow-slate-300 dark:hover:shadow-black
         `}
     >
       <div className="flex gap-3 justify-between">
@@ -44,7 +43,7 @@ export default function DashboardCategoryItem({
             height={28}
           />
           <h4 className={" font-bold text-accent "}>{text}</h4>
-          <h5 className=" text-slate-500 py-1">{x?.count} cards</h5>
+          <h5 className=" text-sec py-1">{x?.count} cards</h5>
         </div>
 
         <div className=" flex flex-col justify-end items-center">

@@ -4,7 +4,7 @@ import { TemplateType } from "../template/templateType";
 import { TopicType } from "../topic/topicType";
 
 const initialState: AppStateType = {
-  //selectedTopic, fronts,backs, content
+  //selectedTopic,selectedFolderId, fronts,backs, content
   topicAdderOpenState: false,
 };
 
@@ -41,7 +41,6 @@ const appSlice = createSlice({
       state,
       action: PayloadAction<{ content: ContentType; category: CategoryType }>
     ) {
-      console.log(`here`, action);
       state.content = action.payload.content;
       state.selectedCategory = action.payload.category;
     },
@@ -72,6 +71,11 @@ const appSlice = createSlice({
     setTopicOpenState(state, action: PayloadAction<boolean>) {
       state.topicAdderOpenState = action.payload;
     },
+
+    // set what current folder is selected. set and get only on folder select,deselect
+    setSelectedFolderId(state, action: PayloadAction<string>) {
+      state.selectedFolderId = action.payload;
+    },
   },
 });
 
@@ -84,6 +88,7 @@ export const {
   toAddTopic,
   setTopicOpenState,
   setContCat,
+  setSelectedFolderId,
 } = appSlice.actions;
 export default appSlice.reducer;
 

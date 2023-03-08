@@ -9,14 +9,6 @@ import { CardTypes } from "./CardType";
 export function useCardMutation(topicId?: string) {
   const client = useQueryClient();
 
-  // const cardCreator = useMutation(cardApiCreateCard, {
-  //   onSuccess: (createdCard) => {
-  //     client.setQueryData(["cards", topicId], (cards: any) => {
-  //       return [...cards, createdCard];
-  //     });
-  //   },
-  // });
-
   const cardDeleter = useMutation(cardApiDeleteCard, {
     onSuccess: (deletedCard) => {
       client.setQueryData(["cards", topicId], (cards: any) => {
@@ -39,9 +31,7 @@ export function useCardMutation(topicId?: string) {
   });
 
   return {
-    // cardCreator,
     cardDeleter,
-    // createCard: cardCreator.mutate,
     deleteCard: cardDeleter.mutate,
     setCardLevel: setCardLevel.mutate,
   };

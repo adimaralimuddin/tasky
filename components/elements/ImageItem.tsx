@@ -1,3 +1,4 @@
+import { Source } from "graphql";
 import Image from "next/image";
 import React, { useState } from "react";
 import Modal from "./Modal";
@@ -16,7 +17,7 @@ export default function ImageItem({
   return (
     <div
       className={
-        " cursor-pointer mr-auto rounded-md ring-1 ring-slate-300 flex min-w-[100px] " +
+        " cursor-pointer mr-auto rounded-md ring-1d ring-slate-300d flex min-w-[100px] " +
         divCss
       }
     >
@@ -24,23 +25,24 @@ export default function ImageItem({
         onClick={(_) => imageViewer && setOpen((p) => !p)}
         className={" " + css}
         src={checkSrcType() || "/img/image.png"}
+        objectFit="contain"
         width={width}
         height={height}
         alt=""
       />
 
-      <Modal open={open} setOpen={setOpen}>
-        {(Icon: any) => (
-          <div className=" shadow-xl relative w-4/5 p-10d h-4/5">
-            <Icon />
+      <Modal className=" h-[90vh] w-[90vw] p-0 " open={open} setOpen={setOpen}>
+        {(closePop) => (
+          <div className=" shadow-xl relative  h-full m-0 ">
             {checkSrcType() ? (
               <Image
-                className="w-full rounded-xl"
+                className=" rounded-xl"
                 onClick={(_) => setOpen(false)}
                 src={src}
                 layout="fill"
-                width={200}
-                height={200}
+                objectFit="contain"
+                width={"100%"}
+                height={"100%"}
                 alt=""
               />
             ) : (

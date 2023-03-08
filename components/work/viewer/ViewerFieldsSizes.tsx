@@ -11,7 +11,6 @@ function ViewerFieldSizes() {
       </p>
       <Select
         text="Font Size"
-        // value={work.textSize}
         value={viewer.textSize}
         onInput={viewer.setTextSize}
         options={[

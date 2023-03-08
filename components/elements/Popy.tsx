@@ -6,11 +6,13 @@ interface Props {
   setOpen: any;
   className?: string;
   header: React.ReactNode;
+  pin?: boolean;
 }
-function Popy({ open, setOpen, children, className, header }: Props) {
+function Popy({ open, setOpen, children, className, header, pin }: Props) {
   //   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const popRef = useRef<HTMLDivElement>(null);
+  const [top, setTop] = useState<number | null>(null);
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -25,12 +27,11 @@ function Popy({ open, setOpen, children, className, header }: Props) {
     };
   }, []);
   return (
-    <div>
+    <div className="z-[200]">
       <div
-        onClick={() => {
-          console.log(`click`, open);
-
+        onClick={(e) => {
           if (!open) {
+            if (pin) setTop(e.clientY);
             setOpen(true);
             setDone(false);
           } else {
@@ -52,7 +53,10 @@ function Popy({ open, setOpen, children, className, header }: Props) {
             }
           }}
           ref={popRef}
-          className={" absolute animate-pop " + className}
+          style={{
+            top: (pin && top && top + 5) || "",
+          }}
+          className={"z-50 fixed animate-pop mt-2  " + className}
         >
           {children}
         </div>

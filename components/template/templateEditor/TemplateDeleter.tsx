@@ -7,12 +7,14 @@ interface Props {
   setIsDeleting: any;
   editable: boolean;
   templateId: string | undefined;
+  setOpen: any;
 }
 function TemplateDeleter({
   isDeleting,
   setIsDeleting,
   editable,
   templateId,
+  setOpen,
 }: Props) {
   const { deleteTemplate } = useTemplateDeleter();
 
@@ -23,17 +25,16 @@ function TemplateDeleter({
       );
     }
     deleteTemplate(templateId);
+    setOpen(false);
   };
 
   return (
-    <div>
-      <Verifier
-        message="are you sure to delete this template?"
-        open={isDeleting}
-        setOpen={setIsDeleting}
-        onOkay={onDeleteHandler}
-      />
-    </div>
+    <Verifier
+      message="are you sure to delete this template?"
+      open={isDeleting}
+      setOpen={setIsDeleting}
+      onOkay={onDeleteHandler}
+    />
   );
 }
 

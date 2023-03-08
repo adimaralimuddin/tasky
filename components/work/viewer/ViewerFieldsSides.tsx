@@ -11,16 +11,20 @@ interface Props {
   setView: any;
 }
 function ViewerFieldsSides({ setView, setSides, side, fields }: Props) {
+  console.log(`fieldsdssd`, fields);
+
   return (
     <div className="py-1 flex-1 max-w-[200px]">
       <p className="text-[.9rem] text-accent">
         {side.charAt(0).toUpperCase() + side.slice(1, -1)} Fields
       </p>
       <Divider className="my-2" />
+
       {fields?.map((f: any) => (
         <div className="py-1" key={"" + f?.text + f?.type}>
           <Toggle
-            value={f?.value}
+            value={f?.view}
+            defaultValue={f?.view}
             wide={true}
             text={f?.text}
             onToggle={(val) => setView(val, f, side, setSides)}

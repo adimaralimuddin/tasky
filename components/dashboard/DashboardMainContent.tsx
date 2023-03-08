@@ -28,11 +28,11 @@ export default function DashboardMainContent({ serverState }: any) {
   );
 
   return (
-    <div className="flex-1 col_  px-[3%] container max-w-5xl mx-auto">
-      <DashboardMain total={total} data={dashboard} />
+    <div className="flex-1 col_ animate-fadein  container max-w-5xl mx-auto pt-4 ">
+      <DashboardMain total={total} />
       <h4 className="subtitle_ ">
         cards by{" "}
-        <span className="text-slate-600 font-bold text-xl px-1">Level</span>
+        <span className="text-sec font-semibold text-lg px-1">Level</span>
       </h4>
       <div className="flex gap-7 flex-wrap ">
         <DashboardLevelItem
@@ -57,7 +57,7 @@ export default function DashboardMainContent({ serverState }: any) {
 
       <h4 className="subtitle_ ">
         cards by{" "}
-        <span className="text-slate-600 font-bold text-xl px-1">category</span>
+        <span className="text-sec font-semibold text-lg px-1">category</span>
       </h4>
       <div className="flex gap-7 flex-wrap">
         <DashboardCategoryItem

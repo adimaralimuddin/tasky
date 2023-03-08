@@ -32,7 +32,7 @@ export default function ClassRenamer({
 
   return (
     <div>
-      <Modal open={open} setOpen={setOpen}>
+      <Modal open={open} setOpen={setOpen} className="max-w-md">
         {(Icon: any) => (
           <Box>
             <Icon />

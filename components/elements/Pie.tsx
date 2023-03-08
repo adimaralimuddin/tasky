@@ -16,7 +16,8 @@ function Pie({
   bar = 7,
   fontSize = "0.9rem",
   fontWeight = 800,
-  bar_d = "rgb(52, 225, 225)",
+  bar_d = "#bc81fa",
+  // bar_d = "rgb(52, 225, 225)d",
   bar_l = "#7756AC",
 }: Props) {
   const { counter } = _useGraphCount(value);
@@ -26,7 +27,7 @@ function Pie({
       className="box flex items-center justify-center transition "
       style={
         {
-          ["--p"]: `${counter}`,
+          ["--p"]: `${counter === 0 ? 0.5 : counter}`,
           "--bar-d": bar_d,
           "--bar-l": bar_l,
           width: size,

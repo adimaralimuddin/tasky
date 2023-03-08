@@ -4,9 +4,6 @@ import { TemplateType } from "../../../../features/template/templateType";
 import useTemplates from "../../../../features/template/useTemplates";
 import { TopicType } from "../../../../features/topic/topicType";
 import useTopic from "../../../../features/topic/useTopic";
-import { DEF_USER } from "../../../../lib/public";
-import Box from "../../../elements/Box";
-import BtnPrime from "../../../elements/BtnPrime";
 import Input from "../../../elements/Input";
 import Modal from "../../../elements/Modal";
 import Select from "../../../elements/Select";
@@ -31,7 +28,7 @@ export default function TopicAdder() {
     templates?.find((t) => t.id == templateId_) || templates?.[0];
 
   const onCreateHandler = (e: any) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     try {
       const formData = Object.fromEntries(new FormData(e.target));
@@ -60,21 +57,27 @@ export default function TopicAdder() {
 
   return (
     <Modal
+      className="max-w-md"
       open={topicAdderOpenState}
       setOpen={setOpenTopicAdder}
-      css={`overflow-auto px-2`}
     >
-      {(Icon: any) => (
-        <Box css="p-[3%] w-full max-w-lg animate-pop">
-          <Icon />
+      {(closePop) => (
+        <div className="">
           <header>
             <h2>Adding New Topic</h2>
           </header>
-          <form onSubmit={onCreateHandler}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              closePop(() => {
+                onCreateHandler(e);
+              });
+            }}
+          >
             <Input autoFocus={true} text="name" />
             <Input text="description" />
             <Select
-              onInput={(val: any) => setTemplateId(val)}
+              onInput={(val: string) => setTemplateId(val)}
               defaultValue={options?.[0]}
               options={options || []}
               text="template"
@@ -86,7 +89,7 @@ export default function TopicAdder() {
               Create Topic
             </button>
           </form>
-        </Box>
+        </div>
       )}
     </Modal>
   );

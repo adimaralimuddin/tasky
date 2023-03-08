@@ -20,11 +20,6 @@ function PlayOptions() {
       {open && (
         <span className="relative">
           <div className="card-all absolute top-3 col_ animate-pop">
-            {/* <header className="flex_">
-            <VscSettings />
-            <BsLayoutSidebar />
-          </header> */}
-
             <section className="col_">
               <Toggle
                 value={muted}

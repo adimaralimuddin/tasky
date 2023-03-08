@@ -42,7 +42,7 @@ export default function TemplatePage(props: TemplatesProps) {
         <title>templates</title>
       </Head>
       <LayoutMainHeader />
-      <div className="col_ gap-0 container max-w-4xl mx-auto flex-1 py-[3%]">
+      <div className="col_ gap-0 container max-w-4xl mx-auto flex-1 p-[3%] content-center">
         <div className="flex_ justify-end">
           <TemplateAdder />
         </div>

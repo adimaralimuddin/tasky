@@ -35,7 +35,7 @@ export default function ClassMenu({ data }: { data: ClassType }) {
             ? data?.name?.substring(0, 15) + "..."
             : data?.name}
         </h3>
-        {hovered && <Option options={options} left={true} />}
+        {<Option show={hovered} options={options} left={true} />}
       </div>
       <ClassRenamer data={data} open={isRenameing} setOpen={setIsRenaming} />
       <ClassDeleter

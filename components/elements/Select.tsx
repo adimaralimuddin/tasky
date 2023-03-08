@@ -9,19 +9,16 @@ type props = {
   onInput?: (val: any) => any;
   text?: string;
   css?: string;
-  defaultValue?: any;
   value?: any;
   icon?: any;
   className?: string;
 };
 type Option = string[];
 
-const options = [["biology", "mat val"], ["mathematic"], ["physics"]];
 export default function Select({
   onInput,
   options,
   text,
-  defaultValue,
   css,
   value,
   icon,
@@ -34,7 +31,9 @@ export default function Select({
   let timer: any = null;
 
   useEffect(() => {
-    setVal(options?.find((p) => p[1] == value) || options?.[0]);
+    setVal(
+      options?.find((p) => p[0] == value || p[1] == value) || options?.[0]
+    );
   }, [value]);
 
   const onInputHandler = (option: Option) => {
@@ -51,25 +50,11 @@ export default function Select({
           (text && " pr-2 ")
         }
       >
-        {text}{" "}
+        {text}
       </p>
       <div>
-        <p
-          {...props}
-          onClick={(_) => {
-            setOpen((p) => !p);
-          }}
-          className={
-            " bg-layer-1  text-prime select-none	text-sm cursor-pointer hover:shadow-smd ring-1d ring-slate-200 hover:ring-slate-300 rounded-lg p-1 px-2  min-w-[70px] flex items-center justify-between gap-2 text-[.9rem] shadow-sm " +
-            (open && " ring-2 dark:ring-[#606f9a] ") +
-            className
-          }
-        >
-          {icon ? icon : null}
-          <span className="text-center  flex-1">{val?.[0]?.toString()} </span>
-          {open ? <UpIcon /> : <DownIcon />}
-        </p>
-        {/* <Popy
+        <Popy
+          className="mt-3"
           header={
             <p
               className={
@@ -80,19 +65,18 @@ export default function Select({
             >
               {icon ? icon : null}
               <span className="text-center  flex-1">
-                {val?.[0]?.toString()}{" "}
+                {/* {value} */}
+                {val?.[0]?.toString() || value}{" "}
               </span>
               {open ? <UpIcon /> : <DownIcon />}
             </p>
           }
           open={open}
           setOpen={setOpen}
-        > */}
-        {open && (
-          <div className="relative z-20">
+        >
+          <div className=" z-20">
             <input
               className="absolute max-h-0 p-0 top-0 left-0"
-              // onBlurCapture={}
               onBlur={() => {
                 if (timer !== null && timer !== undefined) {
                   clearTimeout(timer);
@@ -105,11 +89,8 @@ export default function Select({
               autoFocus
             />
             <div
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              // className="card-all col_ gap-1"
-              className="card card-ring card-shadow dark:bg-layer-100 absolute top-2 -left-1 col_ gap-0 select-none animate-pop overflow-hidden p-2"
+              onClick={(e) => e.stopPropagation()}
+              className="card-all col_ gap-1"
             >
               {options?.map((option) => (
                 <div
@@ -127,8 +108,7 @@ export default function Select({
               ))}
             </div>
           </div>
-        )}
-        {/* </Popy> */}
+        </Popy>
       </div>
     </div>
   );

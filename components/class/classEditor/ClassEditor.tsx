@@ -47,46 +47,46 @@ export default function ClassEditor({
   };
 
   return (
-    <div>
-      <Modal open={open} setOpen={setOpen}>
-        {(Icon: any) => (
-          <Box>
-            <Icon />
-
-            <h3 className="text-indigo-400">Edit Class</h3>
-            <div>
-              <Input
-                autoFocus
-                defaultValue={name}
-                value={name}
-                text="name"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setName(e.target?.value)
-                }
-              />
-              <Input
-                defaultValue={description}
-                value={description}
-                text="description"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setDescription(e.target?.value)
-                }
-              />
-              <button onClick={onResetHandler}>reset</button>
-            </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="btn-prime"
-                type="submit"
-                onClick={onSaveHandler}
-              >
-                save
-              </button>
-              <BtnWarm onClick={() => setOpen(false)}>cancel</BtnWarm>
-            </div>
-          </Box>
-        )}
-      </Modal>
-    </div>
+    <Modal className="max-w-lg" open={open} setOpen={setOpen}>
+      {(closePop) => (
+        <>
+          <h3 className="text-indigo-400">Edit Class</h3>
+          <div>
+            <Input
+              autoFocus
+              defaultValue={name}
+              value={name}
+              text="name"
+              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setName(e.target?.value)
+              }
+            />
+            <Input
+              defaultValue={description}
+              value={description}
+              text="description"
+              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setDescription(e.target?.value)
+              }
+            />
+            <button onClick={onResetHandler}>reset</button>
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="btn-prime"
+              type="submit"
+              onClick={() => {
+                closePop(() => {
+                  onSaveHandler();
+                });
+              }}
+            >
+              save
+            </button>
+            <BtnWarm onClick={() => setOpen(false)}>cancel</BtnWarm>
+          </div>
+        </>
+      )}
+    </Modal>
   );
 }

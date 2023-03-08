@@ -47,5 +47,9 @@ export default function TopicOptions({
     }
   };
 
-  return <div>{hovered && <Option left={true} options={options()} />}</div>;
+  return (
+    <div className="absolute top-0 right-2 h-full col_ justify-center">
+      <Option pin={true} show={hovered} left={true} options={options()} />
+    </div>
+  );
 }

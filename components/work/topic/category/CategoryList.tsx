@@ -20,7 +20,7 @@ export default function CategoryList() {
   const cards = categorizeCards(selectedCategory);
 
   return (
-    <div className=" flex-1  flex flex-col container_   ">
+    <div className=" flex-1  flex flex-col container_ animate-fadein   ">
       <ContentHeader />
       <CardListWithQuery cards={cards} />
     </div>

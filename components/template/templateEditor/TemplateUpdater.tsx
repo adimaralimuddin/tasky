@@ -28,27 +28,23 @@ function TemplateUpdater({
         "sample template will not be edited. you can always login and create or edit your own template."
       );
     }
-    console.log(`data`, { ...data, id: template?.id });
 
     updateTemplate({ ...data, id: template?.id });
     setOpen(true);
   };
   return (
-    <div>
-      {" "}
-      <TemplateEditor
-        name_={template?.name}
-        open={openEditor}
-        setOpen={setOpenEditor}
-        fronts_={toJson(template?.fronts as any)} // adimar
-        backs_={toJson(template?.backs as any)}
-        onSave={onSaveHandler}
-        onCancel={() => {
-          setOpen(true);
-          setOpenEditor(false);
-        }}
-      />
-    </div>
+    <TemplateEditor
+      name_={template?.name}
+      open={openEditor}
+      setOpen={setOpenEditor}
+      fronts_={toJson(template?.fronts as any)} // adimar
+      backs_={toJson(template?.backs as any)}
+      onSave={onSaveHandler}
+      onCancel={() => {
+        setOpen(true);
+        setOpenEditor(false);
+      }}
+    />
   );
 }
 

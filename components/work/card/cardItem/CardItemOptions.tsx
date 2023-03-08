@@ -55,9 +55,11 @@ function CardItemOptions({
   };
 
   return (
-    <span className="relative flex justify-end p-1">
+    <span className="relative flex justify-end p-1 ">
       <div className="absolute">
-        {hovered && allowOption && <Option options={options()} left={true} />}
+        {allowOption && (
+          <Option show={hovered} options={options()} left={true} />
+        )}
       </div>
     </span>
   );

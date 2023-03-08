@@ -17,10 +17,10 @@
     @apply rounded-xl p-4 bg-white flex dark:bg-[#343C52];
   }
   .card-shadow {
-    @apply shadow-lg shadow-slate-100  dark:shadow-layer-50;
+    @apply shadow-lg shadow-slate-100   dark:shadow-layer-50;
   }
   .card-ring {
-    @apply ring-1 ring-slate-100 dark:ring-layer-50 dark:hover:ring-2 dark:hover:ring-layer-sec;
+    @apply ring-1 ring-slate-100 hover:ring-slate-200 dark:ring-layer-50 dark:hover:ring-2 dark:hover:ring-layer-sec;
   }
   .card-hover {
     @apply hover:-translate-y-[.2rem] hover:shadow-lg transition;
@@ -28,10 +28,13 @@
 
   /* BUTTON */
   .btn-prime {
-    @apply rounded-xl text-[.9rem] bg-[#867bcc] text-white dark:bg-[#6954a9] dark:text-slate-200;
+    @apply rounded-xl text-[.9rem] bg-[#867bcc] hover:bg-[#7368ba] hover:ring-2 hover:ring-[#d0caff] text-white dark:bg-[#6954a9] dark:text-slate-200 dark:hover:ring-[#a79cf9];
   }
   .btn-sec {
-    @apply rounded-xl text-[.9rem] bg-transparent text-primary-light border-2 border-primary-light dark:border-[#6c7dd3] dark:text-[#a9b6f9] py-1;
+    @apply rounded-xl text-[.9rem] font-medium bg-transparent text-[#786cc1] border-2 border-[#867bcc]  hover:border-[#9a8dea]  dark:border-[#8e83d4] dark:text-[#aea5ea] py-1;
+  }
+  .btn-warm {
+    @apply text-white bg-pink-400 hover:bg-pink-500 hover:ring-2 hover:ring-pink-200 dark:bg-pink-500 dark:hover:bg-pink-600 dark:hover:ring-pink-300;
   }
 
   /* TEXT */
@@ -164,7 +167,7 @@ h3 {
 .popy {
   /* background-color: pink; */
   /* transition: all 1s; */
-  animation: popy 0.2s ease-in-out;
+  animation: popy 0.1s ease-in-out;
 }
 
 @keyframes popy {
@@ -255,4 +258,52 @@ h3 {
 
     /* scale: 0.5; */
   }
+}
+
+.collapse-open {
+  animation: col-open 0.2s normal forwards ease-out;
+}
+.collapse-close {
+  animation: col-close 0.2s normal forwards ease-out;
+  overflow: hidden;
+  transform-origin: 0 0;
+}
+
+@keyframes col-open {
+  0% {
+    max-height: 0;
+  }
+  100% {
+    max-height: var(--h);
+  }
+}
+@keyframes col-close {
+  0% {
+    /* transform: scale(1, 1); */
+    /* scale: 1; */
+    height: 50px;
+  }
+  70% {
+    /* scale: 1.1; */
+    height: 30px;
+  }
+  100% {
+    /* scale: 0.5; */
+    height: 0px;
+  }
+}
+
+.bgg {
+  transform: skew(var(--skew));
+  position: absolute;
+  width: 200%;
+  height: 400%;
+  rotate: var(--rot);
+  /* rotate: -13deg; */
+  /* bottom: 0px; */
+  /* left: 100px; */
+  border-bottom-left-radius: 130px;
+  box-shadow: 1px 1px 15px rgba(110, 134, 196, 0.27);
+
+  transform-origin: bottom left;
 }

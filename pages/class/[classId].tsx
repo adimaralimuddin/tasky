@@ -1,14 +1,7 @@
-// import { getSession } from "@auth0/nextjs-auth0";
-// import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-// import { GetServerSideProps } from "next";
 import WorkPage from "../../components/work/WorkPage";
-// import prisma from "../../lib/prisma";
 
 export default WorkPage;
-export const config = {
-  unstable_runtimeJS: false,
-};
 
 export async function getStaticPaths<getStaticPaths>() {
   const prisma = await new PrismaClient();
@@ -76,6 +69,7 @@ export async function getStaticProps(ctx: any) {
   }
 
   const post = { dashboard, folders, class_ };
+  console.log(`server: workPage to serverdata ready:`, post);
 
   return {
     props: { post },

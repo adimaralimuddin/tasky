@@ -1,6 +1,5 @@
 import React from "react";
 import { DashboardType } from "../../features/app/appSlice";
-import useClass from "../../features/class/useClass";
 import useServerState from "../../features/dateState/useServerState";
 import { TopicType } from "../../features/topic/topicType";
 import GraphBar from "../elements/GraphBar";
@@ -8,12 +7,10 @@ import Pie from "../elements/Pie";
 
 interface Props {
   total: number;
-  data: DashboardType[];
 }
-function DashboardMain({ total, data }: Props) {
+function DashboardMain({ total }: Props) {
   const { class_, folders } = useServerState();
 
-  
   const topics = (): TopicType[] =>
     folders?.reduce(
       (topics, folder) => [...topics, ...(folder.Topic || [])] as any,
@@ -21,9 +18,9 @@ function DashboardMain({ total, data }: Props) {
     );
 
   return (
-    <div className=" max-w-3xl">
-      <h3 className="title_ pb-2 font-bold ">Dashboard</h3>
-      <div className="card gap-[5%] flex flex-wrap justify-between   rounded-2xl px-[5%] py-3  ring-slate-200 ring-1 m-r-auto">
+    <div className=" max-w-4xl ">
+      {/* <h3 className="title_ pb-2 font-semibold text-sec ">Dashboard</h3> */}
+      <div className="card card-ring card-shadow gap-[5%] flex flex-wrap justify-between   rounded-2xl px-[5%] py-3   m-r-auto">
         <div>
           <h2 className="font-bold text-prime">{class_?.name}</h2>
           <div className="flex_ font-thin pt-2 text-accent">

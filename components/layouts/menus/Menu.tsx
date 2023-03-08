@@ -10,7 +10,7 @@ const Menu = ({
   col: boolean;
 }) => {
   return (
-    <div className="text-prime dark:text-slate-100d flex items-center gap-1 cursor-pointer hover:text-indigo-400  dark:hover:text-white text-md ">
+    <div className="flex items-center gap-1 font-medium cursor-pointer  text-md text-prime hover:text-indigo-800 dark:hover:text-indigo-100 ">
       {Icon && <Icon className="text-xl" />}
       {!col && children}
     </div>

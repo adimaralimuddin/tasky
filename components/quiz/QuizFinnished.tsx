@@ -1,42 +1,50 @@
 import React, { useState } from "react";
 import { CardTypes } from "../../features/card/CardType";
-import useQuiz from "../../features/quiz/useQuiz";
+import useQuizOptions from "../../features/quiz/useQuizOptions";
 import useViewer from "../../features/viewer/useViewer";
 import _usePercentage from "../../lib/utils/_usePercentage";
-import Box from "../elements/Box";
+import {
+  _useScoreColors,
+  _useScoremessage,
+} from "../../lib/utils/_utilsClasses";
 import BtnBack from "../elements/BtnBack";
-import BtnSec from "../elements/BtnSec";
 import Modal from "../elements/Modal";
 import Pie from "../elements/Pie";
 import TopicTitle from "../elements/TopicTitle";
 import CardItem from "../work/card/cardItem/CardItem";
 import CardQuery from "../work/card/CardQuery";
-import CardQueryView from "../work/viewer/CardQueryView";
 type props = {
+  reloadOptions: any;
   result: any[];
   setFinish: any;
   resetResult: Function;
-  reloadOptions: any;
+  // reloadOptions: any;
 };
 export default function QuizFinnished({
   result,
   setFinish,
   resetResult,
   reloadOptions,
-}: props) {
+}: // reloadOptions,
+props) {
   const onBackHandler = () => {
     setFinish(false);
     reloadOptions();
     resetResult();
   };
-  const { quiz } = useQuiz();
+  const { quiz } = useQuizOptions();
   const { singleWrong } = quiz;
 
   const pointsCards = result?.filter((c) => c?.correct?.includes(true));
   const wrongCards = result?.filter((c) => c?.wrong?.includes(false));
 
+  const score = _usePercentage(
+    pointsCards?.length / wrongCards?.length,
+    result?.length
+  );
+
   return (
-    <div className="flex-1 ">
+    <div className="flex-1 animate-fadein">
       <div className="flex_  gap-0 justify-between flex-wrap  overflow-hidden">
         <TopicTitle extraPath="quiz finished" />
         <BtnBack onClick={onBackHandler} />
@@ -46,7 +54,9 @@ export default function QuizFinnished({
           <h1 className="text-2xl sm:text-3xl text-value font-bold ">
             Quiz Completed!
           </h1>
-          <h2 className="font-bold text-accent">okay super dooper cool!</h2>
+          <h2 className={"font-bold text-accentd " + _useScoreColors(score)}>
+            {_useScoremessage(score)}
+          </h2>
         </div>
         <button className=" btn-prime my-3" onClick={onBackHandler}>
           Repeat
@@ -59,7 +69,7 @@ export default function QuizFinnished({
           <h4 className="text-sec flex-1">
             Total Cards <span className="font-bold">{result?.length}</span>
           </h4>
-          <Pie value={_usePercentage(pointsCards?.length, result?.length)} />
+          <Pie value={score} />
           <h3 className="font-semibold">score</h3>
         </div>
         <div className="flex-1 col_ sm:flex-row ">
@@ -180,10 +190,13 @@ function ResultGroup({ cards, text }: { cards: ResItemType[]; text: string }) {
           <span className="font-semibold">{cards?.length}</span>
         </h4>
       </header>
-      <Modal open={open} setOpen={setOpen}>
-        {(Icon) => (
-          <div className="card p-0 col_ w-full max-w-3xl min-h-[200px] ">
-            <Icon />
+      <Modal
+        className="max-w-5xl h-full  max-h-[90vh]"
+        open={open}
+        setOpen={setOpen}
+      >
+        {() => (
+          <div className="p-0 col_ w-full min-h-[200px] ">
             <ResultPopView results={cards} text={text} />
           </div>
         )}
@@ -208,12 +221,12 @@ const ResultPopView = ({
 
   // console.log(`cards h`, cards);
 
-  const { quiz } = useQuiz();
+  const { quiz } = useQuizOptions();
   const { singleWrong } = quiz;
 
   return (
     <div className=" overflow-y-auto col_ flex-1 ">
-      <header className="px-6 col_ gap-1   ">
+      <header className=" col_ gap-1   ">
         <div className="flex_">
           <h3 className="text-accent font-semibold">{text}</h3>
           <p>{results?.length} cards</p>
@@ -222,8 +235,8 @@ const ResultPopView = ({
           cards={
             results.map(({ card, ...others }) => ({
               ...card,
-              fronts: [...card?.fronts],
-              backs: [...card?.backs],
+              fronts: [...(card?.fronts || [])],
+              backs: [...(card?.backs || [])],
               ...others,
             })) || []
           }
@@ -231,13 +244,12 @@ const ResultPopView = ({
         />
         <small>cards results: {cards?.length}</small>
       </header>
-
       {results?.length === 0 ? (
         <div className="flex-1 col_ ">
           <h2 className="m-auto font-semibold">No Cards</h2>
         </div>
       ) : (
-        <div className="col_ gap-2 flex-1 px-6 pb-6 pl-8 overflow-y-auto overflow-x-hidden max-h-[75vh] ">
+        <div className="col_ gap-2 flex-1 pb-6 pl-4 overflow-y-auto overflow-x-hidden max-h-[75vh] ">
           {cards?.map((card) => (
             <div className="" key={card?.id}>
               <ResItem

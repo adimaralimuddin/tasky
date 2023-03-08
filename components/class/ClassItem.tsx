@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useState } from "react";
 import { ClassType } from "../../features/class/classTypes";
-import Box from "../elements/Box";
 import Option from "../elements/Option";
 
 const ClassEditor = dynamic(() => import("./classEditor/ClassEditor"), {
@@ -38,28 +37,27 @@ function ClassItem({
   return (
     <div
       className={
-        "card-all col_ gap-0 flex-1 min-w-[160px] max-w-[280px] transition min-h-[130px]  "
+        "card card-shadow card-ring hover:shadow-xl hover:shadow-slate-200 dark:hover:shadow-black col_ gap-0 flex-1 min-w-[200px] sm:max-w-[280px] transition min-h-[130px]   "
       }
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {hovered && !data?.preview && (
+      {!data?.preview && (
         <span className="relative">
           <div className="absolute top-0 right-0">
-            <Option options={options} left={true} />
+            <Option show={hovered} options={options} left={true} />
           </div>
         </span>
       )}
 
       <Link prefetch={false} href={`/class/${data?.id}`}>
         <div
-          title={`
-          ${data?.name}
-${data?.description}
-          `}
-          className="flex-1 flex flex-col cursor-pointer hover:font-boldd text-center justify-center"
+          title={`${data?.name} ${data?.description}`}
+          className="flex-1 flex flex-col cursor-pointer  text-center justify-center"
         >
-          <h4 className="text-prime font-bold ">{data?.name}</h4>
+          <h4 className="text-prime font-bold  overflow-hidden max-h-[100px]">
+            {data?.name}
+          </h4>
           <p className="text-sm text-sec overflow-hidden">
             {data?.description}
           </p>

@@ -62,9 +62,13 @@ export default function CardEditor({
 
   return (
     <div>
-      <Modal open={open && !isUpdating}>
-        {() => (
-          <div className="flex-1 flex flex-col  container max-w-4xl overflow-auto card rounded-xl h-screen">
+      <Modal
+        className="max-w-[58rem] max-h-[90vh] "
+        open={open && !isUpdating}
+        setOpen={setOpen}
+      >
+        {(closePop) => (
+          <div className="flex-1 flex flex-col  overflow-auto ">
             <h3 className="px-2 text-prime">Editing card</h3>
             <div className="flex  px-2 text-accent">
               <h3 className="flex-1">Fronts</h3>
@@ -87,10 +91,24 @@ export default function CardEditor({
               />
             </div>
             <div className="flex items-center justify-between px-2 p-1">
-              <button className="btn-prime" onClick={onUpdateHandler}>
+              <button
+                className="btn-prime"
+                onClick={() => {
+                  closePop(() => {
+                    onUpdateHandler();
+                  });
+                }}
+              >
                 save card
               </button>
-              <button className="btn-sec" onClick={onCancel}>
+              <button
+                className="btn-sec"
+                onClick={() => {
+                  closePop(() => {
+                    onCancel();
+                  });
+                }}
+              >
                 cancel
               </button>
             </div>

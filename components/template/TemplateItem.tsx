@@ -3,9 +3,6 @@ import React, { useState } from "react";
 import { FieldType } from "../../features/card/CardType";
 import { TemplateType } from "../../features/template/templateType";
 import { Trash } from "../../lib/icons";
-import Box from "../elements/Box";
-import BtnSec from "../elements/BtnSec";
-import BtnWarm from "../elements/BtnWarm";
 import Modal from "../elements/Modal";
 
 const TemplateUpdater = dynamic(
@@ -32,16 +29,18 @@ export default function TemplateItem({ template, editable = true }: props) {
 
   return (
     <div
-      onClick={() => setOpen(true)}
+      onClick={() => setOpen((p) => !p)}
       className={
-        "card-all col_ gap-0 flex-1 justify-center cursor-pointer min-w-[100px] max-w-[280px] min-h-[130px] " +
+        "card card-shadow card-ring hover:shadow-xl hover:shadow-slate-200 dark:hover:shadow-black transition col_  gap-0 flex-1 justify-center cursor-pointer min-w-[200px] sm:max-w-[280px] min-h-[130px] " +
         (template?.sample && " ring-2 dark:ring-indigo-400 ")
       }
     >
-      <h3 className="text-prime text-center">{template?.name}</h3>
-      <div className="text-phar">
-        <p className="text-center">this is just a sample description</p>
-      </div>
+      <h4
+        title={template?.name}
+        className="text-prime font-bold text-center overflow-hidden   max-h-[100px]"
+      >
+        {template?.name}
+      </h4>
 
       {openEditor && (
         <TemplateUpdater
@@ -52,40 +51,39 @@ export default function TemplateItem({ template, editable = true }: props) {
           template={template}
         />
       )}
-
-      <Modal open={open} setOpen={setOpen}>
-        {(Icon: any) => (
+      <Modal className="max-w-4xl" open={open} setOpen={setOpen}>
+        {() => (
           <div
             onClick={(e: any) => {
               e.stopPropagation();
             }}
-            className=" card col_ max-h-[90vh] overflow-autod"
+            className=" card col_ max-h-[90vh] "
           >
-            <Icon />
             <h3>{template?.name}</h3>
             <div className="flex gap-2 flex-wrap overflow-auto flex-1 ">
               <Fields fields={toJson(template?.fronts as any)} />
               <Fields fields={toJson(template?.backs as any)} text="Backs" />
             </div>
             <div className="flex items-center justify-between">
-              <BtnWarm className="" onClick={() => setIsDeleting(true)}>
+              <button className="btn-warm" onClick={() => setIsDeleting(true)}>
                 <Trash /> delete
-              </BtnWarm>
-              <BtnSec
+              </button>
+              <button
+                className="btn-sec"
                 onClick={() => {
                   setOpen(false);
                   setOpenEditor(true);
                 }}
               >
                 edit
-              </BtnSec>
+              </button>
             </div>
           </div>
         )}
       </Modal>
-
       {isDeleting && (
         <TemplateDeleter
+          setOpen={setOpen}
           templateId={template?.id}
           editable={editable}
           isDeleting={isDeleting}
@@ -104,7 +102,7 @@ function Fields({
   text?: string;
 }) {
   return (
-    <div className="flex-1 bg-slate-50 dark:bg-slate-700 p-2 rounded-lg ">
+    <div className="flex-1 bg-slate-50 dark:bg-layer-100 p-2 rounded-lg ">
       <h3 className="flex-1">{text}</h3>
       {fields?.map((front: FieldType) => (
         <FieldItem front={front} key={front.text} />
@@ -115,7 +113,7 @@ function Fields({
 
 function FieldItem({ front }: { front: FieldType }) {
   return (
-    <div className="flex gap-2 justify-between items-center bg-white dark:bg-slate-500 flex-1 ring-1 p-2  rounded-md  ring-slate-200 shadow-md my-3">
+    <div className="flex gap-2 justify-between items-center bg-slate-200 dark:bg-layer-sec flex-1 ring-1d p-2 px-3  rounded-md my-3">
       <p>{front.text}</p>:<p>{front.type}</p>
     </div>
   );

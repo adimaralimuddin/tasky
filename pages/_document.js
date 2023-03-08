@@ -18,7 +18,7 @@ export default function Document() {
 
         <title>Tasky</title>
       </head>
-      <body className="bg-slate-50d [#eff0f8]d bg-[#f3f4fc]d bg-[#F8F9FF] dark:bg-[#1A1A27]">
+      <body className="bg-slate-50d [#eff0f8]d bg-[#f3f4fc]d bg-[#F8F9FF] dark:bg-[#1A1A27] overflow-x-hidden">
         <Main />
         <NextScript />
       </body>

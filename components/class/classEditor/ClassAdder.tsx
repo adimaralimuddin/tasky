@@ -1,14 +1,12 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ClassType } from "../../../features/class/classTypes";
 import useClassAdder from "../../../features/class/useClassAdder";
-import Box from "../../elements/Box";
-import BtnPrime from "../../elements/BtnPrime";
 import Input from "../../elements/Input";
 import ClassAdderView from "./ClassAdderView";
 
-const DynamicModal = dynamic(() => import("../../elements/Modal"), {
+const Modal = dynamic(() => import("../../elements/Modal"), {
   ssr: false,
 });
 
@@ -22,8 +20,6 @@ function ClassAdder_({ myClasses }: { myClasses: ClassType[] }) {
   const checkLimit = () => {
     return myClasses?.length >= 5 ? true : false;
   };
-
-  useEffect(() => {}, []);
 
   const onAddClassHandler = async () => {
     addClass({
@@ -46,33 +42,35 @@ function ClassAdder_({ myClasses }: { myClasses: ClassType[] }) {
       )}
 
       {open && (
-        <DynamicModal open={open} setOpen={setOpen}>
-          {(Icon: any) => (
-            <div className="px-5 w-full">
-              <Box css="w-fulld max-w-[400px] mx-auto">
-                <Icon />
-                <form onSubmit={onAddClassHandler}>
-                  <Input
-                    autoFocus={true}
-                    onInput={(e: any) => setName(e.target.value)}
-                    css="flex-col"
-                  >
-                    Name
-                  </Input>
-                  <Input
-                    onInput={(e: any) => setDesc(e.target.value)}
-                    css="flex-col"
-                  >
-                    Description
-                  </Input>
-                  <button className="btn-prime" type="submit">
-                    Create
-                  </button>
-                </form>
-              </Box>
-            </div>
+        <Modal className="max-w-md" open={open} setOpen={setOpen}>
+          {(closePop) => (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                closePop(() => {
+                  onAddClassHandler();
+                });
+              }}
+            >
+              <Input
+                autoFocus={true}
+                onInput={(e: any) => setName(e.target.value)}
+                css="flex-col"
+              >
+                Name
+              </Input>
+              <Input
+                onInput={(e: any) => setDesc(e.target.value)}
+                css="flex-col"
+              >
+                Description
+              </Input>
+              <button className="btn-prime" type="submit">
+                Create
+              </button>
+            </form>
           )}
-        </DynamicModal>
+        </Modal>
       )}
     </div>
   );

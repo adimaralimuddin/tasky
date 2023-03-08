@@ -7,6 +7,7 @@ function useContentSetter() {
   const { setUrlState } = useUrlState();
 
   const setContent_ = (content: ContentType, category?: CategoryType) => {
+    localStorage.setItem("content", content);
     const states_ = { content, category };
     if (!category) {
       delete states_?.category;

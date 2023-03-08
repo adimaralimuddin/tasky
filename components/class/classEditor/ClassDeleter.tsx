@@ -30,14 +30,12 @@ function ClassDeleter({
   };
 
   return (
-    <div>
-      <Verifier
-        open={isDeleting}
-        setOpen={setIsDeleting}
-        message="folders and topics will also be permanently deleted"
-        onOkay={onDelete}
-      />
-    </div>
+    <Verifier
+      open={isDeleting}
+      setOpen={setIsDeleting}
+      message="folders and topics will also be permanently deleted"
+      onOkay={onDelete}
+    />
   );
 }
 

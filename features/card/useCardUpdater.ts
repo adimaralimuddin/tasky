@@ -73,7 +73,6 @@ function useCardUpdater({ card, setOpen }: Props) {
         "sample card will not be edited. you can always add, edit and delete your own card instead."
       );
     }
-    // setIsUpdating(true);
     const data: any = {
       fronts,
       backs,
@@ -84,23 +83,14 @@ function useCardUpdater({ card, setOpen }: Props) {
     console.log(`updated data`, data);
     onUpdateQueryState({ ...card, ...data });
 
-    setOpen(false);
     setIsUpdating(false);
     const ret = await updateFields(data);
-    // console.log(`ret`, ret);
-
-    // onUpdated?.(ret);
   };
 
   return {
-    // work,
     query,
-    // fronts,
-    // backs,
     topicId,
     isUpdating,
-    // setFronts,
-    // setBacks,
     setIsUpdating,
     updateCard,
   };

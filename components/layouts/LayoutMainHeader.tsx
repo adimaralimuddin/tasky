@@ -33,7 +33,7 @@ function LayoutMainHeader({ showTitle = true, className }: LayoutMainProps) {
 
   return (
     <div className={" bg-white dark:bg-slate-800 relative " + className}>
-      <div className="flex p-2 items-center justify-between px-5 max-w-4xl mx-auto flex-wrap">
+      <div className="flex p-2 items-center justify-between px-5 max-w-5xl mx-auto flex-wrap">
         <div className="flex items-center cursor-pointer">
           {showTitle ? (
             <Link prefetch={false} href="/">
@@ -46,15 +46,19 @@ function LayoutMainHeader({ showTitle = true, className }: LayoutMainProps) {
             <MenuBurger open={openMenu} setOpen={setOpenMenu} />
           ) : null}
         </div>
-        {!collapsed ? <MainMenus col={collapsed} /> : null}
+        {!collapsed ? (
+          <div>
+            <MainMenus col={collapsed} />
+          </div>
+        ) : null}
         <span className="flex items-center gap-2">
           <DarkMode />
           <DynamicUserMenu />
         </span>
       </div>
       {openMenu && collapsed ? (
-        <div className=" relative container max-w-4xl mx-auto ">
-          <MainMenus css=" flex-wrap absolute top-0 bg-white flex-1 w-full gap-3 p-3 items-center justify-center " />
+        <div className=" fixed top-[50px] animate-fadein flex_ justify-center p-3 min-h-[200px] card-shadow left-0 w-screen bg-white dark:bg-layer-50 z-50 ">
+          <MainMenus css=" bg-red-400d flex flex-wrap " />
         </div>
       ) : null}
     </div>
@@ -82,7 +86,7 @@ function MenuBurger({ open, setOpen }: any) {
   return (
     <div
       onClick={() => setOpen((p: boolean) => !p)}
-      className=" p-1 mx-1 text-2xl hover:ring-2 rounded-md ring-indigo-400"
+      className=" p-1 mx-1 text-xl hover:ring-2 rounded-md ring-indigo-400"
     >
       {open ? <FaTimes /> : <FaBars />}
     </div>

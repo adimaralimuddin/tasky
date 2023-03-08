@@ -1,33 +1,53 @@
-import { ReactElement } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoClose } from "react-icons/io5";
 
-export default function Modal({
-  children: Children,
-  open,
-  setOpen,
-  css,
-}: {
-  children: (Icon: any) => any;
+type ClosePopType = (cb?: (open?: boolean, done?: boolean) => any) => any;
+interface Props {
+  children: (closePop: ClosePopType) => any;
   open: boolean;
   setOpen?: any;
   css?: string;
-}) {
+  className?: string;
+}
+
+export default function Modal({
+  children,
+  open,
+  setOpen,
+  className = "",
+}: Props) {
+  const [done, setDone] = useState(false);
+  const popRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+      console.log(`hello `);
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
+
   if (!open) return null;
 
   const stopPropa = (e: React.FormEvent) => e.stopPropagation();
 
-  const closeIcon = ({ css, iconCss, ...props }: any) => (
+  const CloseIcon = ({ css, iconCss, ...props }: any) => (
     <div
-      className="relative flex justify-end z-[999] "
+      className="relative flex justify-end z-[999] p-0 m-0 "
       onClick={stopPropa}
       onMouseEnter={stopPropa}
       onMouseDown={stopPropa}
     >
       <span
-        onClick={(_) => setOpen(false)}
+        onClick={(_) => {
+          closePop();
+          document.body.style.overflow = "auto";
+        }}
         {...props}
         className={
-          "bg-slate-200 dark:bg-slate-500 p-1 absolute rounded-full text-3xl -top-3 -right-3 shadow-md ring-1 ring-slate-300 dark:ring-slate-400 hover:scale-105 cursor-pointer z-[999]   " +
+          "bg-slate-200 dark:bg-slate-500 p-0 absolute rounded-full text-3xl -top-3 -right-3 shadow-md ring-1 ring-slate-300 dark:ring-slate-400 hover:scale-105 cursor-pointer z-50   " +
           css
         }
       >
@@ -36,17 +56,46 @@ export default function Modal({
     </div>
   );
 
+  const closePop = (cb?: (open?: boolean, done?: boolean) => any) => {
+    setDone(true);
+    popRef.current?.classList.add("pop-out");
+    popRef.current
+      ? (popRef.current.onanimationend = () => cb?.(open, done))
+      : cb?.(open, done);
+  };
+
   return (
     <div
       className={
-        "top-0 left-0 w-full h-full min-h-screen backdrop-blur-sm bg-opacity-60 fixed  overflow-hidden flex items-center justify-center bg-slate-900 flex-col z-[999] p-2  " +
-        css
+        "top-0 left-0 w-full h-full min-h-screen backdrop-blur-sm bg-opacity-60 fixed  overflow-hidden flex items-center justify-center bg-slate-900 flex-col z-[999] p-2 gap-0 overflow-y-auto  "
       }
-      onClick={stopPropa}
+      onClick={(e) => {
+        console.log(`clickout`, e.target);
+
+        stopPropa(e);
+        closePop();
+        document.body.style.overflow = "auto";
+      }}
       onMouseEnter={stopPropa}
       onMouseDown={stopPropa}
     >
-      {Children(closeIcon)}
+      <div
+        ref={popRef}
+        onAnimationEnd={(e) => {
+          if (done) {
+            setOpen(false);
+            setDone(false);
+          }
+        }}
+        onClick={stopPropa}
+        className={
+          "card-all animate-pop2 shadow-slate-600 max-w-mdd w-full col_ p-6 " +
+          className
+        }
+      >
+        <CloseIcon />
+        {children(closePop)}
+      </div>
     </div>
   );
 }

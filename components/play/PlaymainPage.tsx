@@ -82,7 +82,7 @@ export default function PlaymainPage({}: any) {
   );
 
   return (
-    <div className=" container_ flex-col">
+    <div className=" container_ flex-col animate-fadein">
       <ContentHeader
         Action={<BtnBack content="topic" category="all" />}
         extraPath="play"

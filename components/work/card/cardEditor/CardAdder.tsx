@@ -19,7 +19,7 @@ const CardLists = dynamic(() => import("../cardLists/CardLists"), {
 
 export default function CardAdder({ classId }: { classId: string | any }) {
   return (
-    <div className="container_ flex-col">
+    <div className="container_ flex-col animate-fadein">
       <ContentHeader extraPath="add cards" removeMiddlePaths={true} />
       <AdderItem classId={classId} />
       <CardLists />

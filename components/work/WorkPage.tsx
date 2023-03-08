@@ -14,9 +14,8 @@ export default function WorkPage({ post }: any) {
     initServerState(post);
   }, []);
 
-  // console.log(`posts`, post);
   return (
-    <div className=" min-h-[100vh] flexd flex-col flex   ">
+    <div className=" min-h-screen flex-col flex   ">
       <div className="flex flex-1">
         <WorkSide post={post} />
         <div className="flex-[3] flex flex-col border-b-1 shadow-sm ">

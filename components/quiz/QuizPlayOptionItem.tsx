@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { CardTypes } from "../../features/card/CardType";
-import useQuiz from "../../features/quiz/useQuiz";
+import useQuizOptions from "../../features/quiz/useQuizOptions";
 import CardItem from "../work/card/cardItem/CardItem";
 type props = {
   card: CardTypes;
@@ -20,7 +20,7 @@ export default function QuizPlayOptionItem({
   const [correct, setCorrect] = useState(false);
   const [wasWrong, setWasWrong] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
-  const { quiz, setHasChosen } = useQuiz();
+  const { quiz, setHasChosen } = useQuizOptions();
   const { hasChosen, side, singleWrong, speed, sound } = quiz;
   useEffect(() => {
     setCorrect(false);
@@ -55,20 +55,21 @@ export default function QuizPlayOptionItem({
     if (hasChosen) return;
     if (card?.id == current?.id) {
       if (sound) new Audio("/correct.mp3")?.play();
-
       setHasChosen(true);
       setCorrect(true);
-      updateResult();
       gotAnswer(() => {
+        updateResult();
         setCorrect(false);
         pass();
       });
     } else {
       if (sound) new Audio("/wrong.mp3")?.play();
+      // console.log(`wrong`);
 
       setCorrect(false);
       setWasWrong(true);
       updateResult(false);
+
       gotAnswer(() => {
         setWasWrong(false);
       });
@@ -89,11 +90,11 @@ export default function QuizPlayOptionItem({
     <div
       onClick={onSelectHandler}
       className={
-        "flex-1   ring-2 ring-prime rounded-xl cursor-pointer m-1  max-w-[400px]  " +
+        "flex-1 p-[2px]d rounded-2xl cursor-pointer m-1  max-w-[400px]   " +
         isCorrect(
-          "ring-lime-400 hover:ring-lime-500 animate-pop",
+          "animate-pop ",
           isWasWrong(
-            "ring-pink-300 dark:ring-pink-400 animate-wiggle ",
+            " animate-wiggle  ",
             !hasChosen && " hover:ring-text-accent hover:shadow-lg"
           )
         )
@@ -113,14 +114,15 @@ export default function QuizPlayOptionItem({
           </div>
         </div>
       )}
+
       <CardItem
         card={card}
         side={side == "fronts" ? "backs" : "fronts"}
         allowOption={false}
         css={
-          "m-0 flexd my-0 flex-1 ring-0  h-full " +
-          isWasWrong("dark:ring-red-400") +
-          isCorrect("dark:ring-green-400")
+          "m-0 my-0 flex-1 ring-1  h-full " +
+          isWasWrong("ring-0  border-2 border-pink-400 ") +
+          isCorrect("ring-0  border-2 border-green-400 ")
         }
         imageViewer={false}
       />

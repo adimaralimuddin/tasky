@@ -1,4 +1,3 @@
-import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
 import { TemplateType } from "../../../../features/template/templateType";
 import useTemplates from "../../../../features/template/useTemplates";
@@ -9,7 +8,6 @@ import Modal from "../../../elements/Modal";
 import Select from "../../../elements/Select";
 
 export default function TopicAdder() {
-  const { user } = useUser();
   const { createTopic, setOpenTopicAdder, topicAdderOpenState } = useTopic();
 
   const { myTemplates, sampleTemplates } = useTemplates();
@@ -78,7 +76,6 @@ export default function TopicAdder() {
             <Input text="description" />
             <Select
               onInput={(val: string) => setTemplateId(val)}
-              defaultValue={options?.[0]}
               options={options || []}
               text="template"
             />

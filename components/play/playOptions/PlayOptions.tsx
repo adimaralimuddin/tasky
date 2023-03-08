@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { BsLayoutSidebar } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
 import usePlay from "../../../features/play/usePlay";
 import Select from "../../elements/Select";
@@ -31,7 +30,6 @@ function PlayOptions() {
               <Select
                 onInput={setSide}
                 value={[side]}
-                defaultValue={[side]}
                 text="starting side"
                 options={[
                   ["fronts", "fronts"],

@@ -36,7 +36,7 @@ function WorkContent({ serverState }: any) {
       ) : content == "play" ? (
         <PlaymainPage classId={classId} />
       ) : content == "quiz" ? (
-        <QuizMainContent classId={classId} />
+        <QuizMainContent />
       ) : null}
     </div>
   );

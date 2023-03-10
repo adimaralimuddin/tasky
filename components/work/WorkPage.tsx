@@ -20,7 +20,7 @@ export default function WorkPage({ post }: any) {
         <WorkSide post={post} />
         <div className="flex-[3] flex flex-col border-b-1 shadow-sm ">
           <WorkHeader serverState={post} />
-          <WorkContent serverState={post} />
+          <WorkContent />
         </div>
       </div>
     </div>

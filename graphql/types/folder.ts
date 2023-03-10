@@ -1,5 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
-import { SAMPLE } from "../../lib/public";
+import { ENTITY_LIMIT, SAMPLE } from "../../lib/public";
 import { Class } from "./class";
 import { Topic } from "./topic";
 
@@ -61,7 +61,12 @@ export const FolderMutation = extendType({
         name: nonNull(stringArg()),
         classId: nonNull(stringArg()),
       },
-      resolve(par, data, ctx) {
+      async resolve(par, data, ctx) {
+        const folderCounts = await ctx.prisma.folder.findMany({
+          where: { userId: data.userId },
+        });
+
+        if (folderCounts.length > ENTITY_LIMIT) return null;
         return ctx.prisma.folder.create({ data: { ...data, sample: SAMPLE } });
       },
     });

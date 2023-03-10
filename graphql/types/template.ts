@@ -6,7 +6,8 @@ import {
   objectType,
   stringArg,
 } from "nexus";
-import { SAMPLE } from "../../lib/public";
+import { TemplateType } from "../../features/template/templateType";
+import { ENTITY_LIMIT, SAMPLE } from "../../lib/public";
 
 const Xamp = objectType({
   name: "Xamp",
@@ -95,10 +96,20 @@ export const TemplateMutation = extendType({
         fronts: list(FieldsListInputType),
         backs: list(FieldsListInputType),
       },
-      resolve(par, data: any, ctx) {
-        return ctx.prisma.template.create({
+      async resolve(par, data, ctx) {
+        const templatesCounts = await ctx.prisma.template.findMany({
+          where: { userId: data?.userId, deleted: false },
+        });
+
+        console.log(`templatesCounts`, templatesCounts?.length);
+
+        if (templatesCounts?.length >= ENTITY_LIMIT) {
+          return null;
+        }
+        const template = await ctx.prisma.template.create({
           data: { ...data, sample: SAMPLE },
         });
+        return template;
       },
     });
 

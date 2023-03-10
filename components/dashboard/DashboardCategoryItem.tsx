@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { DashboardType } from "../../features/app/appSlice";
+import _useLevelValues_ from "../../lib/utils/_useLevelValues_";
+import _usePercentage from "../../lib/utils/_usePercentage";
 import Pie from "../elements/Pie";
-import { dashType } from "./DashboardMainContent";
 
 export default function DashboardCategoryItem({
   data,
@@ -16,8 +17,8 @@ export default function DashboardCategoryItem({
   text: string;
   total: number;
 }) {
-  const cards = data?.filter((i: any) => i?.[field] == value);
-  const x = cards?.reduce(
+  const cardsByCategoryStats = data?.filter((i: any) => i?.[field] == value);
+  const totalCardsStats = cardsByCategoryStats?.reduce(
     (s, f) => {
       s.count += f._count.id;
       return s;
@@ -25,13 +26,9 @@ export default function DashboardCategoryItem({
     { count: 0 }
   );
 
-  const card = cards?.[0];
-
-  const valueColo = () =>
-    value === "normal" ? "lime" : value === "easy" ? "orange" : "pink";
   return (
     <div
-      className={`card card-ring  animate-pop flex-col flex-1 px-6 py-4 rounded-3xl md:max-w-[220px] shadow-[1px_22px_51px_0px_rgba(132,132,132,0.15)] cursor-pointer hover:scale-105 transition hover:shadow-2xl hover:shadow-slate-300 dark:hover:shadow-black
+      className={`card card-ring  animate-pop flex-col flex-1 px-6 py-4 rounded-3xl md:max-w-[250px] shadow-[1px_22px_51px_0px_rgba(132,132,132,0.15)] cursor-pointer hover:scale-105 transition hover:shadow-2xl hover:shadow-slate-300 dark:hover:shadow-black
         `}
     >
       <div className="flex gap-3 justify-between">
@@ -43,16 +40,23 @@ export default function DashboardCategoryItem({
             height={28}
           />
           <h4 className={" font-bold text-accent "}>{text}</h4>
-          <h5 className=" text-sec py-1">{x?.count} cards</h5>
+          <div className="leading-[1]">
+            {cardsByCategoryStats?.length >= 2 &&
+              cardsByCategoryStats?.map((stat) => (
+                <div className=" text-sec " key={stat.level}>
+                  <small>
+                    {_useLevelValues_(stat.level)} {stat?._count?.id}
+                  </small>
+                </div>
+              ))}
+          </div>
         </div>
 
         <div className=" flex flex-col justify-end items-center">
-          <Pie value={67} />
+          <Pie value={_usePercentage(totalCardsStats?.count, total)} />
           <div className="flex  gap-2 items-center pt-1 text-sm text-value ">
-            {card?.level}
-            <small className="  font-semibold  ">
-              {card?._count?.id + card?._count?.id || 0}
-            </small>
+            {totalCardsStats?.count}
+            <small className="  font-semibold  ">Cards</small>
           </div>
         </div>
       </div>

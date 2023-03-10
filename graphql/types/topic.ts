@@ -1,6 +1,6 @@
 import { prisma } from "@prisma/client";
 import { extendType, nonNull, objectType, stringArg } from "nexus";
-import { SAMPLE } from "../../lib/public";
+import { ENTITY_LIMIT, SAMPLE } from "../../lib/public";
 import { Card } from "./card";
 
 export const Topic = objectType({
@@ -92,16 +92,21 @@ export const TopicMutation = extendType({
         folderId: nonNull(stringArg()),
         templateId: nonNull(stringArg()),
       },
-      async resolve(par, data: any, ctx) {
-        console.log("c topic -----");
-        const x: any = await ctx.prisma.topic.create({
+      async resolve(par, data, ctx) {
+        const topicsCount = await ctx.prisma.topic.findMany({
+          where: { folderId: data.folderId },
+        });
+
+        if (topicsCount?.length >= ENTITY_LIMIT) {
+          return null;
+        }
+
+        return await ctx.prisma.topic.create({
           data: { ...data, sample: SAMPLE },
           include: {
             Template: true,
           },
         });
-        console.log("x ", x);
-        return x;
       },
     });
 

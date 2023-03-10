@@ -1,8 +1,6 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import useDashboard from "../../features/card/useDashboard";
-import Pie from "../elements/Pie";
 import DashboardCategoryItem from "./DashboardCategoryItem";
 import DashboardLevelItem from "./DashboardLevelItem";
 import DashboardMain from "./DashboardMain";

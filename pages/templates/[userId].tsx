@@ -1,4 +1,3 @@
-import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { PrismaClient } from "@prisma/client";
 import { GetStaticProps } from "next";
 import TemplatePage from "../../components/template/TemplatePage";
@@ -23,6 +22,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     select: { id: true, dbid: true, name: true },
   });
 
+  console.log(`user`, user);
+
   let templates = await prisma.template.findMany({
     where: { OR: [{ userId: user?.id }, { sample: true }] },
     select: {
@@ -45,19 +46,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     sampleServerTemplates,
   };
 
-  console.log(`template page templates: `, templates);
+  console.log(`template page templates: `, templates?.length);
   console.log(`template page serverProps: `, props);
 
   return { props };
 };
-
-// export const getStaticProps = withPageAuthRequired({
-//   async getServerSideProps(ctx) {
-//     const defTempId = process.env.DEF_TEMP;
-//     const session = getSession(ctx.req, ctx.res);
-//     await initUser(session?.user);
-//     return {
-//       props: { defTempId },
-//     };
-//   },
-// });

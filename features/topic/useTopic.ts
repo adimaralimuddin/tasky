@@ -4,7 +4,7 @@ import request, { gql } from "graphql-request";
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
 import { TopicIcon } from "../../lib/icons";
-import { DEF_USER } from "../../lib/public";
+import { DEF_USER, ENTITY_LIMIT } from "../../lib/public";
 import { RootState } from "../../store";
 import { setTopicOpenState } from "../app/appSlice";
 import useFolderGetter from "../app/folders/useFolderGetter";
@@ -52,6 +52,17 @@ export default function useTopic() {
   });
 
   const createTopic = (topicPayload: TopicType) => {
+    const topicTotal: TopicType[] | undefined = client.getQueryData([
+      "topics",
+      getSelectedFolder(),
+    ]);
+    if ((topicTotal?.length || 0) >= ENTITY_LIMIT) {
+      alert(
+        `i'm limiting the creation of topics to five for security and database free tier reasons.`
+      );
+      return;
+    }
+
     const id = nanoid();
     const folderId = getSelectedFolder();
     const userId = user?.sub || DEF_USER;

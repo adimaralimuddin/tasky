@@ -7,8 +7,6 @@ import { FieldType } from "../../../../features/card/CardType";
 import useCardAdder from "../../../../features/card/useCardAdder";
 import useTopicGetter from "../../../../features/topic/useTopicGetter";
 import { ImageIcon, Mp3, XIcon } from "../../../../lib/icons";
-import BtnBack from "../../../elements/BtnBack";
-import BtnPrime from "../../../elements/BtnPrime";
 import ContentHeader from "../../../elements/ContentHeader";
 import CardQueryView from "../../viewer/CardQueryView";
 import CardEditormodeToggler from "./CardEditormodeToggler";
@@ -28,7 +26,7 @@ export default function CardAdder({ classId }: { classId: string | any }) {
 }
 
 export function AdderItem({ index, classId }: any) {
-  const firstInputref = useRef(null);
+  // const firstInputref = useRef(null);
   const { fronts: fronts_, backs: backs_ } = useFieldsGetter().getFieldsRaw();
   const topic = useTopicGetter().getSelectedTopic();
   const { addCard } = useCardAdder();
@@ -47,8 +45,6 @@ export function AdderItem({ index, classId }: any) {
       fronts,
       backs,
     };
-
-    // console.log(`card data to add`, data);
 
     addCard(data, () => {
       // clear fields from local storage

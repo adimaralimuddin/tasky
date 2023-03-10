@@ -19,7 +19,11 @@ export default function useClassAdder() {
       // Ui check if user had reach the limit to create more class
       if (!checkLimit()) {
         console.log(`you have reach the limit to create class!`);
-        alert("you have reach the limit to create class!");
+        alert(
+          `i am limiting the creation of classes to only five for security reason!
+          every entity will be limited accordingly. 
+          `
+        );
         return null;
       }
       try {
@@ -38,7 +42,6 @@ export default function useClassAdder() {
     onSuccess(addedClass) {
       try {
         client.setQueryData(["classes", user?.sub], (classes: any) => {
-          console.log(`pclasses`, classes);
           if (classes?.length) {
             return classes.map((c: ClassType) => {
               if (!c.id && c?.name === addedClass?.name) {

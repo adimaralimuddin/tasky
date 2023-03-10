@@ -31,8 +31,7 @@ export default function TemplateItem({ template, editable = true }: props) {
     <div
       onClick={() => setOpen((p) => !p)}
       className={
-        "card card-shadow card-ring hover:shadow-xl hover:shadow-slate-200 dark:hover:shadow-black transition col_  gap-0 flex-1 justify-center cursor-pointer min-w-[200px] sm:max-w-[280px] min-h-[130px] " +
-        (template?.sample && " ring-2 dark:ring-indigo-400 ")
+        "card card-shadow card-ring hover:shadow-xl hover:shadow-slate-200 dark:hover:shadow-black transition col_  gap-0 flex-1 justify-center cursor-pointer min-w-[200px] sm:max-w-[280px] min-h-[100px] "
       }
     >
       <h4

@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import _fileReader from "../../lib/utils/_fileReader";
 import useTopicGetter from "../topic/useTopicGetter";
 import { CardUrl, fieldsSolve } from "./cardApi";
+import { CardTypes } from "./CardType";
 
 export default function useCardAdder() {
   const { user } = useUser();
@@ -18,10 +19,8 @@ export default function useCardAdder() {
       // cardPayload.fronts = await Promise.all(
       cardPayload?.fronts?.map(async (f) => {
         if (f.value instanceof File) {
-          // console.log(`yes a file`);
           const result = await _fileReader(f.value);
           f.value = result;
-          // console.log(`here is the result `, f);
         }
         return f;
       });
@@ -35,9 +34,6 @@ export default function useCardAdder() {
     onSuccess: (createdCard) => {
       console.log("usecards: added", createdCard);
       client.invalidateQueries(["cards", topicId]);
-      // client.setQueryData(["cards", topicId], (cards: any) => {
-      //   return [...cards, createdCard];
-      // });
     },
     onError(x) {
       console.log(`error`, x);
@@ -48,6 +44,25 @@ export default function useCardAdder() {
     data: Omit<PayloadProps, "topicId" | "userId">,
     cb?: any
   ) => {
+    if (
+      data?.fronts?.[0]?.value?.trim() === "" ||
+      data?.backs?.[0]?.value?.trim() === ""
+    ) {
+      console.log(`card's fields are empty`);
+      return;
+    }
+
+    const totalCards: CardTypes[] | undefined = client.getQueryData([
+      "cards",
+      topicId,
+    ]);
+
+    if ((totalCards?.length || 0) >= 20) {
+      alert(`you are only allowed to create over 20 cards.
+      i'm limiting because i use free resources for this projects.`);
+      return;
+    }
+
     cardCreator.mutate({
       id: nanoid(),
       topicId,

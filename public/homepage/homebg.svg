@@ -5,7 +5,8 @@
 <g filter="url(#filter1_d_153_357)">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M3284 1002.67L457.449 1547.14C350.613 1567.72 242.16 1498.95 215.211 1393.54L0 551.725V23H3284V1002.67Z" fill="#EDF2FE"/>
 </g>
-<rect x="2874" y="240" width="259" height="223" rx="46" fill="#F4F6FE"/>
+<rect x="2874" y="240" width="259" height="223" rx="46" fill="#FF0000"/>
+<!-- F4F6FE -->
 <rect x="1775" y="441" width="211" height="202" rx="46" fill="#F4F6FE"/>
 <rect x="956" y="463" width="167" height="128" rx="46" fill="#F4F6FE"/>
 <rect x="856" y="1107" width="201" height="177" rx="46" fill="#F4F6FE"/>

@@ -1,6 +1,5 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "@tanstack/react-query";
-import { TemplatesProps } from "../../components/template/TemplatePage";
 import { templateFields } from "../app/appSlice";
 import { templateApiSampleTemplate, templateApiTemplates } from "./templateApi";
 

@@ -57,6 +57,8 @@ function Input({
           setHasChanged(true);
           props?.onChange?.(e);
         }}
+        autoComplete={"nope"}
+        autoCorrect={false}
         style={{
           cursor: type === "checkbox" ? "pointer" : "text",
           marginLeft: "auto",

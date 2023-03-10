@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { ClassType } from "../../../features/class/classTypes";
 import useClassAdder from "../../../features/class/useClassAdder";
+import { ENTITY_LIMIT } from "../../../lib/public";
 import Input from "../../elements/Input";
 import ClassAdderView from "./ClassAdderView";
 
@@ -18,7 +19,7 @@ function ClassAdder_({ myClasses }: { myClasses: ClassType[] }) {
   const { user } = useUser();
 
   const checkLimit = () => {
-    return myClasses?.length >= 5 ? true : false;
+    return myClasses?.length >= ENTITY_LIMIT ? true : false;
   };
 
   const onAddClassHandler = async () => {
@@ -36,8 +37,10 @@ function ClassAdder_({ myClasses }: { myClasses: ClassType[] }) {
         <ClassAdderView />
       ) : (
         <div>
-          <p>you have reach the limit</p>
-          <h3 className="text-accent">0 class left!</h3>
+          <h3 className="text-accent font-semibold">0 class left!</h3>
+          <p className="text-pink-500 dark:text-pink-400">
+            you have reach the limit
+          </p>
         </div>
       )}
 

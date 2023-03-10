@@ -135,6 +135,15 @@ export const CardMutaion = extendType({
         backs: list(arg({ type: FieldInputType })),
       },
       async resolve(par, arg, ctx) {
+        const cardCounts = await ctx.prisma.card.findMany({
+          where: { topicId: arg.topicId },
+        });
+
+        console.log(`cards counts: `, cardCounts?.length);
+        if (cardCounts?.length >= 20) {
+          return null;
+        }
+
         const ret: any = await ctx.prisma.card.create({
           data: {
             id: arg.id,

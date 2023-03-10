@@ -37,7 +37,7 @@ function ClassItem({
   return (
     <div
       className={
-        "card card-shadow card-ring hover:shadow-xl hover:shadow-slate-200 dark:hover:shadow-black col_ gap-0 flex-1 min-w-[200px] sm:max-w-[280px] transition min-h-[130px]   "
+        "card card-shadow card-ring hover:shadow-xl hover:shadow-slate-200 dark:hover:shadow-black col_ gap-0 flex-1 min-w-[200px] sm:max-w-[280px] transition min-h-[100px]   "
       }
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

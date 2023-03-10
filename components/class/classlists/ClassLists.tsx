@@ -13,7 +13,7 @@ export default function ClassLists({
 }) {
   return (
     <div>
-      <h4 className=" px-3 text-sec pb-2">{title}</h4>
+      <h3 className=" px-3 text-accent font-semibold pb-2">{title}</h3>
       <div className="flex flex-wrap gap-6 ">
         {data?.map((data: ClassType) => (
           <ClassItem data={data} editable={editable} key={data?.id} />

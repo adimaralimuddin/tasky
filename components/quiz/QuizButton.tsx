@@ -15,9 +15,9 @@ function QuizButton({ category }: Props) {
 
   return (
     <div>
-      <div className=" bg-sec flex hover:ring-2 ring-indigo-200  dark:ring-slate-400 text-sm text=-white rounded-xl dark:text-[#A4B3E2]">
+      <div className=" bg-[#E2F5FF] dark:bg-layer-sec flexd text-center hover:ring-2 ring-indigo-200  dark:ring-slate-400 text-sm text=-white rounded-xl dark:text-[#A4B3E2] min-w-[90px] ">
         <p
-          className="pl-3 text-slate-600d p-1 "
+          className="font-semibold text-slate-600d p-1 text-[#5585a1] dark:text-[#A4B3E2]  "
           onClick={(e) => {
             e.stopPropagation();
             onJustPlay();
@@ -25,9 +25,9 @@ function QuizButton({ category }: Props) {
         >
           Quiz
         </p>
-        <span className=" col_ justify-center px-2 text-whited ">
+        {/* <span className=" col_ justify-center px-2 text-whited ">
           <DownIcon />
-        </span>
+        </span> */}
       </div>
     </div>
   );

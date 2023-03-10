@@ -1,8 +1,7 @@
 import { UserProfile, useUser } from "@auth0/nextjs-auth0";
-import { useQueryClient } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React from "react";
 import { TemplateType } from "../../features/template/templateType";
 import useTemplates from "../../features/template/useTemplates";
 import LayoutMainHeader from "../layouts/LayoutMainHeader";
@@ -18,23 +17,16 @@ const TemplateAdder = dynamic(() => import("./templateEditor/TemplateAdder"));
 
 export default function TemplatePage(props: TemplatesProps) {
   const { user } = useUser();
-  const client = useQueryClient();
-  const userId = props?.user?.id || user?.sub;
-
-  useEffect(() => {
-    // client.setQueryData(["templates", userId], () => {
-    //   return props.myServerTemplates;
-    // });
-    // client.setQueryData(["sampleTemplates"], () => {
-    //   return props.sampleServerTemplates;
-    // });
-  }, [props]);
-
   const queryTemplates = useTemplates();
   const myTemplates =
     queryTemplates?.myTemplatesData || props.myServerTemplates;
   const sampleTemplates =
     queryTemplates?.sampleTemplatesData || props.sampleServerTemplates;
+
+  // console.log(`sampleTemplates server:`, props.sampleServerTemplates);
+  // console.log(`myTemplates`, myTemplates);
+
+  console.log(`props`, props);
 
   return (
     <div>
@@ -43,22 +35,33 @@ export default function TemplatePage(props: TemplatesProps) {
       </Head>
       <LayoutMainHeader />
       <div className="col_ gap-0 container max-w-4xl mx-auto flex-1 p-[3%] content-center">
-        <div className="flex_ justify-end">
-          <TemplateAdder />
+        <div>
+          {!user && (
+            <h2 className="pt-3 text-sec">
+              Login to see or create your own templates.
+            </h2>
+          )}
         </div>
-        <br />
-        <TemplatesGroup title="my templates">
-          {myTemplates?.map((template: TemplateType) => (
-            <TemplateItem template={template} key={template.id} />
-          ))}
-        </TemplatesGroup>
+        {user && (
+          <>
+            <div className="flex_ justify-end">
+              <TemplateAdder myTemplates={myTemplates} />
+            </div>
+            <br />
+            <TemplatesGroup title="my templates">
+              {myTemplates?.map((template: TemplateType) => (
+                <TemplateItem template={template} key={template?.id} />
+              ))}
+            </TemplatesGroup>
+          </>
+        )}
         <br />
         <TemplatesGroup title="Sample Templates">
           {sampleTemplates?.map((template: TemplateType) => (
             <TemplateItem
               template={template}
               editable={false}
-              key={template.id}
+              key={template?.id}
             />
           ))}
         </TemplatesGroup>
@@ -76,7 +79,7 @@ function TemplatesGroup({
 }) {
   return (
     <div className="">
-      <h4 className=" text-sec pb-2 px-3">{title}</h4>
+      <h3 className=" text-accent font-semibold pb-2 px-3">{title}</h3>
       <div className="flex_ flex-wrap gap-6">{children}</div>
     </div>
   );

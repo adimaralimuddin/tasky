@@ -24,9 +24,9 @@ function Collapsable({ className = "", open, children }: Props) {
         }
       }}
       className={
-        "  transition-[max-height] overflow-hiddend " +
+        "  transition-[max-height] overflow-hidden  " +
         (open
-          ? " max-h-[150px] opacity-100 "
+          ? " max-h-[200px] opacity-100 "
           : " max-h-0 opacity-40  overflow-hidden ") +
         className
       }

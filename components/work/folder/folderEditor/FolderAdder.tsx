@@ -20,8 +20,6 @@ export default function FolderAdder({ classId }: props) {
   const { addFolder } = useFolderAdder(classId);
 
   const onAddFolderHandler = () => {
-    if (!folderName) return alert("you mast enter a folder name!");
-    // setOpen(false);
     addFolder(folderName);
   };
 
@@ -37,6 +35,7 @@ export default function FolderAdder({ classId }: props) {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              if (!folderName) return alert("you mast enter a folder name!");
               closePop(() => {
                 onAddFolderHandler();
               });

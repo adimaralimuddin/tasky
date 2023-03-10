@@ -32,7 +32,7 @@ export default function ActionButtons() {
         >
           <p
             onClick={(_) => setContent("play")}
-            className="px-3 p-1 cursor-pointer first-letter:"
+            className="px-3 p-1 cursor-pointer flex-1"
           >
             Play
           </p>

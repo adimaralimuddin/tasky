@@ -63,7 +63,7 @@ export default function CardItem({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={
-        "card card-ring animate-pop2 block items-center ring-slate-200d my-3 min-w-[100px] shadow-none   ring-1 p-0 card-ring dark:ring-layer-sec " +
+        "card card-ring animate-pop2d block items-center ring-slate-200d my-3 min-w-[100px] shadow-none   ring-1 p-0 card-ring dark:ring-layer-sec " +
         css
       }
     >

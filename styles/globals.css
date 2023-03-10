@@ -27,14 +27,17 @@
   }
 
   /* BUTTON */
+  .btn {
+    @apply min-w-[90px];
+  }
   .btn-prime {
-    @apply rounded-xl text-[.9rem] bg-[#867bcc] hover:bg-[#7368ba] hover:ring-2 hover:ring-[#d0caff] text-white dark:bg-[#6954a9] dark:text-slate-200 dark:hover:ring-[#a79cf9];
+    @apply btn rounded-xl text-[.9rem] bg-[#867bcc] hover:bg-[#7368ba] hover:ring-2 hover:ring-[#d0caff] text-white dark:bg-[#6954a9] dark:text-slate-200 dark:hover:ring-[#a79cf9];
   }
   .btn-sec {
-    @apply rounded-xl text-[.9rem] font-medium bg-transparent text-[#786cc1] border-2 border-[#867bcc]  hover:border-[#9a8dea]  dark:border-[#8e83d4] dark:text-[#aea5ea] py-1;
+    @apply btn rounded-xl text-[.9rem] font-medium bg-transparent text-[#786cc1] border-2 border-[#867bcc]  hover:border-[#9a8dea]  dark:border-[#8e83d4] dark:text-[#aea5ea] py-1;
   }
   .btn-warm {
-    @apply text-white bg-pink-400 hover:bg-pink-500 hover:ring-2 hover:ring-pink-200 dark:bg-pink-500 dark:hover:bg-pink-600 dark:hover:ring-pink-300;
+    @apply btn text-white bg-pink-400 hover:bg-pink-500 hover:ring-2 hover:ring-pink-200 dark:bg-pink-500 dark:hover:bg-pink-600 dark:hover:ring-pink-300;
   }
 
   /* TEXT */
@@ -302,8 +305,14 @@ h3 {
   /* rotate: -13deg; */
   /* bottom: 0px; */
   /* left: 100px; */
-  border-bottom-left-radius: 130px;
-  box-shadow: 1px 1px 15px rgba(110, 134, 196, 0.27);
+  border-bottom-left-radius: 80px;
+  /* box-shadow: 1px 1px 15px rgba(110, 134, 196, 0.27); */
 
   transform-origin: bottom left;
 }
+
+/* .element-pop {
+  background-color: red;
+  color: blue;
+  fill: green;
+} */

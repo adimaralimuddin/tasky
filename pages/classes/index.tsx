@@ -19,7 +19,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      myClasses: [],
       sampleClasses,
     },
   };

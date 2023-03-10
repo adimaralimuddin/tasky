@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Menu from "./menus/Menu";
 import MenuClasses from "./menus/MenuClasses";
+import MenuTemplates from "./menus/MenuTemplates";
 
 const DynamicUserMenu = dynamic(() => import("../elements/UserHeaderPop"), {
   ssr: false,
@@ -71,13 +72,14 @@ function MainMenus({ css, style = "flex items-center gap-5 ", col }: any) {
   return (
     <div className={style + " " + css}>
       <MenuClasses col={col} />
-      <Link href="/templates">
+      <MenuTemplates col={col} />
+      {/* <Link href="/templates">
         <div>
           <Menu col={col} Icon={TbLayout}>
             templates
           </Menu>
         </div>
-      </Link>
+      </Link> */}
     </div>
   );
 }

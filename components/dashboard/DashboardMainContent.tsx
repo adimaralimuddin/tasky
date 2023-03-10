@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React from "react";
 import useDashboard from "../../features/card/useDashboard";
 import DashboardCategoryItem from "./DashboardCategoryItem";
@@ -11,46 +10,21 @@ export type dashType = {
   _count: { id: number };
 };
 
-export default function DashboardMainContent({ serverState }: any) {
-  const serverDashboards = serverState?.dashboard;
-
-  const {
-    query: { classId },
-  } = useRouter();
-
-  const { data: dashboard } = useDashboard(classId, serverDashboards);
-
-  const total = dashboard?.reduce(
-    (total: number, d: dashType) => total + d._count.id,
-    0
-  );
+export default function DashboardMainContent() {
+  const { data: dashboard, getTotal } = useDashboard();
+  const total = getTotal();
 
   return (
     <div className="flex-1 col_ animate-fadein  container max-w-5xl mx-auto pt-4 ">
-      <DashboardMain total={total} />
+      <DashboardMain />
       <h4 className="subtitle_ ">
         cards by{" "}
         <span className="text-sec font-semibold text-lg px-1">Level</span>
       </h4>
       <div className="flex gap-7 flex-wrap ">
-        <DashboardLevelItem
-          data={dashboard}
-          text="learning"
-          value="normal"
-          total={total}
-        />
-        <DashboardLevelItem
-          data={dashboard}
-          text="remembered"
-          value="easy"
-          total={total}
-        />
-        <DashboardLevelItem
-          data={dashboard}
-          text="forgotten"
-          value="hard"
-          total={total}
-        />
+        <DashboardLevelItem data={dashboard} text="learning" value="normal" />
+        <DashboardLevelItem data={dashboard} text="remembered" value="easy" />
+        <DashboardLevelItem data={dashboard} text="forgotten" value="hard" />
       </div>
 
       <h4 className="subtitle_ ">

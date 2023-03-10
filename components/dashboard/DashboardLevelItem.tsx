@@ -6,9 +6,8 @@ interface Props {
   data: DashboardType[];
   text: string;
   value: LevelType;
-  total: number;
 }
-function DashboardLevelItem({ data, text, value, total }: Props) {
+function DashboardLevelItem({ text, value, data }: Props) {
   const cardsByLevelStats = data?.filter((i: any) => i?.level == value);
 
   const totalCardsStats = cardsByLevelStats?.reduce(
@@ -30,7 +29,7 @@ function DashboardLevelItem({ data, text, value, total }: Props) {
           className={"p-1 mx-2 rounded-xl max-w-[40px] dark:opacity-60 "}
         ></div>
         <div className="flex_ justify-between gap-1 flex-wrap pr-1 flex-1 pt-2">
-          {cardsByLevelStats?.length >= 2 &&
+          {(cardsByLevelStats?.length || 0) >= 2 &&
             cardsByLevelStats?.map((stat) => (
               <div
                 className="text-sm py-1 flex_ text-sec leading-[.5] "

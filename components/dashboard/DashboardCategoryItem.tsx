@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { DashboardType } from "../../features/app/appSlice";
+import useDashboard from "../../features/card/useDashboard";
 import _useLevelValues_ from "../../lib/utils/_useLevelValues_";
 import _usePercentage from "../../lib/utils/_usePercentage";
 import Pie from "../elements/Pie";
@@ -17,6 +18,8 @@ export default function DashboardCategoryItem({
   text: string;
   total: number;
 }) {
+  // const { getTotal } = useDashboard();
+  // const total = getTotal();
   const cardsByCategoryStats = data?.filter((i: any) => i?.[field] == value);
   const totalCardsStats = cardsByCategoryStats?.reduce(
     (s, f) => {

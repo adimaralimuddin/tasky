@@ -17,9 +17,9 @@ function DashboardMain({ total }: Props) {
       []
     );
 
-  const passed = dashboard.find((d) => d.category === "passed");
-  const left = dashboard.find((d) => d.category === "left");
-  const new_ = dashboard.find((d) => d.category === "new");
+  // const passed = dashboard.find((d) => d.category === "passed");
+  // const left = dashboard.find((d) => d.category === "left");
+  // const new_ = dashboard.find((d) => d.category === "new");
 
   // const res =
   //   ((passed?._count?.id - (new_?._count?.id + left?._count?.id) / 2) / total) *

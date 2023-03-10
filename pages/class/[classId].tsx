@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import WorkPage from "../../components/work/WorkPage";
+const prisma = new PrismaClient();
 
 export default WorkPage;
 
 export async function getStaticPaths<getStaticPaths>() {
-  const prisma = await new PrismaClient();
   const classes = await prisma.class.findMany({ select: { id: true } });
 
   const paths = classes?.map((class_) => ({
@@ -18,7 +18,6 @@ export async function getStaticPaths<getStaticPaths>() {
 }
 
 export async function getStaticProps(ctx: any) {
-  const prisma = await new PrismaClient();
   const { params } = ctx;
   const classId = params?.classId;
   const dashboard = await getDashboard();

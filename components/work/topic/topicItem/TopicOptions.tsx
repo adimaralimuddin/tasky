@@ -1,9 +1,9 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
 import useContentSetter from "../../../../features/app/contents/useContentSetter";
+import useClassGetter from "../../../../features/class/useClassGetter";
 import { TopicType } from "../../../../features/topic/topicType";
 import { Pencil, Plus, Trash } from "../../../../lib/icons";
-import { DEF_USER } from "../../../../lib/public";
 import Option from "../../../elements/Option";
 
 type Props = {
@@ -20,6 +20,7 @@ export default function TopicOptions({
 }: Props) {
   const { user } = useUser();
   const { setContent } = useContentSetter();
+  const { class_ } = useClassGetter();
 
   const options = () => {
     const ret = [
@@ -43,7 +44,7 @@ export default function TopicOptions({
     if (user?.sub) {
       return user?.sub == data?.userId ? ret : notUserOptions;
     } else {
-      return data?.userId !== DEF_USER ? notUserOptions : ret;
+      return class_?.sample ? ret : notUserOptions;
     }
   };
 

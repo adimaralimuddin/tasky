@@ -1,15 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
+import { useRouter } from "next/router";
 import { dashType } from "../../components/dashboard/DashboardMainContent";
 import { DashboardType } from "../app/appSlice";
+import useClassGetter from "../class/useClassGetter";
 import useServerState from "../dateState/useServerState";
 import { CardUrl } from "./cardApi";
 
 export default function useDashboard() {
-  const { class_ } = useServerState();
-  const classId = class_?.id;
-  const dashboard = useQuery(["dashboard", classId], () =>
-    cardApiDashboard(classId)
+  // const { class_ } = useServerState();
+  const class_ = useClassGetter().getClass();
+  const { query } = useRouter();
+
+  const classId = class_?.id || String(query?.classId);
+  const dashboard = useQuery<DashboardType[]>(
+    ["dashboard", classId],
+    () => cardApiDashboard(classId),
+    {
+      onSuccess(data) {
+        // console.log(`dashboard query=`, data);
+      },
+      onError(err) {
+        console.log(`Error: dashboard query onError = `, err);
+      },
+    }
   );
 
   const getTotal = () => {
@@ -21,12 +35,13 @@ export default function useDashboard() {
   };
 
   return {
+    dashboard,
     ...dashboard,
     getTotal,
   };
 }
 
-export async function cardApiDashboard(classId: any) {
+export async function cardApiDashboard(classId: any): Promise<DashboardType[]> {
   const q = gql`
     query Query($classId: String!) {
       dashboard(classId: $classId) {

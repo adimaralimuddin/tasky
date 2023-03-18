@@ -1,13 +1,13 @@
 import React from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useCardMutation } from "../../../../features/card/useCardMutation";
+import useCardDeleter from "../../../../features/card/useCardDeleter";
 import Verifier from "../../../elements/Verifier";
 
 interface Props {
   isDeleting: boolean;
   setIsDeleting: any;
   topicId: string | undefined;
-  userId: string;
+  userId: string | undefined;
   cardId: string;
   editorMode: boolean;
 }
@@ -19,7 +19,7 @@ function CardDeleter({
   cardId,
   editorMode,
 }: Props) {
-  const { deleteCard } = useCardMutation(topicId);
+  const { deleteCard } = useCardDeleter(topicId);
 
   if (!topicId) return null;
 

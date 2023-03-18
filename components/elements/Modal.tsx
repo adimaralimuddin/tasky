@@ -5,7 +5,7 @@ type ClosePopType = (cb?: (open?: boolean, done?: boolean) => any) => any;
 interface Props {
   children: (closePop: ClosePopType) => any;
   open: boolean;
-  setOpen?: any;
+  setOpen: any;
   css?: string;
   className?: string;
 }
@@ -22,7 +22,6 @@ export default function Modal({
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
-      console.log(`hello `);
     }
     return () => {
       document.body.style.overflow = "auto";
@@ -35,7 +34,7 @@ export default function Modal({
 
   const CloseIcon = ({ css, iconCss, ...props }: any) => (
     <div
-      className="relative flex justify-end z-[999] p-0 m-0 "
+      className="relative flex justify-end z-[10] p-0 m-0 "
       onClick={stopPropa}
       onMouseEnter={stopPropa}
       onMouseDown={stopPropa}
@@ -67,7 +66,7 @@ export default function Modal({
   return (
     <div
       className={
-        "top-0 left-0 w-full h-full min-h-screen backdrop-blur-sm bg-opacity-60 fixed  overflow-hidden flex items-center justify-center bg-slate-900 flex-col z-[999] p-2 gap-0 overflow-y-auto  "
+        "fixed top-0 left-0 w-full h-full min-h-screen backdrop-blur-sm bg-opacity-60   overflow-hidden flex items-center justify-center bg-slate-900 flex-col z-[999] p-2 gap-0 overflow-y-auto  "
       }
       onClick={(e) => {
         console.log(`clickout`, e.target);
@@ -89,7 +88,7 @@ export default function Modal({
         }}
         onClick={stopPropa}
         className={
-          "card-all animate-pop2 shadow-slate-600 max-w-mdd w-full col_ p-6 " +
+          "card card-shadow card-ring z-[20] animate-pop2 shadow-slate-600 w-full col_ p-6 " +
           className
         }
       >

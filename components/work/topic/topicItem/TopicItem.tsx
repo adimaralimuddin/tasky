@@ -53,7 +53,7 @@ export default function TopicItem({ data }: props) {
           if (div.classList.contains("popy")) setChangedName(false);
         }}
         className={
-          "cursor-pointer flex items-center   dark:hover:bg-layer-100 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d hover:bg-slate-50 active:scale-105 ring-1d  " +
+          "cursor-pointer flex items-center   dark:hover:bg-layer-100 px-2 p-[2px] rounded-lg text-slate-700 justify-between min-h-[20px]d ring-1d hover:bg-slate-50 active:scale-[1.03] " +
           isTopicSelected(
             data?.id,
             " bg-indigo-100 hover:bg-indigo-200 dark:bg-primary-dark dark:hover:bg-violet-500 ",

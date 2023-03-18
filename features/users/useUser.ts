@@ -3,16 +3,15 @@ import request, { gql } from "graphql-request";
 
 const userId = "cl6uancai0022mcjo96jb051y";
 
+export default function useUser() {
+  const query = useQuery(["users"], () => getUsers(userId));
+  return query;
+}
+
 const getUsers = async (userId: string) => {
   const res = await request("/api/graphql", query, { userId });
   return res?.user;
 };
-
-export default function useUser() {
-  const query = useQuery(["users"], () => getUsers(userId));
-
-  return query;
-}
 
 const query = gql`
   query Query($userId: String!) {

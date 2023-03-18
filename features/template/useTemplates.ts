@@ -6,14 +6,30 @@ import { templateApiSampleTemplate, templateApiTemplates } from "./templateApi";
 export default function useTemplates() {
   const { user } = useUser();
   const userId = user?.sub;
-  const myTemplates = useQuery(["templates", userId], async () => {
-    const res = await templateApiTemplates({ userId });
-    return res;
-  });
+  const myTemplates = useQuery(
+    ["templates", userId],
+    async () => templateApiTemplates({ userId }),
+    {
+      onError(error) {
+        console.log(
+          `Error:
+        @useTemplates/myTemplates
+        msg: `,
+          error
+        );
+      },
+    }
+  );
 
   const sampleTemplates = useQuery(
-    ["sampleTemplates"],
-    templateApiSampleTemplate
+    ["sampleTemplates", userId],
+    templateApiSampleTemplate,
+    {
+      onSuccess(data) {},
+      onError(error) {
+        console.log(`Error: useTemplates/sampleTemplates query : `, error);
+      },
+    }
   );
 
   const sampleTemplatesParsed = () => {

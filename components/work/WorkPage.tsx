@@ -5,21 +5,21 @@ import WorkContent from "./workContent/WorkContent";
 import WorkHeader from "./workHeader/WorkHeader";
 import WorkSide from "./WorkSide/WorkSideMain";
 
-export default function WorkPage({ post }: any) {
+export default function WorkPage({ pageInitialData }: any) {
   const { initClientState } = useClientState();
   const { initServerState } = useServerState();
 
   useEffect(() => {
-    initClientState(post);
-    initServerState(post);
+    initClientState(pageInitialData);
+    initServerState(pageInitialData);
   }, []);
 
   return (
     <div className=" min-h-screen flex-col flex   ">
       <div className="flex flex-1">
-        <WorkSide post={post} />
+        <WorkSide />
         <div className="flex-[3] flex flex-col border-b-1 shadow-sm ">
-          <WorkHeader serverState={post} />
+          <WorkHeader />
           <WorkContent />
         </div>
       </div>

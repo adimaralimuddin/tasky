@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { LevelType } from "../../../features/app/appSlice";
 import { CardTypes } from "../../../features/card/CardType";
+import usePlay from "../../../features/play/usePlay";
 import { LEVEL_EASY, LEVEL_HARD, LEVEL_NORMAL } from "../../../lib/public";
+import _usePercentage from "../../../lib/utils/_usePercentage";
 import {
   _useScoreColors,
   _useScoremessage,
@@ -21,6 +23,9 @@ type props = {
   setFinish: any;
   playInd: number;
   setPlayInd: any;
+  hideHeader?: boolean;
+  isCardEditable?: boolean;
+  showAllFields?: boolean;
 };
 type Selected = {
   text: string;
@@ -31,6 +36,9 @@ export default function PlayFinish({
   setFinish,
   cards = [],
   setPlayInd,
+  hideHeader,
+  isCardEditable,
+  showAllFields,
 }: props) {
   const [selected, setSelected] = useState<Selected>({
     text: "",
@@ -39,18 +47,9 @@ export default function PlayFinish({
   });
   const [open, setOpen] = useState<boolean>(false);
 
-  const filter = (filterType: string = "easy") =>
-    cards?.filter((card) => card.level == filterType);
-
-  const easyCards = filter("easy");
-  const normalCards = filter("normal");
-  const hardCards = filter("hard");
-
-  const score = Math.floor(
-    ((easyCards?.length + normalCards?.length / 2) / cards?.length) * 100
-  );
-
-  console.log(`cards`, cards);
+  const { getPlayScore } = usePlay();
+  const { score, easyCards, normalCards, hardCards, filter } =
+    getPlayScore(cards);
 
   const onRepeatHandler = () => {
     setPlayInd(0);
@@ -65,10 +64,12 @@ export default function PlayFinish({
   return (
     <div className="flex-1 animate-fadein">
       <div className="flex flex-col flex-1 ">
-        <div className="flex_">
-          <TopicTitle extraPath="play finish" />
-          <BtnBack />
-        </div>
+        {!hideHeader && (
+          <div className="flex_">
+            <TopicTitle extraPath="play finish" />
+            <BtnBack />
+          </div>
+        )}
         <div className="flex justify-between py-[3%] items-start max-w-3xl">
           <div>
             <h1 className="font-bold  text-3xl text-value ">Play Completed!</h1>
@@ -120,9 +121,15 @@ export default function PlayFinish({
       <div>
         <h3 className="text-accent font-semibold my-2 mt-4">Result Cards</h3>
 
-        {cards?.map((c) => (
-          <div key={c.id}>
-            <CardItem card={c} />
+        {cards?.map((card, ind) => (
+          <div key={card.id}>
+            <CardItem
+              card={card}
+              allowOption={isCardEditable}
+              showAllFields={showAllFields}
+              index={true}
+              listInd={ind}
+            />
           </div>
         ))}
       </div>
@@ -131,6 +138,8 @@ export default function PlayFinish({
         selected={selected}
         open={open}
         setOpen={setOpen}
+        isCardEditable={isCardEditable}
+        showAllFields={showAllFields}
       />
     </div>
   );

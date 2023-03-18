@@ -16,10 +16,13 @@ function FolderItemTopics({ setSelected, id, open }: Props) {
   return (
     <div
       className={
-        "ml-3 animate-pop border-l-2 px-2 dark:border-layer-100 flex-1 "
+        "ml-3 animate-pop border-l-2 px-2 dark:border-layer-100 flex-1 pt-1d "
       }
     >
-      <Collapsable open={open} className="p-2d col_ gap-[2px]">
+      <Collapsable
+        open={open}
+        className={" col_ gap-[2px] px-2 " + (open && " pt-1 ")}
+      >
         {topics?.map((topic: TopicType) => (
           <TopicItem key={topic.id} data={topic} selectFolder={setSelected} />
         ))}

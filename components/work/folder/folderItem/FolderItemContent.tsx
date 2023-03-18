@@ -54,7 +54,6 @@ function FolderItemContent({
         classId={classId}
       />
       <FolderDeleter
-        classId={classId}
         data={data}
         deleteFolderId={data.id}
         isDeleting={isDeleting}

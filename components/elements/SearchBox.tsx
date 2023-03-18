@@ -6,7 +6,7 @@ export default function SearchBox({ css, children, ...props }: any) {
   return (
     <div
       className={
-        "bg-white dark:bg-layer-sec shadow-sm items-center px-2 rounded-xl overflow-hidden flex flex-1 " +
+        "bg-white dark:bg-layer-sec shadow-sm items-center px-2 rounded-xl overflow-hidden flex flex-1 min-w-[200px] " +
         (foc && " ring-2 ring-slate-200 dark:ring-[#606f9a] ") +
         css
       }

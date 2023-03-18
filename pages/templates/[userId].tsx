@@ -22,8 +22,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     select: { id: true, dbid: true, name: true },
   });
 
-  console.log(`user`, user);
-
   let templates = await prisma.template.findMany({
     where: { OR: [{ userId: user?.id }, { sample: true }] },
     select: {
@@ -34,6 +32,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
       id: true,
       sample: true,
       userId: true,
+    },
+    orderBy: {
+      createdAt: "asc",
     },
   });
 

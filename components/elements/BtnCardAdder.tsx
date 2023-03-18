@@ -15,13 +15,9 @@ export default function BtnCardAdder() {
   };
 
   if (user?.sub) {
-    if (topic?.userId !== user?.sub) {
-      return <></>;
-    }
+    if (topic?.userId !== user?.sub) return null;
   } else {
-    if (topic?.userId !== DEF_USER) {
-      return <></>;
-    }
+    if (topic?.userId !== DEF_USER) return null;
   }
 
   return (

@@ -6,6 +6,7 @@ import { TopicType } from "../topic/topicType";
 const initialState: AppStateType = {
   //selectedTopic,selectedFolderId, fronts,backs, content
   topicAdderOpenState: false,
+  // content: "dashboard",
 };
 
 const appSlice = createSlice({

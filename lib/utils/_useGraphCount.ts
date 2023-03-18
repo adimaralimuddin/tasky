@@ -4,6 +4,7 @@ function _useGraphCount(value: number, speed: number = 10) {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
+    setCounter(0);
     const sett = setInterval(() => {
       setCounter((p) => {
         if (value === 0) {
@@ -27,8 +28,9 @@ function _useGraphCount(value: number, speed: number = 10) {
 
     return () => {
       clearInterval(sett);
+      setCounter(0);
     };
-  }, []);
+  }, [value]);
   return {
     counter,
     value,

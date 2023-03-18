@@ -7,10 +7,12 @@ type Card {
   _count: Count
   backs: [Field]
   category: String
+  classId: String
   def: Boolean
   description: String
   fronts: [Field]
   id: String
+  ind: String
   level: String
   name: String
   sample: Boolean
@@ -46,6 +48,11 @@ type Dashboard {
   level: String
 }
 
+type DbResponse {
+  isError: Boolean
+  msg: String
+}
+
 type Field {
   backId: String
   frontId: String
@@ -75,24 +82,25 @@ type Folder {
 }
 
 type Mutation {
+  addCard(backs: [CommentInputType], category: String = "new", classId: String!, description: String, fronts: [CommentInputType], id: String!, ind: Int!, level: String = "hard", name: String!, topicId: String!, userId: String): Card
   addField(backId: String, frontId: String, id: String!, ind: Int!, text: String!, type: String!, value: String!, viewId: String!): Field
-  createCard(backs: [CommentInputType], category: String = "new", description: String, fronts: [CommentInputType], id: String!, level: String = "hard", name: String!, topicId: String!, userId: String!): Card
-  createClass(description: String, name: String!, userId: String): Class!
+  addStat(classId: String!, easy: Int!, easyCards: [String], hard: Int!, hardCards: [String], normal: Int!, normalCards: [String], time: String!): Stats
+  addTopic(classId: String!, description: String, folderId: String!, id: String!, name: String!, templateId: String!, userId: String): Topic
+  createClass(description: String, id: String!, name: String!, userId: String): Class!
   createFieldFront(frontId: String!, ind: Int!, name: String!, type: String!, value: String!, viewId: String!): Field
   createFolder(classId: String!, name: String!, userId: String!): Folder
   createTemplate(backs: [FieldListInputType], fronts: [FieldListInputType], name: String!, userId: String!): Template
-  createTopic(description: String, folderId: String!, id: String!, name: String!, templateId: String!, userId: String!): Topic
   createUser(email: String!, id: String!, name: String!): User!
-  deleteCard(cardId: String!, userId: String!): Card
+  deleteCard(cardId: String!, classId: String!, userId: String): Card
   deleteClass(classId: String!): Class
-  deleteFolder(id: String!, userId: String!): Folder
+  deleteFolder(classId: String!, id: String!, userId: String): Folder
   deleteTemplate(templateId: String!): Template
-  deleteTopic(topicId: String!, userId: String!): Topic
+  deleteTopic(classId: String!, topicId: String!, userId: String): Topic
   deleteUser(id: String!): User
   renameClass(classId: String!, name: String!): Class
-  renameFolder(folderId: String!, name: String!, userId: String!): Folder
-  renameTopic(name: String!, topicId: String!, userId: String!): Topic
-  setCardLevel(cardId: String!, level: String): Card
+  renameFolder(classId: String!, folderId: String!, name: String!, userId: String!): Folder
+  renameTopic(name: String!, topicId: String!, userId: String): Topic
+  setCardLevel(cardId: String!, classId: String!, level: String, userId: String): Card
   updateClass(classId: String!, description: String, name: String): Class
   updateField(id: String!, newValue: String!, val: String!): Field
   updateTemplate(backs: [FieldListInputType], fronts: [FieldListInputType], id: String!, name: String!, userId: String!): Template
@@ -100,23 +108,37 @@ type Mutation {
 }
 
 type Query {
+  cardsByField(classId: String!, field: String!, value: String!): [Card]
+  cardsByIds(ids: [String]): [Card]
   cardsByTopic(topicId: String!): [Card]
   class(id: String!): Class
   classDashboard(id: String!): Class
-  classes: [Class]!
   dashboard(classId: String!): [Card]
   foldersByClass(classId: String!): [Folder]
+  getTest: TestResponse
   sampleClasses: [Class]
   sampleTemplates: [Template]
+  stats(classId: String!): [Stats]
   template(id: String!): Template
   templates(userId: String!): [Template]
   topic(topicId: String!): Topic
   topicsByFolders(folderId: String!): [Topic]
   user(id: String!): User
-  userByDbid(dbid: String!): User
+  userByDbid(id: String!): User
   userClasses(userId: String!): [Class]
   userTopic(userId: String!): [Topic]
   users: [User]!
+}
+
+type Stats {
+  classId: String
+  easy: Int
+  easyCards: [String]
+  hard: Int
+  hardCards: [String]
+  normal: Int
+  normalCards: [String]
+  time: String
 }
 
 type Template {
@@ -125,11 +147,23 @@ type Template {
   fronts: String
   id: String
   name: String
+  sample: Boolean
   userId: String
 }
 
+type Test {
+  good: String
+}
+
+type TestFailed {
+  msg: String
+}
+
+union TestResponse = Test | TestFailed
+
 type Topic {
   cards: [Card]
+  classId: String
   description: String
   folderId: String
   id: String

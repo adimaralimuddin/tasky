@@ -56,6 +56,9 @@
   .text-value {
     @apply text-[#4e929b] dark:text-[#b9b7ff];
   }
+  .text-warm {
+    @apply text-pink-500 dark:text-pink-400;
+  }
 
   /* BACKGROUNDS */
   .bg-sec {

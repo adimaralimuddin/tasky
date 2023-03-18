@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { ClassType } from "../../../features/class/classTypes";
 import useClassUpdater from "../../../features/class/useClassUpdater";
-import Box from "../../elements/Box";
-import BtnPrime from "../../elements/BtnPrime";
 import BtnWarm from "../../elements/BtnWarm";
 import Input from "../../elements/Input";
 import Modal from "../../elements/Modal";

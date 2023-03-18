@@ -73,14 +73,14 @@ export default function CategoryItem({
         <LevelField
           allCards={allCards}
           cards={cards}
-          filter="hard"
-          text="forgot"
+          filter="normal"
+          text="repeated"
         />
         <LevelField
           allCards={allCards}
           cards={cards}
-          filter="normal"
-          text="recall"
+          filter="hard"
+          text="forgotten"
         />
       </div>
       <div className="flex  py-1 pt-3 justify-end gap-6 z-10">

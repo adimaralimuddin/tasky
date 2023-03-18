@@ -4,7 +4,10 @@ import useCards from "../../../../features/card/useCards";
 import useTopicGetter from "../../../../features/topic/useTopicGetter";
 import CardItem from "../cardItem/CardItem";
 
-function CardLists() {
+interface Props {
+  cardIndex?: boolean;
+}
+function CardLists({ cardIndex }: Props) {
   const topicId = useTopicGetter().getSelectedTopicId();
   const { data } = useCards(topicId);
 
@@ -14,7 +17,13 @@ function CardLists() {
         ?.map((c: CardTypes, ind: number) => ({ ...c, ind }))
         ?.sort((a: any, b: any) => b?.ind - a?.ind)
         ?.map((card: CardTypes, ind: number) => (
-          <CardItem card={card} key={card?.id + ind} index={true} />
+          <CardItem
+            card={card}
+            key={card?.id}
+            index={true}
+            cardIndex={cardIndex}
+            listInd={ind}
+          />
         ))}
     </div>
   );

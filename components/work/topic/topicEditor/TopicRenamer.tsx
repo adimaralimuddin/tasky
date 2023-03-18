@@ -3,7 +3,6 @@ import React from "react";
 import { TopicType } from "../../../../features/topic/topicType";
 import useTopicRenamer from "../../../../features/topic/useTopicRenamer";
 import { DEF_USER } from "../../../../lib/public";
-import Box from "../../../elements/Box";
 import BtnPrime from "../../../elements/BtnPrime";
 import Input from "../../../elements/Input";
 import Modal from "../../../elements/Modal";

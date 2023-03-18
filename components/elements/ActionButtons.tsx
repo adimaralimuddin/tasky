@@ -1,11 +1,19 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
 import useContentSetter from "../../features/app/contents/useContentSetter";
+import useClassGetter from "../../features/class/useClassGetter";
 import { DownIcon, PlusBig, QuizIcon, UpIcon } from "../../lib/icons";
-import Box from "./Box";
 import Popy from "./Popy";
 
-export default function ActionButtons() {
+interface Props {
+  hideCardAdder?: boolean;
+}
+
+
+export default function ActionButtons({ hideCardAdder }: Props) {
   const [open, setOpen] = useState(false);
+  const class_ = useClassGetter().getClass();
+  const { user } = useUser();
 
   const { setContent } = useContentSetter();
 
@@ -14,9 +22,19 @@ export default function ActionButtons() {
     setOpen(false);
   };
 
-  const onAddHandler = () => {
+  const onAddCardHandler = () => {
     setContent("cardadder");
     setOpen(false);
+  };
+
+  const isAbleToCreateClass = () => {
+    if (!user) {
+      return class_ && class_?.sample ? true : false;
+    } else {
+      return class_ && class_.userId !== user.sub && !class_?.sample
+        ? false
+        : true;
+    }
   };
 
   return (
@@ -50,9 +68,11 @@ export default function ActionButtons() {
         <Item onClick={onQuizHandler} Icon={<QuizIcon />}>
           Quiz
         </Item>
-        <Item onClick={onAddHandler} Icon={<PlusBig />}>
-          Card
-        </Item>
+        {!hideCardAdder && isAbleToCreateClass() && (
+          <Item onClick={onAddCardHandler} Icon={<PlusBig />}>
+            Card
+          </Item>
+        )}
       </div>
     </Popy>
   );

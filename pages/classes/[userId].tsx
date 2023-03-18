@@ -28,6 +28,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
       sample: true,
       userId: true,
     },
+    orderBy: {
+      createdAt: "asc",
+    },
   });
 
   const myClasses = classes.filter((c) => c.userId === user?.id);

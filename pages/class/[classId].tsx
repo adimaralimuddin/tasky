@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { GetStaticProps } from "next";
 import WorkPage from "../../components/work/WorkPage";
 const prisma = new PrismaClient();
 
 export default WorkPage;
 
-export async function getStaticPaths<getStaticPaths>() {
+export async function getStaticPaths() {
   const classes = await prisma.class.findMany({ select: { id: true } });
 
   const paths = classes?.map((class_) => ({
@@ -13,13 +14,14 @@ export async function getStaticPaths<getStaticPaths>() {
 
   return {
     paths,
-    fallback: false,
+    fallback: "blocking",
   };
 }
 
-export async function getStaticProps(ctx: any) {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   const { params } = ctx;
-  const classId = params?.classId;
+
+  const classId = String(params?.classId);
   const dashboard = await getDashboard();
   const folders = await getFolders();
   const class_ = await prisma.class.findFirst({
@@ -51,27 +53,62 @@ export async function getStaticProps(ctx: any) {
     return res;
   }
   async function getFolders() {
-    const res = await prisma.folder.findMany({
+    const folders = await prisma.folder.findMany({
       where: { classId },
-      include: {
+      select: {
+        id: true,
+        userId: true,
+        classId: true,
+        name: true,
+        sample: true,
+
         Topic: {
-          include: {
-            Template: true,
-            cards: true,
+          select: {
+            id: true,
+            description: true,
+            folderId: true,
+            name: true,
+            sample: true,
+            templateId: true,
+            userId: true,
+            Template: {
+              select: {
+                id: true,
+                userId: true,
+                name: true,
+                sample: true,
+
+                backs: true,
+                fronts: true,
+              },
+            },
+            cards: {
+              select: {
+                id: true,
+                classId: true,
+                userId: true,
+                topicId: true,
+                ind: true,
+                name: true,
+                description: true,
+                level: true,
+                category: true,
+                sample: true,
+                fronts: true,
+                backs: true,
+              },
+            },
           },
         },
       },
     });
-    // console.log(`'folders = '`, res);
-
-    return res;
+    return folders;
   }
 
-  const post = { dashboard, folders, class_ };
-  console.log(`server: workPage to serverdata ready:`, post);
+  const pageInitialData = { dashboard, folders, class_ };
 
   return {
-    props: { post },
+    props: { pageInitialData },
     revalidate: 10,
   };
-}
+};

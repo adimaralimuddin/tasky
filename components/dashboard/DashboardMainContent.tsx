@@ -12,6 +12,7 @@ export type dashType = {
 
 export default function DashboardMainContent() {
   const { data: dashboard, getTotal } = useDashboard();
+
   const total = getTotal();
 
   return (
@@ -22,9 +23,24 @@ export default function DashboardMainContent() {
         <span className="text-sec font-semibold text-lg px-1">Level</span>
       </h4>
       <div className="flex gap-7 flex-wrap ">
-        <DashboardLevelItem data={dashboard} text="learning" value="normal" />
-        <DashboardLevelItem data={dashboard} text="remembered" value="easy" />
-        <DashboardLevelItem data={dashboard} text="forgotten" value="hard" />
+        <DashboardLevelItem
+          total={total}
+          data={dashboard}
+          text="repeated"
+          value="normal"
+        />
+        <DashboardLevelItem
+          total={total}
+          data={dashboard}
+          text="remembered"
+          value="easy"
+        />
+        <DashboardLevelItem
+          total={total}
+          data={dashboard}
+          text="forgotten"
+          value="hard"
+        />
       </div>
 
       <h4 className="subtitle_ ">

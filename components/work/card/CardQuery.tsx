@@ -20,10 +20,8 @@ export default function CardQuery({
 
   const [type, setType] = useState<Side>("fronts");
   const [filter, setFilter] = useState(template?.fronts?.[0]?.viewId);
-  // console.log(`filterssssss`, filter);
 
   const fields = template;
-  // console.log(`fields`,fields);
 
   const updateFilter = (type_: Side = type) => {
     const x = fields?.[type_]?.find((p: any) => p?.text == filter);
@@ -33,16 +31,12 @@ export default function CardQuery({
   };
 
   const onSearchHandler = (e: any) => {
-    // console.log(`all cards`, cards);
-
     const val = e.target.value?.toLowerCase();
 
     if (val?.trim() === "") {
       setCards(cards);
       return;
     }
-    // console.log(`val`, val);
-    console.log(`filter`, filter);
     const newCards = cards?.filter((card: any) => {
       var ret = false;
       card?.[type]?.map((field: FieldType) => {
@@ -55,8 +49,6 @@ export default function CardQuery({
       });
       return ret;
     });
-
-    console.log(`bew cards`, newCards);
 
     setCards(newCards);
   };

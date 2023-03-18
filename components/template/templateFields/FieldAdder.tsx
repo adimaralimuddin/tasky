@@ -1,13 +1,24 @@
 import { nanoid } from "nanoid";
 import React, { useState } from "react";
 import { FieldType } from "../../../features/card/CardType";
+import { ENTITY_LIMIT } from "../../../lib/public";
 
-export default function FieldAdder({ set }: any) {
+export default function FieldAdder({
+  set,
+  list,
+}: {
+  set: any;
+  list: FieldType[];
+}) {
   const [clicked, setClicked] = useState(false);
   const [text, setText] = useState("");
   const [type, setType] = useState<any>("text");
 
   const onSave = () => {
+    if (list?.length >= ENTITY_LIMIT) {
+      return alert(`i'm limiting the adding of fields to only up to five.`);
+    }
+
     if (text.trim() === "") {
       return alert("must have a text");
     }

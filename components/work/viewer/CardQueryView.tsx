@@ -5,9 +5,7 @@ import useFieldsGetter from "../../../features/app/fields/useFieldsGetter";
 import useFieldsSetter from "../../../features/app/fields/useFieldsSetter";
 import { FieldType } from "../../../features/card/CardType";
 import { ViewIcon } from "../../../lib/icons";
-import Box from "../../elements/Box";
 import Divider from "../../elements/Divider";
-import Modal from "../../elements/Modal";
 import Popy from "../../elements/Popy";
 import CardEditormodeToggler from "../card/cardEditor/CardEditormodeToggler";
 import ViewerFieldsSides from "./ViewerFieldsSides";
@@ -40,75 +38,77 @@ export default function CardQueryView({ right = true }: { right?: boolean }) {
   };
 
   return (
-    <Popy
-      open={open}
-      setOpen={setOpen}
-      header={
-        <div
-          className={
-            "flex text-prime z-[999] bg-white bg-sec shadow-sm select-none cursor-pointer items-center px-2 py-[.2rem] gap-1  rounded-lg transition  " +
-            (open && " ring-2 ring-slate-300 dark:ring-[#606f9a] ")
-          }
-          title="card's field viewer"
-          onClick={(_) => setOpen((p) => !p)}
-        >
-          <ViewIcon className="text-xl" />
-          view
-        </div>
-      }
-    >
-      <div
-        style={{
-          left: right ? "" : 2,
-          right: right ? -80 : "",
-        }}
-        className="card-all z-[999] col_ absolute top-2d left-d2 animate-popd"
-      >
-        <header className="flex_ text-xl text-slate-500">
-          <IconTab onClick={() => setTab(0)} active={tab === 0}>
-            <GoSettings />
-          </IconTab>
-          <IconTab onClick={() => setTab(1)} active={tab === 1}>
-            <MdOutlineAppRegistration />
-          </IconTab>
-        </header>
-        {tab === 0 && (
-          <section>
-            <div className="flex flex-col flex-1 gap-3 ">
-              <ViewerFieldSizes />
-              <Divider />
-              <ViewerFieldsVisibilities />
-              <Divider />
-              <ViewerOtherOptionsA />
-              <CardEditormodeToggler />
-            </div>
-          </section>
-        )}
-
-        {tab == 1 && (
-          <div className="flex-[2] flex flex-col min-w-[200px]">
-            <p className="pb-1 text-[.9rem] text-center text-accent">
-              Properties Visibility.
-            </p>
-            <div className="grid grid-cols-1">
-              <ViewerFieldsSides
-                side="fronts"
-                fields={fields.fronts}
-                setSides={setFronts}
-                setView={setView}
-              />
-              <ViewerFieldsSides
-                side="backs"
-                fields={fields.backs}
-                setSides={setBacks}
-                setView={setView}
-              />
-            </div>
+    <div className={"" + (open && " z-[200] ")}>
+      <Popy
+        open={open}
+        setOpen={setOpen}
+        header={
+          <div
+            className={
+              "flex text-prime bg-white bg-sec shadow-sm select-none cursor-pointer items-center px-2 py-[.2rem] gap-1  rounded-lg transition  " +
+              (open && " ring-2 ring-slate-300 dark:ring-[#606f9a] ")
+            }
+            title="card's field viewer"
+            onClick={(_) => setOpen((p) => !p)}
+          >
+            <ViewIcon className="text-xl" />
+            view
           </div>
-        )}
-        {/* <CardEditormodeToggler /> */}
-      </div>
-    </Popy>
+        }
+      >
+        <div
+          style={{
+            left: right ? "" : 2,
+            right: right ? -80 : "",
+          }}
+          className="card-all col_ absolute z-[200]"
+        >
+          <header className="flex_ text-xl text-slate-500">
+            <IconTab onClick={() => setTab(0)} active={tab === 0}>
+              <GoSettings />
+            </IconTab>
+            <IconTab onClick={() => setTab(1)} active={tab === 1}>
+              <MdOutlineAppRegistration />
+            </IconTab>
+          </header>
+          {tab === 0 && (
+            <section>
+              <div className="flex flex-col flex-1 gap-3 ">
+                <ViewerFieldSizes />
+                <Divider />
+                <ViewerFieldsVisibilities />
+                <Divider />
+                <ViewerOtherOptionsA />
+                <CardEditormodeToggler />
+              </div>
+            </section>
+          )}
+
+          {tab == 1 && (
+            <div className="flex-[2] flex flex-col min-w-[200px]">
+              <p className="pb-1 text-[.9rem] text-center text-accent">
+                Properties Visibility.
+              </p>
+              <div className="grid grid-cols-1">
+                <ViewerFieldsSides
+                  side="fronts"
+                  fields={fields.fronts}
+                  setSides={setFronts}
+                  setView={setView}
+                />
+                <ViewerFieldsSides
+                  side="backs"
+                  fields={fields.backs}
+                  setSides={setBacks}
+                  setView={setView}
+                />
+              </div>
+            </div>
+          )}
+          {/* <CardEditormodeToggler /> */}
+        </div>
+      </Popy>
+    </div>
   );
 }
 

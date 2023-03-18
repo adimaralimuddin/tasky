@@ -3,7 +3,7 @@ import { SideType } from "../app/appSlice";
 
 const initialState = {
   side: "fronts",
-  muted: false,
+  muted: true,
 } as PlayStateTypes;
 export const playSlice = createSlice({
   name: "play",

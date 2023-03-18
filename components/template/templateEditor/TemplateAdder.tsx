@@ -11,7 +11,7 @@ interface Props {
 }
 export default function TemplateAdder({ myTemplates }: Props) {
   const { user } = useUser();
-  const { createTemplate, templateAdder } = useTemplate(undefined, user?.sub);
+  const { createTemplate } = useTemplate(undefined, user?.sub);
   const [open, setOpen] = useState(false);
 
   const onSaveTemplate = (data: any) => {

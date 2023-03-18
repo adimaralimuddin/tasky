@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { clearTimeout } from "timers";
 import { DownIcon, UpIcon } from "../../lib/icons";
 import _charLimits from "../../lib/utils/_charLimits";
-import Popy from "./Popy";
+import Popy2 from "./Popy2";
 
 type props = {
   options: any[][];
@@ -28,7 +27,6 @@ export default function Select({
   const [open, setOpen] = useState(false);
   const [val, setVal] = useState<Option>(options?.[0]);
   const maxVarChar = 20;
-  let timer: any = null;
 
   useEffect(() => {
     setVal(
@@ -53,7 +51,7 @@ export default function Select({
         {text}
       </p>
       <div>
-        <Popy
+        <Popy2
           className="mt-3"
           header={
             <p
@@ -75,19 +73,6 @@ export default function Select({
           setOpen={setOpen}
         >
           <div className=" z-20">
-            <input
-              className="absolute max-h-0 p-0 top-0 left-0"
-              onBlur={() => {
-                if (timer !== null && timer !== undefined) {
-                  clearTimeout(timer);
-                }
-                timer = setTimeout(() => {
-                  setOpen(false);
-                }, 150);
-              }}
-              type="text"
-              autoFocus
-            />
             <div
               onClick={(e) => e.stopPropagation()}
               className="card-all col_ gap-1"
@@ -108,7 +93,7 @@ export default function Select({
               ))}
             </div>
           </div>
-        </Popy>
+        </Popy2>
       </div>
     </div>
   );

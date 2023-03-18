@@ -1,6 +1,7 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import React, { useState } from "react";
 import { FieldType } from "../../../features/card/CardType";
+import { ENTITY_LIMIT } from "../../../lib/public";
 import BtnSec from "../../elements/BtnSec";
 import Input from "../../elements/Input";
 import Modal from "../../elements/Modal";
@@ -107,7 +108,16 @@ function Fields({
             key={"front-" + field.text + field.ind}
           />
         ))}
-        <FieldAdder list={fields} set={set} />
+        {fields?.length < ENTITY_LIMIT ? (
+          <FieldAdder list={fields} set={set} />
+        ) : (
+          <div className="col_ gap-0">
+            <small className="text-warm">reached maximum fields!</small>
+            <small className="text-sec">
+              you can add up to five fields only.
+            </small>
+          </div>
+        )}
       </div>
     </div>
   );

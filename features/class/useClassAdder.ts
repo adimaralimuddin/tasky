@@ -1,7 +1,8 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
-import { ClassLimit, DEF_USER } from "../../lib/public";
+import { nanoid } from "nanoid";
+import { ClassLimit } from "../../lib/public";
 import { ClassUrl } from "./classApi";
 import { ClassCreateType, ClassType } from "./classTypes";
 
@@ -9,15 +10,15 @@ export default function useClassAdder() {
   const { user } = useUser();
   const client = useQueryClient();
 
-  const checkLimit = () => {
+  const checkIfReachedMaxLimit = () => {
     const classes = client.getQueryData(["classes", user?.sub]) as ClassType[];
-    return classes?.length >= ClassLimit ? false : true;
+    return classes?.length >= ClassLimit ? true : false;
   };
 
   const classAdder = useMutation(classApiCreateClass, {
     onMutate(classPayload) {
       // Ui check if user had reach the limit to create more class
-      if (!checkLimit()) {
+      if (checkIfReachedMaxLimit()) {
         console.log(`you have reach the limit to create class!`);
         alert(
           `i am limiting the creation of classes to only five for security reason!
@@ -27,8 +28,6 @@ export default function useClassAdder() {
         return null;
       }
       try {
-        console.log(`classPayload`, classPayload);
-
         //   return classPayload if user is allowed to create more class
         client.setQueryData(["classes", user?.sub], (classes: any) => {
           const newClass = { ...classPayload, preview: true };
@@ -44,7 +43,7 @@ export default function useClassAdder() {
         client.setQueryData(["classes", user?.sub], (classes: any) => {
           if (classes?.length) {
             return classes.map((c: ClassType) => {
-              if (!c.id && c?.name === addedClass?.name) {
+              if (c?.id === addedClass?.id) {
                 return addedClass;
               }
               return c;
@@ -56,27 +55,41 @@ export default function useClassAdder() {
         console.log(`Error: classAdder onSuccess`, error);
       }
     },
+    onError(err) {
+      console.log(
+        `Error:
+      @useClasAdder
+      msg: `,
+        err
+      );
+    },
   });
 
   const addClass = (data: { name: string; description: string }) => {
-    classAdder.mutate({ userId: user?.sub || DEF_USER, ...data });
+    classAdder.mutate({ userId: user?.sub, ...data, id: nanoid() });
   };
 
   return {
     ...classAdder,
     addClass,
-    checkLimit,
+    checkLimit: checkIfReachedMaxLimit,
   };
 }
 
-export const classApiCreateClass = async ({
-  userId,
-  name,
-  description,
-}: ClassCreateType) => {
+export const classApiCreateClass = async (args: ClassCreateType) => {
   const q = gql`
-    mutation Mutation($name: String!, $userId: String, $description: String) {
-      createClass(name: $name, userId: $userId, description: $description) {
+    mutation Mutation(
+      $id: String!
+      $name: String!
+      $userId: String
+      $description: String
+    ) {
+      createClass(
+        id: $id
+        name: $name
+        userId: $userId
+        description: $description
+      ) {
         description
         id
         name
@@ -85,7 +98,7 @@ export const classApiCreateClass = async ({
       }
     }
   `;
-  const ret = await request(ClassUrl, q, { userId, name, description });
+  const ret = await request(ClassUrl, q, args);
 
   return ret?.createClass;
 };

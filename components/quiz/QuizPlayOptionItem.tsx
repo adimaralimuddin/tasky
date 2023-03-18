@@ -22,6 +22,7 @@ export default function QuizPlayOptionItem({
   const [isWrong, setIsWrong] = useState(false);
   const { quiz, setHasChosen } = useQuizOptions();
   const { hasChosen, side, singleWrong, speed, sound } = quiz;
+
   useEffect(() => {
     setCorrect(false);
     setIsWrong(false);
@@ -64,7 +65,6 @@ export default function QuizPlayOptionItem({
       });
     } else {
       if (sound) new Audio("/wrong.mp3")?.play();
-      // console.log(`wrong`);
 
       setCorrect(false);
       setWasWrong(true);

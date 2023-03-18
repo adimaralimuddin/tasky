@@ -21,6 +21,10 @@ export default function useClass(classId: any) {
     },
   });
 
+  const isSampleClass = ()=>{
+    
+  }
+
   return {
     userClass,
     classRenamer,

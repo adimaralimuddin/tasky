@@ -2,8 +2,8 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
 import { useDispatch } from "react-redux";
-import { DEF_USER } from "../../lib/public";
 import { setContent } from "../card/cardSlice";
+import useClassGetter from "../class/useClassGetter";
 import { TopicUrl } from "./topicApi";
 import { TopicType } from "./topicType";
 
@@ -11,6 +11,7 @@ export default function useTopicDeleter(folderId: string) {
   const client = useQueryClient();
   const dispatch = useDispatch();
   const { user } = useUser();
+  const classId = useClassGetter().getClassId();
 
   const topicDeleter = useMutation(topicApiDeleteTopic, {
     onMutate: ({ topicId }) => {
@@ -26,6 +27,9 @@ export default function useTopicDeleter(folderId: string) {
       });
       dispatch(setContent("dashboard"));
     },
+    onError(error) {
+      console.log(`Error: useTopicDeleter: `, error);
+    },
   });
 
   const deleteTopic = (data: any) => {
@@ -34,21 +38,24 @@ export default function useTopicDeleter(folderId: string) {
         "sample topic will not be deleted. you can always create, edit and delete your own topic"
       );
     }
-    topicDeleter.mutate({ userId: user?.sub || DEF_USER, topicId: data?.id });
+    topicDeleter.mutate({
+      userId: user?.sub,
+      classId,
+      topicId: data?.id,
+    });
   };
   return { ...topicDeleter, deleteTopic };
 }
 
-export async function topicApiDeleteTopic({
-  userId,
-  topicId,
-}: {
-  userId: string;
+type TopicDeleteApiType = {
+  userId?: string | undefined | null;
   topicId: string;
-}) {
+  classId: string;
+};
+export async function topicApiDeleteTopic(args: TopicDeleteApiType) {
   const q = gql`
-    mutation Mutation($userId: String!, $topicId: String!) {
-      deleteTopic(userId: $userId, topicId: $topicId) {
+    mutation Mutation($userId: String, $classId: String!, $topicId: String!) {
+      deleteTopic(userId: $userId, classId: $classId, topicId: $topicId) {
         name
         id
         userId
@@ -57,6 +64,6 @@ export async function topicApiDeleteTopic({
       }
     }
   `;
-  const ret = await request(TopicUrl, q, { userId, topicId });
+  const ret = await request(TopicUrl, q, args);
   return ret?.deleteTopic;
 }

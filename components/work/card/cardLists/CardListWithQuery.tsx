@@ -15,9 +15,19 @@ const ActionButtons = dynamic(() => import("../../../elements/ActionButtons"), {
 });
 
 type props = {
-  cards: CardTypes[];
+  cards: CardTypes[] | undefined;
+  overflow?: boolean;
+  hideCardAdder?: boolean;
+  hideAction?: boolean;
+  headers?: React.ReactNode;
 };
-export default function CardListWithQuery({ cards: cards_ }: props) {
+export default function CardListWithQuery({
+  cards: cards_ = [],
+  overflow,
+  hideCardAdder,
+  hideAction,
+  headers,
+}: props) {
   const [cards, setCards] = useState(cards_);
   const viewer = useViewer();
 
@@ -29,20 +39,30 @@ export default function CardListWithQuery({ cards: cards_ }: props) {
     <div className="flex-1 mt-2 col_ gap-0  ">
       <div className="flex gap-2 items-end flex-wrap justify-between ">
         <CardQuery cards={cards_} setCards={setCards}>
-          <ActionButtons />
+          {!hideAction && <ActionButtons hideCardAdder={hideCardAdder} />}
+          {headers ? headers : null}
         </CardQuery>
       </div>
       {!cards?.length ? (
         <NoCards />
       ) : (
-        cards?.map((card: CardTypes) => (
-          <CardItem
-            card={card}
-            key={card?.id}
-            index={true}
-            side={viewer.side}
-          />
-        ))
+        <div
+          style={{
+            overflowY: overflow ? "auto" : undefined,
+            maxHeight: overflow ? "75vh" : undefined,
+          }}
+          className="pl-7 p-1"
+        >
+          {cards?.map((card: CardTypes, ind) => (
+            <CardItem
+              card={card}
+              key={card?.id}
+              index={true}
+              listInd={ind}
+              side={viewer.side}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

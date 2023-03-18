@@ -62,14 +62,15 @@ export default function useCardAdder() {
       i'm limiting because i use free resources for this projects.`);
       return;
     }
-
-    cardCreator.mutate({
+    const finalCardData = {
       id: nanoid(),
       topicId,
       userId: user?.sub || undefined,
       ...data,
-    });
-    cb?.(data);
+    };
+
+    cardCreator.mutate(finalCardData);
+    cb?.(finalCardData);
   };
 
   return {
@@ -86,7 +87,7 @@ type Field = {
 };
 interface PayloadProps {
   id?: string;
-  classId?: string;
+  classId: string;
   userId: string | undefined;
   topicId: string;
   name: string;
@@ -106,21 +107,22 @@ export async function cardApiCreateCard(data: PayloadProps) {
     data.userId = "google-oauth2|117745479963692189418";
   }
 
-  // remove the classId to un include from model
-  delete data?.classId;
-
   const q = gql`
-    mutation CreateCard(
+    mutation addCardMutation(
       $id: String!
-      $userId: String!
+      $ind: Int!
+      $classId: String!
+      $userId: String
       $topicId: String!
       $name: String!
       $description: String
       $fronts: [CommentInputType]
       $backs: [CommentInputType]
     ) {
-      createCard(
+      addCard(
         id: $id
+        ind: $ind
+        classId: $classId
         userId: $userId
         topicId: $topicId
         name: $name
@@ -129,6 +131,8 @@ export async function cardApiCreateCard(data: PayloadProps) {
         backs: $backs
       ) {
         id
+        ind
+        classId
         userId
         name
         description

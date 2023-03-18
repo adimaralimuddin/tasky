@@ -8,8 +8,9 @@ export type ClassType = {
 };
 
 export type ClassCreateType = {
+  id: string;
   name?: string;
   description?: string;
-  userId?: string;
+  userId?: string | undefined | null;
   sample?: boolean;
 };

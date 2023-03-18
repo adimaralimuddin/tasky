@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import _useGraphCount from "../../lib/utils/_useGraphCount";
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   bar_l?: any;
 }
 function Pie({
-  value = 46,
+  value = 0,
   size = 57,
   bar = 7,
   fontSize = "0.9rem",

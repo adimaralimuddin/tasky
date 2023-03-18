@@ -35,7 +35,7 @@ export async function templateApiCreate(data: {
 
 export async function templateApiSampleTemplate(): Promise<TemplateType[]> {
   const q = gql`
-    query SampleTemplates {
+    query sampleTemplates {
       sampleTemplates {
         id
         name
@@ -49,6 +49,7 @@ export async function templateApiSampleTemplate(): Promise<TemplateType[]> {
     }
   `;
   const ret = await request(url, q);
+
   return ret?.sampleTemplates;
 }
 
@@ -57,6 +58,7 @@ export async function templateApiTemplates({
 }: {
   userId?: string | null;
 }): Promise<TemplateType[]> {
+  if (!userId) return [];
   const q = gql`
     query Query($userId: String!) {
       templates(userId: $userId) {

@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -7,18 +7,28 @@ interface Props {
   className?: string;
   header: React.ReactNode;
   pin?: boolean;
+  right?: boolean;
 }
-function Popy({ open, setOpen, children, className, header, pin }: Props) {
-  //   const [open, setOpen] = useState(false);
+function Popy({
+  open,
+  setOpen,
+  children,
+  className,
+  header,
+  pin,
+  right: right_,
+}: Props) {
   const [done, setDone] = useState(false);
   const popRef = useRef<HTMLDivElement>(null);
   const [top, setTop] = useState<number | null>(null);
+  const [right, setRight] = useState<number | null>(null);
 
   useEffect(() => {
     const handler = (e: any) => {
       if (!popRef.current?.contains(e.target)) {
         popRef.current?.classList.add("pop-out");
         setDone(true);
+      } else {
       }
     };
     document.addEventListener("mousedown", handler);
@@ -27,15 +37,16 @@ function Popy({ open, setOpen, children, className, header, pin }: Props) {
     };
   }, []);
   return (
-    <div className="z-[200]">
+    <div className="">
       <div
         onClick={(e) => {
           if (!open) {
             if (pin) setTop(e.clientY);
+            if (right_) setRight(e.nativeEvent.offsetX);
             setOpen(true);
             setDone(false);
           } else {
-            // setOpen(false);
+            setOpen(false);
             popRef.current?.classList.add("pop-out");
             setDone(true);
           }
@@ -55,6 +66,7 @@ function Popy({ open, setOpen, children, className, header, pin }: Props) {
           ref={popRef}
           style={{
             top: (pin && top && top + 5) || "",
+            right: (right_ && right && right + 5) || "",
           }}
           className={"z-50 fixed animate-pop mt-2  " + className}
         >

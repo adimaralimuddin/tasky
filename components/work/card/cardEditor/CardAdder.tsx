@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useFieldsGetter from "../../../../features/app/fields/useFieldsGetter";
 import { FieldType } from "../../../../features/card/CardType";
 import useCardAdder from "../../../../features/card/useCardAdder";
+import useCards from "../../../../features/card/useCards";
 import useTopicGetter from "../../../../features/topic/useTopicGetter";
 import { ImageIcon, Mp3, XIcon } from "../../../../lib/icons";
 import ContentHeader from "../../../elements/ContentHeader";
@@ -20,16 +21,17 @@ export default function CardAdder({ classId }: { classId: string | any }) {
     <div className="container_ flex-col animate-fadein">
       <ContentHeader extraPath="add cards" removeMiddlePaths={true} />
       <AdderItem classId={classId} />
-      <CardLists />
+      <CardLists cardIndex={true} />
     </div>
   );
 }
 
 export function AdderItem({ index, classId }: any) {
-  // const firstInputref = useRef(null);
+  const [hasEmptyValue, setHasEmptyValue] = useState(false);
   const { fronts: fronts_, backs: backs_ } = useFieldsGetter().getFieldsRaw();
   const topic = useTopicGetter().getSelectedTopic();
   const { addCard } = useCardAdder();
+  const { data: cards } = useCards(topic?.id);
 
   const onAddCardHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,8 +39,15 @@ export function AdderItem({ index, classId }: any) {
 
     const fronts = filterFields("front", formElem, fronts_);
     const backs = filterFields("back", formElem, backs_);
+    const ind = (cards?.length || 0) + 1;
+
+    if (fronts?.[0]?.value?.trim() === "" || backs?.[0]?.value?.trim() === "") {
+      setHasEmptyValue(true);
+      return;
+    }
 
     const data = {
+      ind,
       classId,
       name: "",
       description: "",
@@ -68,6 +77,16 @@ export function AdderItem({ index, classId }: any) {
             Add New Card
           </button>
         </div>
+        {hasEmptyValue && (
+          <h3
+            onAnimationEnd={() => {
+              setHasEmptyValue(false);
+            }}
+            className="text-warm animate-wiggle"
+          >
+            fronts and backs must not be empty!
+          </h3>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 card card-shadow py-2 ">
           <Fields side="front" fields={fronts_} />
           <Fields side="back" fields={backs_} />

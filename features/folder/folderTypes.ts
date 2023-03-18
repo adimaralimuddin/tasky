@@ -6,4 +6,5 @@ export type FolderType = {
   userId: string;
   sample?: boolean;
   Topic?: TopicType[];
+  classId: string;
 };

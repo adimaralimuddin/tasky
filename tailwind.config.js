@@ -40,13 +40,12 @@ module.exports = {
         },
         pop: {
           "0%": { transform: "scale(0.7,0.7)", opacity: "0%" },
-          "70%": { transform: "scale(1.2,1.1)", opacity: "100%" },
+          "70%": { transform: "scale(1.02,1.01)", opacity: "100%" },
           "100%": { transform: "scale(1,1)" },
         },
         pop2: {
-          "0%": { transform: "scale(0.98,0.98)", opacity: "0%" },
-          "70%": { transform: "scale(1.1,1.05)", opacity: "100%" },
-          "100%": { transform: "scale(1,1)" },
+          "0%": { transform: "scale(0.78,0.78)", opacity: "30%" },
+          "100%": { transform: "scale(1,1)", opacity: "100%" },
         },
         wiggle: {
           "0%": { transform: "translate(0)" },

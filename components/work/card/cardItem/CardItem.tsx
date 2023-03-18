@@ -5,7 +5,6 @@ import useFieldsGetter from "../../../../features/app/fields/useFieldsGetter";
 import { CardTypes, FieldType } from "../../../../features/card/CardType";
 import useTopicGetter from "../../../../features/topic/useTopicGetter";
 import useViewer from "../../../../features/viewer/useViewer";
-import { DEF_USER } from "../../../../lib/public";
 import AudioElement from "../../../elements/AudioEl";
 import ImageItem from "../../../elements/ImageItem";
 
@@ -22,19 +21,25 @@ const CardDeleter = dynamic(() => import("../cardEditor/CardDeleter"), {
 type props = {
   card: CardTypes;
   side?: "fronts" | "backs" | "both";
-  key?: any;
+  // key?: any;
   index?: boolean;
+  listInd?: number;
+  cardIndex?: boolean;
   css?: string;
   allowOption?: boolean;
   imageViewer?: boolean;
+  showAllFields?: boolean;
 };
 export default function CardItem({
   card,
   index,
+  listInd = 0,
+  cardIndex,
   css,
   allowOption = true,
   imageViewer = true,
   side = "both",
+  showAllFields,
 }: props) {
   const { user } = useUser();
   const [isEditing, setIsEditing] = useState(false);
@@ -63,14 +68,18 @@ export default function CardItem({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={
-        "card card-ring animate-pop2d block items-center ring-slate-200d my-3 min-w-[100px] shadow-none   ring-1 p-0 card-ring dark:ring-layer-sec " +
+        "card card-ring animate-pop2d block items-center ring-slate-200d my-3 min-w-[100px] shadow-none p-0 card-ring dark:ring-layer-sec " +
         css
       }
     >
-      {index && card?.ind != undefined && (
+      {index && (
         <span className="relative">
-          <small className="absolute top-1 -left-4 z-10 text-phar">
-            {card?.ind + 1}
+          <small className="absolute top-1 right-4 z-10 text-phar">
+            {cardIndex
+              ? card?.ind !== undefined && card?.ind !== null
+                ? card?.ind + 1
+                : listInd + 1
+              : listInd + 1}
           </small>
         </span>
       )}
@@ -96,6 +105,7 @@ export default function CardItem({
               view={fronts}
               side={side}
               imageViewer={imageViewer}
+              showAllFields={showAllFields}
             />
           )}
           {side == "both" && (
@@ -111,6 +121,7 @@ export default function CardItem({
               view={backs}
               side={side}
               imageViewer={imageViewer}
+              showAllFields={showAllFields}
             />
           )}
         </div>
@@ -133,30 +144,34 @@ export default function CardItem({
           </p>
         )}
       </div>
-      <div className="p-2 flex_">
-        <CardEditor
-          open={isEditing}
-          setOpen={setIsEditing}
-          editorMode={viewer.editorMode}
-          card={card}
-          onCancel={() => {
-            setHovered(false);
-          }}
-        />
-        <CardDeleter
-          cardId={card?.id}
-          isDeleting={isDeleting}
-          setIsDeleting={setIsDeleting}
-          topicId={topicId}
-          editorMode={viewer.editorMode}
-          userId={user?.sub || DEF_USER}
-        />
+      <div className={" flex_ " + (viewer.editorMode && " p-2 ")}>
+        {(isEditing || viewer.editorMode) && (
+          <CardEditor
+            open={isEditing}
+            setOpen={setIsEditing}
+            editorMode={viewer.editorMode}
+            card={card}
+            onCancel={() => {
+              setHovered(false);
+            }}
+          />
+        )}
+        {(isDeleting || viewer.editorMode) && (
+          <CardDeleter
+            cardId={card?.id}
+            isDeleting={isDeleting}
+            setIsDeleting={setIsDeleting}
+            topicId={topicId}
+            editorMode={viewer.editorMode}
+            userId={user?.sub || undefined}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-type CardFrontsProps = {
+type CardSidesProps = {
   card: any;
   type: string;
   textSize: any;
@@ -165,39 +180,24 @@ type CardFrontsProps = {
   view: any;
   side: string;
   imageViewer?: boolean;
+  showAllFields?: boolean;
 };
 
-export function CardSides({
-  card,
-  type,
-  textSize,
-  imageSize,
-  lebel,
-  view,
-  side,
-  imageViewer,
-}: CardFrontsProps) {
-  // console.log(`card fronts `, card);
-
+export function CardSides(props: CardSidesProps) {
   return (
-    <div
-      className={
-        "flex-1 p-1 " + ""
-        // (lebel ? " items-center " : " items-center  ")
-      }
-    >
+    <div className={"flex-1 p-1 "}>
       <div className=" col_ gap-2 flex-1 ">
-        {card?.[type]
-          ?.sort((a: FieldType, b: FieldType) => a?.ind - b?.ind)
-          ?.map((field: FieldType) => (
+        {Array.isArray(props?.card?.[props?.type]) &&
+          props?.card?.[props?.type]?.map((field: FieldType) => (
             <FieldItem
-              view={view}
+              view={props?.view}
               field={field}
               key={field?.id}
-              textSize={textSize}
-              imageSize={imageSize}
-              lebel={lebel}
-              imageViewer={imageViewer}
+              textSize={props?.textSize}
+              imageSize={props?.imageSize}
+              lebel={props?.lebel}
+              imageViewer={props?.imageViewer}
+              showAllFields={props?.showAllFields}
             />
           ))}
       </div>
@@ -205,69 +205,70 @@ export function CardSides({
   );
 }
 
-function FieldItem({
-  field,
-  textSize,
-  imageSize = 100,
-  lebel,
-  view,
-  imageViewer,
-}: {
+interface FieldItemType {
   field: FieldType;
   textSize: any;
   imageSize: any;
   lebel?: boolean;
   view: any;
   imageViewer?: boolean;
-}) {
-  const myView = view?.find((f: FieldType) => f?.viewId === field?.viewId);
+  showAllFields?: boolean;
+}
+function FieldItem(props: FieldItemType) {
+  const myView = props?.view?.find(
+    (f: FieldType) => f?.viewId === props?.field?.viewId
+  );
 
   if (!myView?.view) {
     // hide field if the view turned off or false
-    return null;
+    if (!props?.showAllFields) {
+      return null;
+    }
   }
 
-  if (!field?.value && !lebel) {
+  if (!props?.field?.value && !props?.lebel) {
     // if somehow the template changed then, return only the matched view
-    return null;
+    if (!props?.showAllFields) {
+      return null;
+    }
   }
 
   return (
     <div className="ring-1d">
       <div className="flex leading-none sm:leading-normal gap-1 items-start  flex-col-reverse sm:flex-row sm:gap-2 ">
-        {lebel && (
+        {(props?.lebel || props?.showAllFields) && (
           <p
             style={{
-              fontSize: fontSize(textSize),
+              fontSize: fontSize(props?.textSize),
             }}
             className={`text-slate-400 dark:text-slate-500 font-normal pl-1 sm:pl-0  `}
           >
-            {myView?.text}
+            {myView?.text || props?.field?.text}
           </p>
         )}
         {myView?.type !== "image" && myView?.type !== "audio" && (
           <p
             style={{
-              fontSize: fontSize(textSize),
+              fontSize: fontSize(props?.textSize),
             }}
             className={
               "flex-1  text-phar max-h-[150px] leading-normal font-normal overflow-y-auto min-h-[10px] " +
-              textSize
+              props?.textSize
             }
           >
-            {field?.value}
+            {props?.field?.value}
           </p>
         )}
-        {myView?.type == "image" && field?.value && (
+        {myView?.type == "image" && props?.field?.value && (
           <ImageItem
-            src={field?.value}
-            width={imageSize}
-            height={imageSize}
-            imageViewer={imageViewer}
+            src={props?.field?.value}
+            width={props?.imageSize}
+            height={props?.imageSize}
+            imageViewer={props?.imageViewer}
           />
         )}
-        {myView?.type == "audio" && field?.value && (
-          <AudioElement src={field?.value} controls />
+        {myView?.type == "audio" && props?.field?.value && (
+          <AudioElement src={props?.field?.value} controls />
         )}
       </div>
     </div>

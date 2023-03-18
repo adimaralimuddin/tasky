@@ -1,10 +1,13 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
+import { DEF_USERID } from "../../lib/public";
 import { FolderUrl } from "./folderApi";
 import { FolderType } from "./folderTypes";
 
 export default function useFolderRenamer(classId: string) {
   const client = useQueryClient();
+  const { user } = useUser();
 
   const setName = (renamedFolder: Partial<FolderType>) => {
     client.setQueryData(["folder", classId], (folders: any) => {
@@ -17,35 +20,62 @@ export default function useFolderRenamer(classId: string) {
     });
   };
   const folderRenamer = useMutation(folderApiRenameFolder, {
-    onMutate: ({ folderId, ...others }) => {
+    onMutate: (folderData) => {
+      const { folderId, ...others } = folderData;
+      console.log(`mutated`, folderData);
+
       setName({ id: folderId, ...others });
     },
     onSuccess: (renamedFolder) => {
       setName(renamedFolder);
     },
+    onError(error) {
+      console.log(`Error: useFolderRenamer: `, error);
+    },
   });
+
+  const renameFolder = (folderPayload: FolderRenamerArgsApi) => {
+    folderPayload.userId = user?.sub || DEF_USERID;
+    folderRenamer.mutate(folderPayload);
+  };
 
   return {
     ...folderRenamer,
-    renameFolder: folderRenamer.mutate,
+    renameFolder,
   };
 }
 
-export async function folderApiRenameFolder(args: {
+type FolderRenamerArgsApi = {
   folderId: string;
   name: string;
-  userId: string;
-}) {
+  userId?: string;
+  classId: string;
+};
+export async function folderApiRenameFolder(args: FolderRenamerArgsApi) {
+  console.log(`ars`, args);
+
   const q = gql`
-    mutation Mutation($userId: String!, $folderId: String!, $name: String!) {
-      renameFolder(userId: $userId, folderId: $folderId, name: $name) {
-        id
-        name
-        sample
+    mutation RenameFolder(
+      $userId: String!
+      $classId: String!
+      $folderId: String!
+      $name: String!
+    ) {
+      renameFolder(
+        userId: $userId
+        classId: $classId
+        folderId: $folderId
+        name: $name
+      ) {
         userId
+        sample
+        name
+        classId
       }
     }
   `;
   const ret = await request(FolderUrl, q, args);
+  console.log(`ret`, ret);
+
   return ret.renameFolder;
 }

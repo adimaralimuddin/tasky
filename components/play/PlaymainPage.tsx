@@ -1,28 +1,36 @@
 import React, { useState } from "react";
 import { SideType } from "../../features/app/appSlice";
-import useCategoryGetter from "../../features/app/category/useCategoryGetter";
+import useStatAdder from "../../features/app/dashboard/useStatAdder";
 import { CardTypes } from "../../features/card/CardType";
-import { useCardMutation } from "../../features/card/useCardMutation";
-import useCards from "../../features/card/useCards";
+import { SetCardLevel } from "../../features/card/useCardLevelUpdater";
+
 import usePlay from "../../features/play/usePlay";
-import useTopicGetter from "../../features/topic/useTopicGetter";
 import BtnBack from "../elements/BtnBack";
 import ContentHeader from "../elements/ContentHeader";
 import NoCards from "../elements/NoCards";
-import TopicTitle from "../elements/TopicTitle";
 import CardItem from "../work/card/cardItem/CardItem";
 import PlayButtons from "./PlayAnswerButtons";
 import PlayFinish from "./playFinish/PlayFinish";
 import PlayHeader from "./PlayHeader";
 import PlayNav from "./PlayNavs";
 
-export default function PlaymainPage({}: any) {
-  const topic = useTopicGetter().getSelectedTopic();
-  const { categorizeCards } = useCards(topic?.id);
-  const { setCardLevel } = useCardMutation(topic?.id);
-  const selectedCategory = useCategoryGetter().getSelectedCategory();
-  const cards_ = categorizeCards(selectedCategory);
-  const [cards, setCards] = useState(cards_);
+interface Props {
+  cards: CardTypes[];
+  setCardLevel: SetCardLevel;
+  setCards: any;
+  hideHeader?: boolean;
+  isCardEditable?: boolean;
+  showAllFields?: boolean;
+}
+export default function PlaymainPage({
+  cards,
+  setCardLevel,
+  setCards,
+  hideHeader,
+  isCardEditable,
+  showAllFields,
+}: Props) {
+  const { addStat } = useStatAdder();
 
   const { muted, side: startSide } = usePlay();
 
@@ -34,8 +42,18 @@ export default function PlaymainPage({}: any) {
 
   const onNextHandler = (level: string) => {
     if (muted) new Audio("/correct.mp3")?.play();
-    setCardLevel({ cardId: current?.id, level });
-    setCards((c_) =>
+    setCardLevel(
+      { cardId: current?.id, level, classId: "what" },
+      {
+        onSuccess(x) {
+          if (cards?.length && playInd >= cards?.length - 1) {
+            console.log(`finish`);
+            addStat(cards);
+          }
+        },
+      }
+    );
+    setCards((c_: CardTypes[]) =>
       c_?.map((c) => (c?.id === current?.id ? { ...c, level } : c))
     );
     setPlayInd((p) => {
@@ -60,12 +78,15 @@ export default function PlaymainPage({}: any) {
         cards={cards}
         playInd={playInd}
         setPlayInd={setPlayInd}
+        hideHeader={hideHeader}
+        isCardEditable={isCardEditable}
+        showAllFields={showAllFields}
       />
     );
   }
 
   const QuizContent = (
-    <div className=" pb-5 flex-1 col_   ">
+    <div className=" pb-5 flex-1 col_ ">
       <PlayHeader />
       <div className={"flex flex-col items-center flex-1  justify-center "}>
         <PlayNav cards={cards} playInd={playInd} />
@@ -74,7 +95,12 @@ export default function PlaymainPage({}: any) {
             " px-1 flex-1d rounded-xl " + (side == "backs" && "bg-indigo-400")
           }
         >
-          <CardItem card={current} side={side} />
+          <CardItem
+            card={current}
+            side={side}
+            showAllFields={showAllFields}
+            allowOption={false}
+          />
         </div>
       </div>
       <PlayButtons onFlip={onFlipHandler} onNext={onNextHandler} side={side} />
@@ -83,10 +109,12 @@ export default function PlaymainPage({}: any) {
 
   return (
     <div className=" container_ flex-col animate-fadein">
-      <ContentHeader
-        Action={<BtnBack content="topic" category="all" />}
-        extraPath="play"
-      />
+      {!hideHeader && (
+        <ContentHeader
+          Action={<BtnBack content="topic" category="all" />}
+          extraPath="play"
+        />
+      )}
       {cards?.length && cards?.length > 0 ? (
         QuizContent
       ) : (

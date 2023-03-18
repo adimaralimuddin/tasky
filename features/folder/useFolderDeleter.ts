@@ -1,16 +1,19 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
+import useClassGetter from "../class/useClassGetter";
 import { FolderUrl } from "./folderApi";
 import { FolderType } from "./folderTypes";
 
-export default function useFolderDeleter(classId: string) {
+export default function useFolderDeleter() {
   const client = useQueryClient();
-  const folderDeleter = useMutation(folderApideleteFolder, {
-    onMutate: ({ userId, deleteFolderId }) => {
+  const { user } = useUser();
+  const classId = useClassGetter().getClassId();
+
+  const folderDeleter = useMutation(folderDeleterReq, {
+    onMutate: ({ id }) => {
       client.setQueryData(["folder", classId], (folders: any) => {
-        return folders?.filter(
-          (folder: FolderType) => folder?.id != deleteFolderId
-        );
+        return folders?.filter((folder: FolderType) => folder?.id != id);
       });
     },
     onSuccess: (deletedFolder) => {
@@ -20,39 +23,54 @@ export default function useFolderDeleter(classId: string) {
         );
       });
     },
+    onError(error) {
+      console.log(
+        `Error:
+      @useFolderDeleter
+      msg: `,
+        error
+      );
+    },
   });
+
+  const deleteFolder = (folderData: DeleteFolderMutateArgsType) => {
+    const folderToDeleteArgs: DeleteFolderReqArgsType = {
+      ...folderData,
+      userId: user?.sub || undefined,
+      classId,
+    };
+    folderDeleter.mutate(folderToDeleteArgs);
+  };
 
   return {
     ...folderDeleter,
-    deleteFolder: folderDeleter.mutate,
+    deleteFolder,
   };
 }
 
-export async function folderApideleteFolder({
-  userId,
-  deleteFolderId,
-}: {
-  userId: string;
-  deleteFolderId: string;
-}): Promise<string> {
+type DeleteFolderMutateArgsType = {
+  id: string;
+};
+
+type DeleteFolderReqArgsType = DeleteFolderMutateArgsType & {
+  classId: string;
+  userId: string | undefined;
+};
+
+export async function folderDeleterReq(
+  args: DeleteFolderReqArgsType
+): Promise<string> {
   const q = gql`
-    mutation Mutation($userId: String!, $deleteFolderId: String!) {
-      deleteFolder(userId: $userId, id: $deleteFolderId) {
+    mutation Mutation($userId: String, $classId: String!, $id: String!) {
+      deleteFolder(userId: $userId, classId: $classId, id: $id) {
         name
         id
         sample
         userId
       }
     }
-    # mutation DeleteFolder($deleteFolderId: String!) {
-    #   deleteFolder(id: $deleteFolderId) {
-    #     id
-    #     name
-    #     sample
-    #   }
-    # }
   `;
 
-  const ret = await request(FolderUrl, q, { deleteFolderId, userId });
+  const ret = await request(FolderUrl, q, args);
   return ret.deleteFolder;
 }

@@ -49,7 +49,7 @@ function ClassItem({
           </div>
         </span>
       )}
-
+      {data?.preview?.toString()}
       <Link prefetch={false} href={`/class/${data?.id}`}>
         <div
           title={`${data?.name} ${data?.description}`}

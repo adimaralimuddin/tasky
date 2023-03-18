@@ -3,11 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
-import { TopicIcon } from "../../lib/icons";
-import { DEF_USER, ENTITY_LIMIT } from "../../lib/public";
+import { ENTITY_LIMIT } from "../../lib/public";
 import { RootState } from "../../store";
 import { setTopicOpenState } from "../app/appSlice";
 import useFolderGetter from "../app/folders/useFolderGetter";
+import useClassGetter from "../class/useClassGetter";
 import { TopicUrl } from "./topicApi";
 import { TopicType } from "./topicType";
 import useTopicSelecter from "./useTopicSelecter";
@@ -16,6 +16,7 @@ export default function useTopic() {
   const client = useQueryClient();
   const patch = useDispatch();
   const { user } = useUser();
+  const { class_ } = useClassGetter();
 
   const { getSelectedFolder } = useFolderGetter();
 
@@ -51,7 +52,7 @@ export default function useTopic() {
     },
   });
 
-  const createTopic = (topicPayload: TopicType) => {
+  const checkTopicLimits = () => {
     const topicTotal: TopicType[] | undefined = client.getQueryData([
       "topics",
       getSelectedFolder(),
@@ -60,13 +61,24 @@ export default function useTopic() {
       alert(
         `i'm limiting the creation of topics to five for security and database free tier reasons.`
       );
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const createTopic = (topicPayload: TopicType) => {
+    if (!checkTopicLimits()) return;
 
     const id = nanoid();
     const folderId = getSelectedFolder();
-    const userId = user?.sub || DEF_USER;
-    const topicFinalData = { ...topicPayload, id, folderId, userId };
+    const userId = user?.sub;
+    const topicFinalData = {
+      ...topicPayload,
+      classId: class_?.id,
+      id,
+      folderId,
+      userId,
+    } as TopicType;
 
     if (!topicFinalData?.template)
       return console.log(
@@ -74,11 +86,14 @@ export default function useTopic() {
         topicPayload
       );
 
-    selectTopic(topicFinalData as TopicType, "cardadder");
+    selectTopic(topicFinalData, "cardadder");
 
-    topicAdder.mutate(topicFinalData as TopicType, {
+    topicAdder.mutate(topicFinalData, {
       onSuccess(x) {
-        console.log(`topic created`, x);
+        // console.log(`topic created`, x);
+      },
+      onError(error) {
+        console.log(`Error: useTopicAdder/mutate: `, error);
       },
     });
   };
@@ -95,43 +110,37 @@ export async function topicApiCreateTopic(
   topicPayload: TopicType
 ): Promise<TopicType> {
   // extract to exclude template, createTopic arguments only needs topic with templateId field
-  const { template, ...topicWithoutTemplate } = topicPayload;
+  const { template: excluded_, ...topicWithoutTemplate } = topicPayload;
+
   const q = gql`
     mutation Mutation(
       $id: String!
-      $userId: String!
+      $classId: String!
+      $userId: String
       $name: String!
       $folderId: String!
       $templateId: String!
       $description: String
     ) {
-      createTopic(
+      addTopic(
         id: $id
-        userId: $userId
+        classId: $classId
         name: $name
         folderId: $folderId
         templateId: $templateId
         description: $description
+        userId: $userId
       ) {
+        id
+        name
+        folderId
+        sample
         userId
         templateId
-        sample
-        name
-        id
-        folderId
         description
-        template {
-          userId
-          name
-          id
-          fronts
-          deleted
-          backs
-        }
       }
     }
   `;
-  // console.log("on creating topic ", { q, data });
   const ret = await request(TopicUrl, q, topicWithoutTemplate);
   return ret.createTopic;
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import AppLogo from "../elements/AppLogo";
 import DarkMode_ from "../elements/DarkMode";
+import UserHeaderPop from "../elements/UserHeaderPop";
 import HomeElement0 from "./HomeElement0";
 import HomeElement1 from "./HomeElement1";
 import HomeElement2 from "./HomeElement2";
@@ -9,18 +10,19 @@ import HomeElement3 from "./HomeElement3";
 import HomeHeroSection from "./HomeHeroSection";
 
 function PageMainHome({ defClass: _ }: { defClass: string }) {
-  const defClass = "clejsg24f0002u93o2inbp2k2";
+  const defClass = "clf578ifn2517esu9bxr9d8yj";
   return (
     <div className="flex flex-col  min-h-screen bg-whited bg-[#F9FBFF] dark:bg-slate-800 overflow-x-hidden ">
-      <header className="flex_ justify-between z-10 max-w-6xl container w-full mx-auto p-2">
+      <header className="flex_ justify-between  max-w-6xl container w-full mx-auto p-2 z-[800]">
         <AppLogo className="text-[1.5rem] " />
-        <nav className="flex_ dark:text-slate-300">
+        <nav className="flex_ dark:text-slate-300 px-6">
           <Link href="/case-study">
             <h3 className="text-[1.1rem] font-semibold cursor-pointer hover:text-indigo-400 dark:hover:text-pink-300">
               Case Study
             </h3>
           </Link>
           {/* <h3 className="text-[1rem] font-semibold">EXPLORE</h3> */}
+          <UserHeaderPop />
           <DarkMode_ />
         </nav>
       </header>

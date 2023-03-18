@@ -2,9 +2,9 @@ import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { toAddTopic } from "../../../../features/app/appSlice";
+import useClassGetter from "../../../../features/class/useClassGetter";
 import { FolderType } from "../../../../features/folder/folderTypes";
 import { Pencil, PlusBig, Trash } from "../../../../lib/icons";
-import { DEF_USER } from "../../../../lib/public";
 import Option from "../../../elements/Option";
 
 interface Props {
@@ -22,7 +22,9 @@ export default function FolderOptions({
   hovered,
 }: Props) {
   const { user } = useUser();
-  const { id, name, userId } = data;
+  const { class_ } = useClassGetter();
+
+  const { id, userId } = data;
   const patch = useDispatch();
 
   const options = () => {
@@ -40,9 +42,9 @@ export default function FolderOptions({
     ];
     let notUserOptions = [{ text: "you're not allowed" }];
     if (user?.sub) {
-      return user?.sub == userId ? ret : notUserOptions;
+      return user?.sub === userId || class_?.sample ? ret : notUserOptions;
     } else {
-      return userId !== DEF_USER ? notUserOptions : ret;
+      return class_?.sample ? ret : notUserOptions;
     }
   };
   return <Option show={hovered} left={true} options={options()} />;

@@ -3,11 +3,22 @@ import { useQuery } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
 import { DBURL } from "../../lib/public";
 
-function useUserDb() {
+function useUserById() {
   const { user } = useUser();
 
-  const userQuery = useQuery(["userdb", user?.sub], () =>
-    getUserApi({ userId: user?.sub })
+  const userQuery = useQuery(
+    ["userdb", user?.sub],
+    () => getUserByIdApiReq({ userId: user?.sub }),
+    {
+      onError(err) {
+        console.log(
+          `Error:
+        @useUserById
+        msg: `,
+          err
+        );
+      },
+    }
   );
 
   return {
@@ -16,15 +27,15 @@ function useUserDb() {
   };
 }
 
-export default useUserDb;
+export default useUserById;
 
-const getUserApi = async ({
+const getUserByIdApiReq = async ({
   userId,
 }: {
   userId: string | undefined | null;
 }) => {
   const q = gql`
-    query UserByDbid($userId: String!) {
+    query UserByIdQuery($userId: String!) {
       user(id: $userId) {
         dbid
         email
@@ -35,6 +46,5 @@ const getUserApi = async ({
   `;
 
   const ret = await request(DBURL, q, { userId });
-
   return ret?.user;
 };

@@ -1,7 +1,5 @@
-import { useUser } from "@auth0/nextjs-auth0";
 import { FolderType } from "../../../../features/folder/folderTypes";
 import useFolderRenamer from "../../../../features/folder/useFolderRenamer";
-import { DEF_USER } from "../../../../lib/public";
 import Input from "../../../elements/Input";
 import Modal from "../../../elements/Modal";
 
@@ -19,7 +17,8 @@ export default function FolderRenamer({
   classId,
 }: props) {
   const { renameFolder } = useFolderRenamer(classId);
-  const { user } = useUser();
+
+  // console.log(`folder`, data);
 
   const onRenameHandler = (e: any) => {
     const val = e.target.name?.value;
@@ -29,10 +28,11 @@ export default function FolderRenamer({
       );
       return;
     }
+
     renameFolder({
       folderId: data?.id,
+      classId: data.classId,
       name: val,
-      userId: user?.sub || DEF_USER,
     });
   };
 

@@ -9,7 +9,9 @@ function useCategorySelecter() {
   const selectCategory_ = (category: CategoryType) => {
     if (!category)
       return console.log(
-        `Validate: useCategory selectCategory: category is undefined `,
+        `Validate:
+        @useCategorySelecter
+        msg: category is undefined `,
         category
       );
     patch(selectCategory(category));

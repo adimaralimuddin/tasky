@@ -58,8 +58,6 @@ export async function topicApiGetTopic(topicId: string) {
 //       }
 //     }
 //   `;
-//   console.log("on creating topic ", { q, data });
 //   const ret = await request(topicUrl, q, data);
-//   console.log("create topic ret ", ret);
 //   return ret.createTopic;
 // }

@@ -23,11 +23,6 @@ export default function TemplatePage(props: TemplatesProps) {
   const sampleTemplates =
     queryTemplates?.sampleTemplatesData || props.sampleServerTemplates;
 
-  // console.log(`sampleTemplates server:`, props.sampleServerTemplates);
-  // console.log(`myTemplates`, myTemplates);
-
-  console.log(`props`, props);
-
   return (
     <div>
       <Head>

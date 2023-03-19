@@ -49,7 +49,12 @@ export default function TopicAdder() {
 
       createTopic(preTopicData as TopicType);
     } catch (error) {
-      console.log(`Error: topicAdder onCreateTopic`, error);
+      console.log(
+        `Error: 
+      @topicAdder/onCreateTopic
+      msg: `,
+        error
+      );
     }
   };
 

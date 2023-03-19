@@ -10,7 +10,7 @@ interface Props {
   card: CardTypes;
   setOpen: any;
 }
-function useCardUpdater({ card, setOpen }: Props) {
+function useCardUpdater({ card }: Props) {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const { query } = useRouter();
@@ -28,8 +28,6 @@ function useCardUpdater({ card, setOpen }: Props) {
       let value: any = f.newValue;
       if (typeof f.newValue === "object") {
         const result = await _fileReader(f.newValue as File);
-        console.log(`file here `, result);
-
         value = result;
       }
 
@@ -39,10 +37,14 @@ function useCardUpdater({ card, setOpen }: Props) {
       return { ...f, value };
     };
     if (!updatedCard?.fronts?.length && !updatedCard?.backs?.length) {
-      console.log(`no fronts and backs`, updatedCard);
+      console.log(
+        `Validate:
+      @useCardUpdater/updateCard
+      msg: no fronts and backs = `,
+        updatedCard
+      );
     } else {
       const queryStateCard = { ...updatedCard };
-      console.log(`proced to updated`, queryStateCard);
 
       queryStateCard.fronts = await Promise.all(
         updatedCard?.fronts?.map(async (f) => await resolveFields(f))
@@ -60,7 +62,6 @@ function useCardUpdater({ card, setOpen }: Props) {
           let x = prevCards.map((c) =>
             c.id === queryStateCard.id ? queryStateCard : c
           );
-          console.log(`done`, x);
           return x;
         }
       );
@@ -80,7 +81,6 @@ function useCardUpdater({ card, setOpen }: Props) {
       cardId: card?.id,
     };
 
-    console.log(`updated data`, data);
     onUpdateQueryState({ ...card, ...data });
 
     setIsUpdating(false);

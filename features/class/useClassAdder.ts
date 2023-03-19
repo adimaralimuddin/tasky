@@ -19,7 +19,9 @@ export default function useClassAdder() {
     onMutate(classPayload) {
       // Ui check if user had reach the limit to create more class
       if (checkIfReachedMaxLimit()) {
-        console.log(`you have reach the limit to create class!`);
+        console.log(`Validate:
+        @useCardAdder
+        msg: you have reach the limit to create class!`);
         alert(
           `i am limiting the creation of classes to only five for security reason!
           every entity will be limited accordingly. 
@@ -34,8 +36,14 @@ export default function useClassAdder() {
           if (!classes || !classes?.length) return [newClass];
           return [...classes, newClass];
         });
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        console.log(
+          `
+        Error:
+        @useClassAdder/onMutate
+        msg: `,
+          err
+        );
       }
     },
     onSuccess(addedClass) {
@@ -52,13 +60,18 @@ export default function useClassAdder() {
           return [addedClass];
         });
       } catch (error) {
-        console.log(`Error: classAdder onSuccess`, error);
+        console.log(
+          `Error:
+        @useClassAdder/onSuccess/setQueryData
+        msg: `,
+          error
+        );
       }
     },
     onError(err) {
       console.log(
         `Error:
-      @useClasAdder
+      @useClassAdder/onError
       msg: `,
         err
       );

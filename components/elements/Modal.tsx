@@ -69,8 +69,6 @@ export default function Modal({
         "fixed top-0 left-0 w-full h-full min-h-screen backdrop-blur-sm bg-opacity-60   overflow-hidden flex items-center justify-center bg-slate-900 flex-col z-[999] p-2 gap-0 overflow-y-auto  "
       }
       onClick={(e) => {
-        console.log(`clickout`, e.target);
-
         stopPropa(e);
         closePop();
         document.body.style.overflow = "auto";

@@ -27,7 +27,12 @@ export default function useTemplates() {
     {
       onSuccess(data) {},
       onError(error) {
-        console.log(`Error: useTemplates/sampleTemplates query : `, error);
+        console.log(
+          `Error:
+        @useTemplates/sampleTemplatesQuery/onError 
+        msg : `,
+          error
+        );
       },
     }
   );

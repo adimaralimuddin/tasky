@@ -8,8 +8,6 @@ function useFieldAdder() {
   const fieldAdder = useMutation(fieldApiAddField);
 
   const addField = (fieldPayload: FieldType) => {
-    console.log(`payload`, fieldPayload);
-
     fieldAdder.mutate(fieldPayload);
   };
   return { ...fieldAdder, addField };

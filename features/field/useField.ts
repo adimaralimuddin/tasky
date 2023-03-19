@@ -13,17 +13,12 @@ export default function useField() {
     return await Promise.all(
       fields?.map(async (f) => {
         if (f?.isNew) {
-          // console.log(`new field is here `, f);
-
           delete f.isNew;
           if ((f.type === "text" || f.type === "number") && f?.value) {
             return await fieldApiAddField(f);
           } else if ((f.type === "image" || f.type === "audio") && f?.value) {
             const { url } = await client.upload(f.value);
-            // console.log(`url here`, url);
             f.value = url;
-            // console.log(`file updated `, f);
-
             return await fieldApiAddField(f);
           }
           return f;
@@ -44,13 +39,10 @@ export default function useField() {
           ) {
             const { url } = await client.upload(f.newValue);
             toUpdateField.newValue = url;
-            // console.log(`done file url `, toUpdateField);
 
             const ret = await fieldApiUpdateField(toUpdateField);
-            // console.log(`ret of file url `, ret);
           }
         }
-        // console.log(`just return f`, f);
 
         return f;
       })

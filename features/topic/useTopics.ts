@@ -41,7 +41,6 @@ async function topicApiGetTopicsByFolder(folderId: string) {
   `;
 
   const ret = await request(TopicUrl, q, { folderId });
-  // console.log(`topics db`, ret.topicsByFolders);
 
   return ret.topicsByFolders;
 }

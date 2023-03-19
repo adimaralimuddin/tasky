@@ -44,7 +44,6 @@ export default function CardEditor({
   });
 
   const onUpdateHandler = () => {
-    console.log(`to update data`, { fronts, backs });
     updateCard(fronts, backs);
   };
 

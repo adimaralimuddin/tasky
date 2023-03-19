@@ -8,9 +8,7 @@ export default function useFolders(classId: string | any) {
     ["folder", classId],
     async () => await folderApiGetFoldersByClassId(classId),
     {
-      onSuccess(data) {
-        // console.log(`folders got `, data);
-      },
+      onSuccess(data) {},
       onError(err) {
         console.log(
           `Error:

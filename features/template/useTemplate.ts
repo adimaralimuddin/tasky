@@ -6,8 +6,6 @@ export default function useTemplate(id?: string, userId?: string | any) {
 
   const templateAdder = useMutation(templateApiCreate, {
     onSuccess: (newTemplate) => {
-      console.log(`done tempalte created`, newTemplate);
-
       client.setQueryData(["templates", userId], (templates: any) => {
         return [...templates, newTemplate];
       });

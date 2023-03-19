@@ -8,7 +8,6 @@ function useStats() {
   const classId = class_?.id;
   const stats = useQuery(["stats", classId], () => statsApi({ classId }), {
     onSuccess(data) {
-      // console.log(`stats `, data);
     },
     onError(err) {
       console.log(`stats err`, err);

@@ -47,7 +47,6 @@ export default function PlaymainPage({
       {
         onSuccess(x) {
           if (cards?.length && playInd >= cards?.length - 1) {
-            console.log(`finish`);
             addStat(cards);
           }
         },

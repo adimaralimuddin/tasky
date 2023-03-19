@@ -21,8 +21,6 @@ export const cardDeleterDefs = extendType({
           const user = getSession(req, res)?.user;
           const isSampleClass = await _dbGetSampleClass(classId);
 
-          console.log(`isSampleClass`, !!isSampleClass);
-
           if (!user) {
             if (!isSampleClass) {
               console.log(`Validate:
@@ -30,7 +28,6 @@ export const cardDeleterDefs = extendType({
                     msg: not authenticated and not sample class`);
               return null;
             }
-            console.log(`change`);
             args.userId = DEF_USERID;
           }
 
@@ -52,8 +49,6 @@ export const cardDeleterDefs = extendType({
               sample: false,
             },
           });
-
-          console.log(`cardDeleted`, deletedCards);
 
           return deletedCards?.count != 0 ? { id: cardId } : null;
         } catch (error) {

@@ -34,9 +34,7 @@ export default function QuizMainContent() {
 
   useEffect(() => {
     if (cards?.length && !hasResults) {
-      console.log(`set option count: `, cards?.length ? 4 : cards?.length);
-
-      setOptionCount((p) => (p >= cards?.length ? 4 : cards?.length));
+      setOptionCount((p) => ((p || 4) <= cards?.length ? 4 : cards?.length));
       setHasResults(true);
       reloadOptions();
     }
@@ -57,15 +55,17 @@ export default function QuizMainContent() {
 
   const current = () => result?.[playInd]?.card;
 
-  const reloadOptions = (optionCount_ = optionCount, modifier = 0) => {
+  const reloadOptions = (optionCount_?: number | undefined, modifier = 0) => {
     setOptions(
-      generatePlayOptionsLists(optionCount, cards?.length, playInd + modifier)
+      generatePlayOptionsLists(
+        optionCount_ || optionCount,
+        cards?.length,
+        playInd + modifier
+      )
     );
   };
 
   const next = () => {
-    console.log(`optionCount `, optionCount);
-
     reloadOptions(undefined, 1);
     setPlayInd((p) => {
       if (p >= cards?.length - 1) {
@@ -90,7 +90,6 @@ export default function QuizMainContent() {
   const Content = (
     <div className=" py-2 flex-1 col_ animate-fadein">
       <div className="flex items-center gap-2 flex-wrap ">
-        {optionCount}
         <QuizOptions
           reloadOptions={reloadOptions}
           optionCount={optionCount}
@@ -145,8 +144,7 @@ function TrivItem({ current }: any) {
 // and will return an array of random numbers between 0 to length, length of count, one of the element will be equal to playInd
 // this will generate a new options lists for play options cards
 function generatePlayOptionsLists(count = 3, length = 11, playInd = 0) {
-  console.log(`reload option`, { count, length, playInd });
-
+  if (count > 6) count = 6;
   // run function return a random number from 0 to max
   const run = (max = length) => Math.floor(Math.random() * max);
   // create and store 30 random numbers

@@ -15,7 +15,6 @@ function MenuTemplates({ col }: { col: boolean }) {
 
   const onClickHandler = () => {
     if (!userData) {
-      console.log(`no userdata, url:`, url);
     }
     router.push(url);
   };

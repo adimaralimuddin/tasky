@@ -17,7 +17,12 @@ export default function useClassDeleter() {
           }
         });
       } catch (error) {
-        console.log(`Error: class deleterf on mutate`, error);
+        console.log(
+          `Error:
+        @useClassDeleter/onMutate
+        msg: `,
+          error
+        );
       }
     },
     onSuccess(deletedClass) {
@@ -44,7 +49,6 @@ export async function classApiDeleteclass(classId: string) {
     }
   `;
   const ret = await request(ClassUrl, q, { classId });
-  console.log(`class deleted`, ret?.deleteClass);
 
   return ret?.deleteClass;
 }

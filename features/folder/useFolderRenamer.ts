@@ -22,7 +22,6 @@ export default function useFolderRenamer(classId: string) {
   const folderRenamer = useMutation(folderApiRenameFolder, {
     onMutate: (folderData) => {
       const { folderId, ...others } = folderData;
-      console.log(`mutated`, folderData);
 
       setName({ id: folderId, ...others });
     },
@@ -30,7 +29,12 @@ export default function useFolderRenamer(classId: string) {
       setName(renamedFolder);
     },
     onError(error) {
-      console.log(`Error: useFolderRenamer: `, error);
+      console.log(
+        `Error: 
+      @useFolderRenamer
+      msg: `,
+        error
+      );
     },
   });
 
@@ -52,8 +56,6 @@ type FolderRenamerArgsApi = {
   classId: string;
 };
 export async function folderApiRenameFolder(args: FolderRenamerArgsApi) {
-  console.log(`ars`, args);
-
   const q = gql`
     mutation RenameFolder(
       $userId: String!
@@ -75,7 +77,6 @@ export async function folderApiRenameFolder(args: FolderRenamerArgsApi) {
     }
   `;
   const ret = await request(FolderUrl, q, args);
-  console.log(`ret`, ret);
 
   return ret.renameFolder;
 }

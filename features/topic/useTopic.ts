@@ -35,7 +35,12 @@ export default function useTopic() {
           return [...topics, topicPayload];
         });
       } catch (error) {
-        console.log(`Error: useTopicAdder onAddMutate: `, error);
+        console.log(
+          `Error:
+        @useTopicAdder/onMutate
+        msg: `,
+          error
+        );
       }
     },
     onSuccess: (createdTopic) => {
@@ -82,18 +87,23 @@ export default function useTopic() {
 
     if (!topicFinalData?.template)
       return console.log(
-        "Validate: useTopicAdder addTopic : template is required:",
+        `Validate:
+        @useTopicAdder/addTopic 
+        msg: template is required:`,
         topicPayload
       );
 
     selectTopic(topicFinalData, "cardadder");
 
     topicAdder.mutate(topicFinalData, {
-      onSuccess(x) {
-        // console.log(`topic created`, x);
-      },
+      onSuccess(x) {},
       onError(error) {
-        console.log(`Error: useTopicAdder/mutate: `, error);
+        console.log(
+          `Error:
+        @useTopicAdder/onError
+        msg: `,
+          error
+        );
       },
     });
   };

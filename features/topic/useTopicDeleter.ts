@@ -28,7 +28,12 @@ export default function useTopicDeleter(folderId: string) {
       dispatch(setContent("dashboard"));
     },
     onError(error) {
-      console.log(`Error: useTopicDeleter: `, error);
+      console.log(
+        `Error:
+      @useTopicDeleter
+      msg: `,
+        error
+      );
     },
   });
 

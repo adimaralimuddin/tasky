@@ -9,9 +9,7 @@ function useCardsByFields(args: Args) {
     ["cardsbyfields", args],
     () => cardsByFieldsApi(args),
     {
-      onSuccess(gotCards) {
-        console.log(`got cards`, gotCards);
-      },
+      onSuccess(gotCards) {},
     }
   );
   return {

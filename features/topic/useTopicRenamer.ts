@@ -13,7 +13,6 @@ export default function useTopicRenamer(folderId: string) {
       const { id, name } = topicPayload;
 
       if (isTopicSelected(id)) {
-        console.log(`yes, this topic is currently selected`, topicPayload);
         selectTopic(topicPayload);
       }
 

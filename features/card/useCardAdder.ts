@@ -14,9 +14,6 @@ export default function useCardAdder() {
 
   const cardCreator = useMutation(cardApiCreateCard, {
     onMutate: async (cardPayload) => {
-      console.log(`card payload`, cardPayload);
-
-      // cardPayload.fronts = await Promise.all(
       cardPayload?.fronts?.map(async (f) => {
         if (f.value instanceof File) {
           const result = await _fileReader(f.value);
@@ -24,7 +21,6 @@ export default function useCardAdder() {
         }
         return f;
       });
-      // );
 
       client.setQueryData(["cards", topicId], (cards: any) => {
         if (cards?.length) return [...cards, cardPayload];
@@ -32,11 +28,15 @@ export default function useCardAdder() {
       });
     },
     onSuccess: (createdCard) => {
-      console.log("usecards: added", createdCard);
       client.invalidateQueries(["cards", topicId]);
     },
     onError(x) {
-      console.log(`error`, x);
+      console.log(
+        `Error:
+      @useCardAdder
+      msg: `,
+        x
+      );
     },
   });
 
@@ -48,7 +48,9 @@ export default function useCardAdder() {
       data?.fronts?.[0]?.value?.trim() === "" ||
       data?.backs?.[0]?.value?.trim() === ""
     ) {
-      console.log(`card's fields are empty`);
+      console.log(`Validate:
+      @useCardAdder/addCard
+      msg: card's fields are empty`);
       return;
     }
 
@@ -96,11 +98,8 @@ interface PayloadProps {
   backs: Field[];
 }
 export async function cardApiCreateCard(data: PayloadProps) {
-  console.log("about to create card", data);
   const backs = await fieldsSolve(data?.backs);
   const fronts = await fieldsSolve(data?.fronts);
-
-  console.log(`fields resolved`, { fronts, backs });
 
   // check if free user or login user
   if (data.userId == undefined && data.classId == "cl86siwik1391dkjokty3u8na") {

@@ -25,7 +25,6 @@ function useCardDeleter(topicId?: string) {
   });
 
   const deleteCard = (args: Partial<CardDeleterApiType>) => {
-    console.log(`args--`, args);
     args.classId = classId;
     cardDeleter.mutate(args as Required<CardDeleterApiType>);
   };
@@ -48,8 +47,6 @@ export async function cardApiDeleteCard(args: CardDeleterApiType) {
     }
   `;
   const ret = await request(DBURL, q, args);
-  console.log(`resss`, ret);
-
   return ret?.deleteCard;
 }
 

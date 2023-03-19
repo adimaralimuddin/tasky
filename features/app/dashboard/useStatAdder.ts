@@ -60,7 +60,12 @@ function useStatAdder() {
         client.invalidateQueries(["stats", classId]);
       },
       onError(error) {
-        console.log(`Error: useStatAdder > statAddermutate :`, error);
+        console.log(
+          `Error: 
+        @useStatAdder/statAddermutate 
+        msg: `,
+          error
+        );
       },
     });
   };

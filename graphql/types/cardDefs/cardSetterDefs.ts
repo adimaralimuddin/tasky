@@ -49,7 +49,6 @@ export const cardSetterDefs = extendType({
             where: { id: cardId },
             data: { level, category: level == "easy" ? "passed" : "left" },
           });
-          console.log(`card level updated`);
           return updatedCardLevel;
         } catch (error) {
           console.log(

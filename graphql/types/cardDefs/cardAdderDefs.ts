@@ -32,12 +32,8 @@ export const cardAdderDefs = extendType({
       async resolve(par, args, { req, res, prisma }) {
         try {
           const { fronts, backs, ...otherCardData } = args;
-          console.log(`card adder args`, args);
           const user = getSession(req, res)?.user;
           const isSampleClass = await _dbGetSampleClass(args.classId);
-
-          console.log(`user`, user);
-          console.log(`sampleCasses `, isSampleClass);
 
           if (!user) {
             if (!isSampleClass) {
@@ -67,12 +63,9 @@ export const cardAdderDefs = extendType({
             where: { topicId: args.topicId },
           });
 
-          console.log(`cards counts: - `, cardCounts?.length);
           if (cardCounts?.length >= 20) {
             return null;
           }
-
-          console.log(`to create cards db - `, args);
 
           const ret = await prisma.card.create({
             data: {
@@ -82,7 +75,6 @@ export const cardAdderDefs = extendType({
               backs: { create: args.backs },
             },
           });
-          console.log(`card added to the database - :`, ret);
 
           return ret;
         } catch (error) {

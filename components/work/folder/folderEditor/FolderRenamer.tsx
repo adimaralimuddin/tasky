@@ -18,8 +18,6 @@ export default function FolderRenamer({
 }: props) {
   const { renameFolder } = useFolderRenamer(classId);
 
-  // console.log(`folder`, data);
-
   const onRenameHandler = (e: any) => {
     const val = e.target.name?.value;
     if (data?.sample) {

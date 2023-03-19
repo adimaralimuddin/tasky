@@ -52,7 +52,6 @@ export const quizSlice = createSlice({
         action.payload,
         state.playind
       );
-      console.log(`new options`, newOptions);
       state.options = newOptions;
     },
   },

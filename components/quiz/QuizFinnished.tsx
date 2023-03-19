@@ -219,8 +219,6 @@ const ResultPopView = ({
     })) || []
   );
 
-  // console.log(`cards h`, cards);
-
   const { quiz } = useQuizOptions();
   const { singleWrong } = quiz;
 

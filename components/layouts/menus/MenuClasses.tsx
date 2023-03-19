@@ -12,13 +12,10 @@ function MenuClasses({ col }: { col: boolean }) {
   useEffect(() => {
     router.prefetch(url);
   }, [userData]);
-  // console.log(`url`, url);
 
   const onClickHandler = () => {
     if (!userData) {
-      console.log(`no userdata, url:`, url);
     }
-    console.log(`userdata`, userData);
     router.push(url);
   };
 

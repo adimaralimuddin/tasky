@@ -17,11 +17,14 @@ export default function useDashboard() {
     ["dashboard", classId],
     () => cardApiDashboard(classId),
     {
-      onSuccess(data) {
-        // console.log(`dashboard query=`, data);
-      },
+      onSuccess(data) {},
       onError(err) {
-        console.log(`Error: dashboard query onError = `, err);
+        console.log(
+          `Error:
+        @useDashboard
+        msg: = `,
+          err
+        );
       },
     }
   );

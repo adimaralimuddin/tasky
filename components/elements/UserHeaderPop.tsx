@@ -22,10 +22,10 @@ export default function UserHeaderPop() {
         className=""
       >
         <div className="card-all col_ gap-1 min-w-[200px]">
-          <Link prefetch={false} href="/api/auth/login" target={"blank"}>
+          <Link prefetch={false} href="/api/auth/login" target="_blank">
             <button className="btn-prime">Login</button>
           </Link>
-          <h3 className="text-accent text-center">OR</h3>
+          <h3 className="text-accent text-center">or use demo users</h3>
           <div>
             <div>
               <div className="col_ gap-1 ring-1d bg-layer-1 rounded-lg p-2">

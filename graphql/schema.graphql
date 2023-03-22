@@ -88,7 +88,7 @@ type Mutation {
   addTopic(classId: String!, description: String, folderId: String!, id: String!, name: String!, templateId: String!, userId: String): Topic
   createClass(description: String, id: String!, name: String!, userId: String): Class!
   createFieldFront(frontId: String!, ind: Int!, name: String!, type: String!, value: String!, viewId: String!): Field
-  createFolder(classId: String!, name: String!, userId: String!): Folder
+  createFolder(classId: String!, name: String!, userId: String): Folder
   createTemplate(backs: [FieldListInputType], fronts: [FieldListInputType], name: String!, userId: String!): Template
   createUser(email: String!, id: String!, name: String!): User!
   deleteCard(cardId: String!, classId: String!, userId: String): Card
@@ -99,7 +99,7 @@ type Mutation {
   deleteUser(id: String!): User
   renameClass(classId: String!, name: String!): Class
   renameFolder(classId: String!, folderId: String!, name: String!, userId: String!): Folder
-  renameTopic(name: String!, topicId: String!, userId: String): Topic
+  renameTopic(classId: String!, name: String!, topicId: String!, userId: String): Topic
   setCardLevel(cardId: String!, classId: String!, level: String, userId: String): Card
   updateClass(classId: String!, description: String, name: String): Class
   updateField(id: String!, newValue: String!, val: String!): Field
@@ -123,7 +123,7 @@ type Query {
   templates(userId: String!): [Template]
   topic(topicId: String!): Topic
   topicsByFolders(folderId: String!): [Topic]
-  user(id: String!): User
+  user(userId: String): User
   userByDbid(id: String!): User
   userClasses(userId: String!): [Class]
   userTopic(userId: String!): [Topic]

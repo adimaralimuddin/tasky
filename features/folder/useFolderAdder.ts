@@ -64,7 +64,7 @@ type FolderAdderApiType = {
 };
 export async function folderApiAddFolder(args: FolderAdderApiType) {
   const q = gql`
-    mutation CreateFolder($classId: String!, $userId: String!, $name: String!) {
+    mutation CreateFolder($classId: String!, $userId: String, $name: String!) {
       createFolder(classId: $classId, userId: $userId, name: $name) {
         id
         classId

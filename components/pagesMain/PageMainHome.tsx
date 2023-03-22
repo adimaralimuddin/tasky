@@ -8,7 +8,7 @@ import UserHeaderPop from "../elements/UserHeaderPop";
 import HomeHeroSection from "./HomeHeroSection";
 
 function PageMainHome({ defClass: _ }: { defClass: string }) {
-  const defClass = "clf578ifn2517esu9bxr9d8yj";
+  const defClass = "y5Q03_vLtDd_ZEhSQS8oA";
   return (
     <div className="flex flex-col  min-h-screen bg-whited bg-[#F9FBFF] dark:bg-slate-800 overflow-x-hidden ">
       <Head>

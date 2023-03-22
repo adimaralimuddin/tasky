@@ -23,7 +23,7 @@ export default function FolderAdder() {
     addFolder(folderName);
   };
 
-  if (user?.sub !== class_?.userId) {
+  if (user?.sub !== class_?.userId && !class_?.sample) {
     return null;
   }
 

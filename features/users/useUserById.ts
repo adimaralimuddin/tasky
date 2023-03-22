@@ -29,14 +29,13 @@ function useUserById() {
 
 export default useUserById;
 
-const getUserByIdApiReq = async ({
-  userId,
-}: {
+type Args = {
   userId: string | undefined | null;
-}) => {
+};
+const getUserByIdApiReq = async (args: Args) => {
   const q = gql`
-    query UserByIdQuery($userId: String!) {
-      user(id: $userId) {
+    query UserByIdQuery($userId: String) {
+      user(userId: $userId) {
         dbid
         email
         id
@@ -45,6 +44,6 @@ const getUserByIdApiReq = async ({
     }
   `;
 
-  const ret = await request(DBURL, q, { userId });
+  const ret = await request(DBURL, q, args);
   return ret?.user;
 };

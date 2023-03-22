@@ -2,7 +2,7 @@ import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
 import { TopicType } from "../../../../features/topic/topicType";
 import useTopicRenamer from "../../../../features/topic/useTopicRenamer";
-import { DEF_USER } from "../../../../lib/public";
+import { DEF_USER, SAMPLE } from "../../../../lib/public";
 import BtnPrime from "../../../elements/BtnPrime";
 import Input from "../../../elements/Input";
 import Modal from "../../../elements/Modal";
@@ -19,18 +19,20 @@ function TopicRenamer({ open, setOpen, data }: props) {
 
   const onSaveHandler = (e: any) => {
     const name = e.target.name.value;
-    if (data?.sample) {
+    if (data?.sample && !SAMPLE) {
       alert(
         "sample topic will not be renamed. you can always create, edit and delete your own topic"
       );
       return;
     }
-
-    renameTopic({
+    const topicData = {
       ...data,
       userId: user?.sub || DEF_USER,
       name,
-    });
+    };
+    console.log(`topicData`, topicData);
+
+    renameTopic(topicData);
   };
 
   return (

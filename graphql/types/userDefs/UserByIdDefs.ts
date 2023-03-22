@@ -6,11 +6,11 @@ export const UserByIdDefs = extendType({
     t.field("user", {
       type: "User",
       args: {
-        id: nonNull(stringArg()),
+        userId: stringArg(),
       },
-      resolve(par, { id }, ctx) {
+      resolve(par_, { userId }, ctx) {
         return ctx.prisma.user.findFirst({
-          where: { id },
+          where: { id: userId },
         });
       },
     });

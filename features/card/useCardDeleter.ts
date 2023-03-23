@@ -9,10 +9,16 @@ function useCardDeleter(topicId?: string) {
   const classId = useClassGetter().getClassId();
 
   const cardDeleter = useMutation(cardApiDeleteCard, {
-    onSuccess: (deletedCard) => {
+    onMutate(args) {
+      console.log(`c`, args);
       client.setQueryData(["cards", topicId], (cards: any) => {
-        return cards?.filter((card: CardTypes) => card?.id !== deletedCard?.id);
+        return cards?.filter((card: CardTypes) => card?.id !== args?.cardId);
       });
+    },
+    onSuccess: (deletedCard) => {
+      // client.setQueryData(["cards", topicId], (cards: any) => {
+      //   return cards?.filter((card: CardTypes) => card?.id !== deletedCard?.id);
+      // });
     },
     onError(error) {
       console.log(

@@ -1,7 +1,7 @@
 import React from "react";
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
 import { CardTypes } from "../../../../features/card/CardType";
-import { DEF_USER } from "../../../../lib/public";
+import useClassGetter from "../../../../features/class/useClassGetter";
 import Option from "../../../elements/Option";
 
 interface Props {
@@ -22,6 +22,7 @@ function CardItemOptions({
   hovered,
   allowOption,
 }: Props) {
+  const class_ = useClassGetter().getClass();
   const options = () => {
     let ret = [
       {
@@ -42,15 +43,14 @@ function CardItemOptions({
             );
           }
           setIsDeleting(true);
-          // deleteCard({ userId: userId || DEF_USER, cardId: card.id });
         },
       },
     ];
     let notAllowed = [{ text: "you're not allowed" }];
     if (userId) {
-      return userId == card?.userId ? ret : notAllowed;
+      return userId == card?.userId || class_?.sample ? ret : notAllowed;
     } else {
-      return DEF_USER == card?.userId ? ret : notAllowed;
+      return class_?.sample ? ret : notAllowed;
     }
   };
 

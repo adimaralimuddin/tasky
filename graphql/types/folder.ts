@@ -1,6 +1,6 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { extendType, nonNull, objectType, stringArg } from "nexus";
-import { ENTITY_LIMIT, SAMPLE, SAMPLE_CLASSES } from "../../lib/public";
+import { ENTITY_LIMIT, SAMPLE } from "../../lib/public";
 // import { Class } from "./class";
 // import { Topic } from "./topic";
 

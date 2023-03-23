@@ -7,7 +7,7 @@ export type TopicType = {
   description?: string;
   templateId: string;
   folderId: string;
-  userId: string;
+  userId: string | undefined;
   template?: TemplateType;
   Template?: TemplateType;
   sample?: boolean | string;

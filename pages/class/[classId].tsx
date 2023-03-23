@@ -49,12 +49,12 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         id: true,
       },
     });
-    // console.log("res======= ", res);
     return res;
   }
   async function getFolders() {
     const folders = await prisma.folder.findMany({
       where: { classId },
+      orderBy: { createdAt: "asc" },
       select: {
         id: true,
         userId: true,
@@ -63,6 +63,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         sample: true,
 
         Topic: {
+          orderBy: { createdAt: "asc" },
           select: {
             id: true,
             description: true,
@@ -83,6 +84,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
               },
             },
             cards: {
+              orderBy: { createdAt: "asc" },
               select: {
                 id: true,
                 classId: true,

@@ -3,14 +3,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
 import { nanoid } from "nanoid";
 import _fileReader from "../../lib/utils/_fileReader";
+import useClassGetter from "../class/useClassGetter";
 import useTopicGetter from "../topic/useTopicGetter";
 import { CardUrl, fieldsSolve } from "./cardApi";
 import { CardTypes } from "./CardType";
+import useCards from "./useCards";
 
 export default function useCardAdder() {
   const { user } = useUser();
   const topicId = useTopicGetter().getSelectedTopicId();
   const client = useQueryClient();
+  const classId = useClassGetter().getClassId();
+  // const { data: cards } = useCards(topicId);
 
   const cardCreator = useMutation(cardApiCreateCard, {
     onMutate: async (cardPayload) => {
@@ -28,7 +32,9 @@ export default function useCardAdder() {
       });
     },
     onSuccess: (createdCard) => {
-      client.invalidateQueries(["cards", topicId]);
+      console.log(`card created`);
+
+      // client.invalidateQueries(["cards", topicId]);
     },
     onError(x) {
       console.log(
@@ -41,7 +47,7 @@ export default function useCardAdder() {
   });
 
   const addCard = (
-    data: Omit<PayloadProps, "topicId" | "userId">,
+    data: Omit<PayloadProps, "topicId" | "userId" | "classId">,
     cb?: any
   ) => {
     if (
@@ -64,12 +70,17 @@ export default function useCardAdder() {
       i'm limiting because i use free resources for this projects.`);
       return;
     }
+    // const ind = (cards?.length || 0) + 1;
+    const ind = 123;
     const finalCardData = {
+      ...data,
       id: nanoid(),
+      classId,
+      ind,
       topicId,
       userId: user?.sub || undefined,
-      ...data,
     };
+    // console.log(`final data`, finalCardData);
 
     cardCreator.mutate(finalCardData);
     cb?.(finalCardData);

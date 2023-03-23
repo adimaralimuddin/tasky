@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useFieldsGetter from "../../../../features/app/fields/useFieldsGetter";
 import { FieldType } from "../../../../features/card/CardType";
 import useCardAdder from "../../../../features/card/useCardAdder";
-import useCards from "../../../../features/card/useCards";
+import useClassGetter from "../../../../features/class/useClassGetter";
 import useTopicGetter from "../../../../features/topic/useTopicGetter";
 import { ImageIcon, Mp3, XIcon } from "../../../../lib/icons";
 import ContentHeader from "../../../elements/ContentHeader";
@@ -16,22 +16,22 @@ const CardLists = dynamic(() => import("../cardLists/CardLists"), {
   loading: () => <p>cards lists..</p>,
 });
 
-export default function CardAdder({ classId }: { classId: string | any }) {
+export default function CardAdder() {
+  console.log(`eff 00`);
+
   return (
     <div className="container_ flex-col animate-fadein">
       <ContentHeader extraPath="add cards" removeMiddlePaths={true} />
-      <AdderItem classId={classId} />
+      <AdderItem />
       <CardLists cardIndex={true} />
     </div>
   );
 }
 
-export function AdderItem({ index, classId }: any) {
+export function AdderItem() {
   const [hasEmptyValue, setHasEmptyValue] = useState(false);
   const { fronts: fronts_, backs: backs_ } = useFieldsGetter().getFieldsRaw();
-  const topic = useTopicGetter().getSelectedTopic();
   const { addCard } = useCardAdder();
-  const { data: cards } = useCards(topic?.id);
 
   const onAddCardHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +39,6 @@ export function AdderItem({ index, classId }: any) {
 
     const fronts = filterFields("front", formElem, fronts_);
     const backs = filterFields("back", formElem, backs_);
-    const ind = (cards?.length || 0) + 1;
 
     if (fronts?.[0]?.value?.trim() === "" || backs?.[0]?.value?.trim() === "") {
       setHasEmptyValue(true);
@@ -47,8 +46,7 @@ export function AdderItem({ index, classId }: any) {
     }
 
     const data = {
-      ind,
-      classId,
+      // classId,
       name: "",
       description: "",
       fronts,
@@ -62,10 +60,12 @@ export function AdderItem({ index, classId }: any) {
     });
   };
 
+  console.log(`eff 0`);
+
   return (
     <div className="col_ py-2">
       <h3 className="  text-primary-light pt-2 text-center text-sm sm:text-lg">
-        Add Cards for {topic?.name}{" "}
+        {/* Add Cards for {topic?.name}{" "} */}
       </h3>
       <form className="" onSubmit={onAddCardHandler}>
         <div className="flex_ justify-between pb-2 flex-wrap">

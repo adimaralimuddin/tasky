@@ -2,13 +2,28 @@ import { useQuery } from "@tanstack/react-query";
 import request, { gql } from "graphql-request";
 import { DBURL } from "../../lib/public";
 import { CategoryType, LevelType } from "../app/appSlice";
+import useServerState from "../dateState/useServerState";
 import { CardTypes } from "./CardType";
 
 function useCardsByFields(args: Args) {
+  const { folders } = useServerState();
+
+  const cards_ = folders?.reduce<CardTypes[]>((cards, fol) => {
+    fol.Topic?.map((t) => {
+      t?.cards?.map((c) => {
+        cards?.push(c);
+      });
+    });
+    return cards;
+  }, []);
+
+  const filteredCards = cards_?.filter((c) => c[args.field] == args.value);
+
   const cards = useQuery(
     ["cardsbyfields", args],
     () => cardsByFieldsApi(args),
     {
+      initialData: filteredCards,
       onSuccess(gotCards) {},
     }
   );

@@ -26,6 +26,8 @@ function useClientState() {
         }); // folder.topic?.map
       } // if topic?
     });
+
+    // console.log(`folders`, folders);
   };
   return {
     initClientState,

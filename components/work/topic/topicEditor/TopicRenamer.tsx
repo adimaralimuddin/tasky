@@ -2,7 +2,7 @@ import { useUser } from "@auth0/nextjs-auth0";
 import React from "react";
 import { TopicType } from "../../../../features/topic/topicType";
 import useTopicRenamer from "../../../../features/topic/useTopicRenamer";
-import { DEF_USER, SAMPLE } from "../../../../lib/public";
+import { SAMPLE } from "../../../../lib/public";
 import BtnPrime from "../../../elements/BtnPrime";
 import Input from "../../../elements/Input";
 import Modal from "../../../elements/Modal";
@@ -27,11 +27,9 @@ function TopicRenamer({ open, setOpen, data }: props) {
     }
     const topicData = {
       ...data,
-      userId: user?.sub || DEF_USER,
+      userId: user?.sub || undefined,
       name,
     };
-    console.log(`topicData`, topicData);
-
     renameTopic(topicData);
   };
 

@@ -14,11 +14,10 @@ const CategoryList = dynamic(() => import("../topic/category/CategoryList"), {
 });
 
 function WorkContent() {
-  const { getContent, router } = useContentGetter();
+  const { getContent } = useContentGetter();
   const { getClass, isLoading } = useClassGetter();
   const currentClass = getClass();
   const content = getContent();
-  const classId = router.query?.classId;
 
   if (!currentClass && !isLoading) {
     return <ClassNoClass />;
@@ -33,7 +32,7 @@ function WorkContent() {
       ) : content == "category" ? (
         <CategoryList />
       ) : content == "cardadder" ? (
-        <CardAdder classId={classId} />
+        <CardAdder />
       ) : content == "play" ? (
         <PlayCategoryPage />
       ) : content == "quiz" ? (

@@ -1,20 +1,6 @@
-import { gql } from "apollo-server-micro";
-
 import { makeSchema } from "nexus";
 import { join } from "path";
 import * as types from "./types";
-
-export const typeDefs = gql`
-  type User {
-    id: String
-    name: String
-    email: String
-  }
-
-  type Query {
-    users: [User]
-  }
-`;
 
 export const schema = makeSchema({
   types,

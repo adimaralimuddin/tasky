@@ -1,14 +1,14 @@
 import { ApolloServer } from "apollo-server-micro";
 import { schema } from "../../graphql/schema";
-import { resolvers } from "../../graphql/resolvers";
-import { createContext } from "../../graphql/context";
+// import { resolvers } from "../../graphql/resolvers";
 import { NextApiRequest, NextApiResponse } from "next";
+import { createContext } from "../../graphql/context";
 const Cors = require("micro-cors");
 
 const cors = Cors();
 const apolloServer = new ApolloServer({
   schema,
-  resolvers,
+  // resolvers,
   context: createContext,
 });
 

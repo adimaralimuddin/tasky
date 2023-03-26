@@ -113,7 +113,7 @@ export type ContentType =
 
 export type CategoryType = "all" | "new" | "passed" | "left" | undefined;
 export type LevelType = "all" | "easy" | "normal" | "hard";
-export type SideType = "both" | "fronts" | "backs";
+export type SideType = "both" | "fronts" | "backs" | "front" | "back";
 
 export type DashboardType = {
   category: "new" | "passed" | "left";

@@ -54,28 +54,3 @@ export const yyy = queryType({
     });
   },
 });
-
-// export const UserResponse = unionType({
-//   name: "UserResponse",
-//   description: "The type of the possible results from the user query",
-//   definition(t) {
-//     t.members();
-//   },
-//   resolveType: (item) => item.name,
-// });
-
-// export const testDefs = extendType({
-//   type: "Mutation",
-//   definition(t) {
-//     t.field("getTest", {
-//       type: TestFailed,
-//       resolve() {
-//         throw new Error("sucks");
-//         return null;
-//         return {
-//           good: "sucks",
-//         };
-//       },
-//     });
-//   },
-// });

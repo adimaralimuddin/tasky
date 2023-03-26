@@ -1,6 +1,7 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
+import { SideType } from "../../../../features/app/appSlice";
 import useFieldsGetter from "../../../../features/app/fields/useFieldsGetter";
 import { CardTypes, FieldType } from "../../../../features/card/CardType";
 import useTopicGetter from "../../../../features/topic/useTopicGetter";
@@ -20,7 +21,7 @@ const CardDeleter = dynamic(() => import("../cardEditor/CardDeleter"), {
 
 type props = {
   card: CardTypes;
-  side?: "fronts" | "backs" | "both";
+  side?: SideType;
   // key?: any;
   index?: boolean;
   listInd?: number;

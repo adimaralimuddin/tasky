@@ -1,3 +1,5 @@
+live page - https://tasky-web-seven.vercel.app/
+on my portfolio - https://adimaralimuddin.com/#project-div
 
 # TASKY
 ## A Fast and Modern Flash Card Manager App with advanced features that provides Effective Learning with Memory repetation while keeping the process as smooth as possible. 

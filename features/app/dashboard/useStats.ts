@@ -6,13 +6,7 @@ import useServerState from "../../dateState/useServerState";
 function useStats() {
   const { class_ } = useServerState();
   const classId = class_?.id;
-  const stats = useQuery(["stats", classId], () => statsApi({ classId }), {
-    onSuccess(data) {
-    },
-    onError(err) {
-      console.log(`stats err`, err);
-    },
-  });
+  const stats = useQuery(["stats", classId], () => statsApi({ classId }));
   return { ...stats };
 }
 

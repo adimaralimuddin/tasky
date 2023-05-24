@@ -51,6 +51,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     });
     return res;
   }
+
+  async function getStats() {
+    // const res = await prisma.
+  }
   async function getFolders() {
     const folders = await prisma.folder.findMany({
       where: { classId },

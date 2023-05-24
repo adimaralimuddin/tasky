@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { LevelType } from "../../features/app/appSlice";
 import { StatsType } from "../../features/app/dashboard/StatTypes";
 import _useGraphCount from "../../lib/utils/_useGraphCount";
